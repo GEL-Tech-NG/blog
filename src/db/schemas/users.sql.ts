@@ -19,35 +19,44 @@ import {
   rolesEnum,
 } from "../schema-helper";
 
-export const users = mysqlTable("Users", {
-  id,
-  name: varchar("name", { length: 120 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull(),
-  password: varchar("password", { length: 255 }),
-  bio: varchar("bio", { length: 255 }),
-  title: varchar("title", { length: 100 }),
-  username: varchar("username", { length: 255 }),
-  avatar: varchar("avatar", { length: 255 }),
-  social_id: int("social_id"),
-  meta_id: int("meta_id"),
-  account_status: varchar("account_status", {
-    length: 30,
-    enum: ["active", "deleted", "banned", "inactive"],
-  }).default("active"),
-  auth_id: varchar("auth_id", { length: 100 }).$defaultFn(() =>
-    IdGenerator.bigIntId()
-  ),
-  email_verified: boolean("email_verified").default(false),
-  auth_type: mysqlEnum("auth_type", [
-    "local",
-    "google",
-    "github",
-    "facebook",
-  ]).default("local"),
-  role_id: int("role_id").notNull(),
-  created_at,
-  updated_at,
-});
+export const users = mysqlTable(
+  "Users",
+  {
+    id,
+    name: varchar("name", { length: 120 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    password: varchar("password", { length: 255 }),
+    bio: varchar("bio", { length: 255 }),
+    title: varchar("title", { length: 100 }),
+    username: varchar("username", { length: 255 }),
+    avatar: varchar("avatar", { length: 255 }),
+    social_id: int("social_id"),
+    meta_id: int("meta_id"),
+    account_status: varchar("account_status", {
+      length: 30,
+      enum: ["active", "deleted", "banned", "inactive"],
+    }).default("active"),
+    auth_id: varchar("auth_id", { length: 100 }).$defaultFn(() =>
+      IdGenerator.bigIntId()
+    ),
+    email_verified: boolean("email_verified").default(false),
+    auth_type: mysqlEnum("auth_type", [
+      "local",
+      "google",
+      "github",
+      "facebook",
+    ]).default("local"),
+    role_id: int("role_id").notNull(),
+    created_at,
+    updated_at,
+  },
+  (table) => ({
+    emailIdx: index("email_idx").on(table.email),
+    usernameIdx: index("username_idx").on(table.username),
+    authIdIdx: index("auth_id_idx").on(table.auth_id),
+    roleIdIdx: index("role_id_idx").on(table.role_id),
+  })
+);
 
 export const roles = mysqlTable(
   "Roles",
@@ -60,7 +69,7 @@ export const roles = mysqlTable(
     description: varchar("description", { length: 255 }),
   },
   (table) => ({
-    idxName: index("roles_idx_name").on(table.name),
+    nameIdx: index("roles_idx_name").on(table.name),
   })
 );
 
@@ -68,44 +77,90 @@ export const permissions = mysqlTable(
   "Permissions",
   {
     id,
-    name: mysqlEnum(
-      "name",
-
-      permissionsEnum
-    )
+    name: mysqlEnum("name", permissionsEnum)
       .notNull()
       .unique()
       .$type<(typeof permissionsEnum)[number]>(),
     description: varchar("description", { length: 255 }),
   },
   (table) => ({
-    idxName: index("permissions_idx_name").on(table.name),
+    nameIdx: index("permissions_idx_name").on(table.name),
   })
 );
 
-const userMeta = mysqlTable("UserMeta", {
-  id,
-  user_id: int("user_id").notNull(),
-  isProMember: boolean("is_pro_member").default(false),
-  lastLogin: timestamp("last_login").default(sql`CURRENT_TIMESTAMP`),
-  lastLoginIP: varchar("last_login_ip", { length: 50 }),
-  lastLoginLocation: varchar("last_login_location", { length: 255 }),
-  lastLoginDevice: varchar("last_login_device", { length: 255 }),
+export const userMeta = mysqlTable(
+  "UserMeta",
+  {
+    id,
+    user_id: int("user_id").notNull(),
+    isProMember: boolean("is_pro_member").default(false),
+    lastLogin: timestamp("last_login").default(sql`CURRENT_TIMESTAMP`),
+    lastLoginIP: varchar("last_login_ip", { length: 50 }),
+    lastLoginLocation: varchar("last_login_location", { length: 255 }),
+    lastLoginDevice: varchar("last_login_device", { length: 255 }),
+    created_at,
+    updated_at,
+  },
+  (table) => ({
+    userIdIdx: index("user_meta_user_id_idx").on(table.user_id),
+  })
+);
 
-  created_at,
-  updated_at,
-});
+export const userRoles = mysqlTable(
+  "UserRoles",
+  {
+    id,
+    user_id: int("user_id").notNull(),
+    role_id: int("role_id").notNull(),
+  },
+  (table) => ({
+    userRoleIdx: index("user_role_idx").on(table.user_id, table.role_id),
+  })
+);
+
+export const rolePermissions = mysqlTable(
+  "RolePermissions",
+  {
+    id,
+    role_id: int("role_id").notNull(),
+    permission_id: int("permission_id").notNull(),
+  },
+  (table) => ({
+    rolePermissionIdx: index("role_permission_idx").on(
+      table.role_id,
+      table.permission_id
+    ),
+  })
+);
+
+export const userSocials = mysqlTable(
+  "UserSocials",
+  {
+    id: int("id").primaryKey().autoincrement(),
+    user_id: varchar("user_id", { length: 100 }).notNull(),
+    github: varchar("github", { length: 100 }),
+    facebook: varchar("facebook", { length: 100 }),
+    email: varchar("email", { length: 100 }),
+    website: varchar("website", { length: 100 }),
+    twitter: varchar("twitter", { length: 100 }),
+    instagram: varchar("instagram", { length: 100 }),
+    linkedin: varchar("linkedin", { length: 100 }),
+    youtube: varchar("youtube", { length: 100 }),
+    created_at,
+    updated_at,
+  },
+  (table) => ({
+    userIdIdx: index("user_socials_user_id_idx").on(table.user_id),
+  })
+);
+
 export const userMetaRelations = relations(userMeta, ({ one }) => ({
   user: one(users, {
     fields: [userMeta.user_id],
     references: [users.id],
   }),
 }));
-export const userRoles = mysqlTable("UserRoles", {
-  id,
-  user_id: int("user_id").notNull(),
-  role_id: int("role_id").notNull(),
-});
+
 export const userRoleRelations = relations(userRoles, ({ one }) => ({
   user: one(users, {
     fields: [userRoles.user_id],
@@ -116,12 +171,6 @@ export const userRoleRelations = relations(userRoles, ({ one }) => ({
     references: [roles.id],
   }),
 }));
-
-export const rolePermissions = mysqlTable("RolePermissions", {
-  id,
-  role_id: int("role_id").notNull(),
-  permission_id: int("permission_id").notNull(),
-});
 
 export const RoleRelations = relations(roles, ({ many }) => ({
   users: many(users),
@@ -145,20 +194,7 @@ export const RolePermissionRelations = relations(
     }),
   })
 );
-export const userSocials = mysqlTable("UserSocials", {
-  id: int("id").primaryKey().autoincrement(),
-  user_id: varchar("user_id", { length: 100 }).notNull(),
-  github: varchar("github", { length: 100 }),
-  facebook: varchar("facebook", { length: 100 }),
-  email: varchar("email", { length: 100 }),
-  website: varchar("website", { length: 100 }),
-  twitter: varchar("twitter", { length: 100 }),
-  instagram: varchar("instagram", { length: 100 }),
-  linkedin: varchar("linkedin", { length: 100 }),
-  youtube: varchar("youtube", { length: 100 }),
-  created_at,
-  updated_at,
-});
+
 export const UserRelations = relations(users, ({ many, one }) => ({
   posts: many(posts),
   socials: one(userSocials, {

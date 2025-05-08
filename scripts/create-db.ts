@@ -3,8 +3,11 @@ import mysql from "mysql2/promise";
 // Function to create database if it doesn't exist
 export async function createDatabaseIfNotExists() {
   const { DB_PORT, DB_USER_NAME, DB_USER_PASS, DB_HOST, DB_NAME } = process.env;
+  if (!DB_PORT || !DB_USER_NAME || !DB_USER_PASS || !DB_HOST || !DB_NAME) {
+    throw new Error("Missing environment variables");
+  }
   const dbConfig = {
-    port: +DB_PORT,
+    port: parseInt(DB_PORT as string),
     user: DB_USER_NAME,
     password: DB_USER_PASS,
     host: DB_HOST,

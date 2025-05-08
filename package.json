@@ -10,8 +10,9 @@
     "db:push": "drizzle-kit push",
     "db:migrate": "drizzle-kit migrate",
     "db:gen": "drizzle-kit generate",
-    "db:create": "node -r dotenv/config scripts/create-db.mjs",
+    "db:create": "tsx scripts/create-db.ts",
     "db:seeds": "tsx scripts/seed.ts",
+    "db:setup": "tsx scripts/setup.ts",
     "db:init": "node -r dotenv/config scripts/init-db.mjs"
   },
   "dependencies": {

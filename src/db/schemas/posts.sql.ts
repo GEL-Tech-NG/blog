@@ -22,7 +22,7 @@ export const posts = mysqlTable(
   "Posts",
   {
     id,
-    title: varchar("title", { length: 255 }),
+    title: varchar("title", { length: 255 }).notNull(),
     content: longtext("content"),
     summary: varchar("summary", { length: 500 }),
     seo_meta_id: int("meta_id"),
@@ -41,7 +41,7 @@ export const posts = mysqlTable(
       "public"
     ),
     category_id: int("category_id"),
-    is_sticky: boolean("is_sticky").default(false), // For pinned posts
+    is_sticky: boolean("is_sticky").default(false),
     reading_time: int("reading_time"),
     allow_comments: boolean("allow_comments").default(false),
     send_newsletter: boolean("send_newsletter").default(true),
@@ -49,25 +49,21 @@ export const posts = mysqlTable(
     featured_image_id: int("featured_image_id"),
     created_at,
     published_at: timestamp("published_at").generatedAlwaysAs(
-      sql`(
-        CASE 
-            WHEN status = 'published' THEN updated_at
-            ELSE NULL
-        END
-    )`,
+      sql`(CASE WHEN status = 'published' THEN updated_at ELSE NULL END)`,
       { mode: "stored" }
     ),
-    updated_at: timestamp("updated_at").onUpdateNow().defaultNow(),
+    updated_at,
   },
-  (table) => {
-    return {
-      idxTitle: index("idx_title_summary").on(table.title, table.summary),
-      idxPostId: uniqueIndex("idx_post_id").on(table.post_id),
-
-      idxStatus: index("idx_status").on(table.status),
-      uniqueIndex: uniqueIndex("slug_unique_index").on(table.slug),
-    };
-  }
+  (table) => ({
+    idxTitle: index("idx_title_summary").on(table.title, table.summary),
+    idxPostId: uniqueIndex("idx_post_id").on(table.post_id),
+    idxStatus: index("idx_status").on(table.status),
+    idxSlug: uniqueIndex("idx_slug").on(table.slug),
+    idxAuthor: index("idx_author").on(table.author_id),
+    idxCategory: index("idx_category").on(table.category_id),
+    idxCreatedAt: index("idx_created_at").on(table.created_at),
+    idxPublishedAt: index("idx_published_at").on(table.published_at),
+  })
 );
 
 export const postsRelations = relations(posts, ({ one, many }) => ({
@@ -92,6 +88,7 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
   }),
   tags: many(postTags),
 }));
+
 export const postSeoMeta = mysqlTable(
   "PostSeoMeta",
   {
@@ -104,14 +101,14 @@ export const postSeoMeta = mysqlTable(
   (table) => ({
     idxSeoTitle: index("idx_seo_title").on(table.title),
     idxSeoCanonicalUrl: index("idx_seo_canonical_url").on(table.canonical_url),
+    idxPostId: index("idx_post_id").on(table.post_id),
   })
 );
+
 export const postMetaRelations = relations(postSeoMeta, ({ one }) => ({
-  post: one(posts, {
-    fields: [postSeoMeta.post_id],
-    references: [posts.id],
-  }),
+  post: one(posts, { fields: [postSeoMeta.post_id], references: [posts.id] }),
 }));
+
 export const categories = mysqlTable(
   "Categories",
   {
@@ -121,15 +118,13 @@ export const categories = mysqlTable(
     created_at,
     updated_at,
   },
-  (table) => {
-    return {
-      nameIdx: index("name_index").on(table.name),
-      slugUniqueIndex: uniqueIndex("slug_unique_index").on(table.slug),
-    };
-  }
+  (table) => ({
+    idxName: index("idx_name").on(table.name),
+    idxSlug: uniqueIndex("idx_slug").on(table.slug),
+  })
 );
 
-export const categoriesRelations = relations(categories, ({ one, many }) => ({
+export const categoriesRelations = relations(categories, ({ many }) => ({
   posts: many(posts),
 }));
 
@@ -142,32 +137,30 @@ export const tags = mysqlTable(
     created_at,
     updated_at,
   },
-  (table) => {
-    return {
-      nameIdx: index("name_index").on(table.name),
-      slugUniqueIndex: uniqueIndex("slug_unique_index").on(table.slug),
-    };
-  }
+  (table) => ({
+    idxName: index("idx_name").on(table.name),
+    idxSlug: uniqueIndex("idx_slug").on(table.slug),
+  })
 );
 
-export const tagsRelations = relations(tags, ({ one, many }) => ({
+export const tagsRelations = relations(tags, ({ many }) => ({
   posts: many(postTags),
 }));
 
-export const postTags = mysqlTable("PostTags", {
-  post_id: int("post_id").notNull(),
-  tag_id: int("tag_id").notNull(),
-});
+export const postTags = mysqlTable(
+  "PostTags",
+  {
+    post_id: int("post_id").notNull(),
+    tag_id: int("tag_id").notNull(),
+  },
+  (table) => ({
+    idxPostTag: index("idx_post_tag").on(table.post_id, table.tag_id),
+  })
+);
 
 export const postTagsRelations = relations(postTags, ({ one }) => ({
-  post: one(posts, {
-    fields: [postTags.post_id],
-    references: [posts.id],
-  }),
-  tag: one(tags, {
-    fields: [postTags.tag_id],
-    references: [tags.id],
-  }),
+  post: one(posts, { fields: [postTags.post_id], references: [posts.id] }),
+  tag: one(tags, { fields: [postTags.tag_id], references: [tags.id] }),
 }));
 
 export const comments = mysqlTable(
@@ -188,6 +181,9 @@ export const comments = mysqlTable(
   },
   (table) => ({
     idxStatus: index("idx_status").on(table.status),
+    idxPostId: index("idx_post_id").on(table.post_id),
+    idxAuthorId: index("idx_author_id").on(table.author_id),
+    idxCreatedAt: index("idx_created_at").on(table.created_at),
   })
 );
 
@@ -196,10 +192,7 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
     fields: [comments.author_id],
     references: [users.auth_id],
   }),
-  post: one(posts, {
-    fields: [comments.post_id],
-    references: [posts.id],
-  }),
+  post: one(posts, { fields: [comments.post_id], references: [posts.id] }),
   replies: many(replies),
 }));
 
@@ -214,7 +207,6 @@ export const replies = mysqlTable(
       "disapproved",
       "deleted",
     ]).default("pending"),
-
     comment_id: int("comment_id").notNull(),
     author_id: varchar("author_id", { length: 100 }).notNull(),
     created_at,
@@ -222,6 +214,9 @@ export const replies = mysqlTable(
   },
   (table) => ({
     idxStatus: index("idx_status").on(table.status),
+    idxCommentId: index("idx_comment_id").on(table.comment_id),
+    idxAuthorId: index("idx_author_id").on(table.author_id),
+    idxCreatedAt: index("idx_created_at").on(table.created_at),
   })
 );
 

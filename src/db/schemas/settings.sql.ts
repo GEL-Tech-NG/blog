@@ -7,6 +7,7 @@ import {
   timestamp,
   varchar,
   uniqueIndex,
+  index,
 } from "drizzle-orm/mysql-core";
 import { created_at, updated_at, id } from "../schema-helper";
 
@@ -24,6 +25,10 @@ export const siteSettings = mysqlTable(
     updated_at,
   },
   (table) => ({
-    idxKey: uniqueIndex("idx_key").on(table.key),
+    keyIndex: uniqueIndex("idx_key").on(table.key),
+    encryptedIndex: index("idx_encrypted").on(table.encrypted),
+    enabledIndex: index("idx_enabled").on(table.enabled),
+    createdAtIndex: index("idx_created_at").on(table.created_at),
+    updatedAtIndex: index("idx_updated_at").on(table.updated_at),
   })
 );

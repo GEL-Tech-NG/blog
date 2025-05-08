@@ -12,6 +12,7 @@ import {
 } from "../src/db/schemas";
 import { eq, sql } from "drizzle-orm";
 import { permissionsEnum, rolesEnum } from "@/src/db/schema-helper";
+import { IdGenerator } from "@/src/utils";
 
 async function main() {
   try {
@@ -34,7 +35,7 @@ async function main() {
     console.log("Creating tags...");
     const seedTags = [
       { name: "Technology", slug: "technology" },
-      { name: "Next.JS", slug: "next-js" },
+
       { name: "Beginner", slug: "beginner" },
       { name: "Programming", slug: "programming" },
     ];
@@ -458,7 +459,7 @@ async function main() {
 
     if (!existingAdmin.length) {
       await db.insert(users).values({
-        auth_id: "131872340407637508096",
+        auth_id: IdGenerator.bigIntId(),
         name: "Super Admin",
         email: adminEmail,
         password: hashedPassword,
