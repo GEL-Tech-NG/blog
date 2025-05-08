@@ -9,10 +9,13 @@ import {
   rolePermissions,
   users,
   posts,
+  siteSettings,
 } from "../src/db/schemas";
 import { eq, sql } from "drizzle-orm";
 import { permissionsEnum, rolesEnum } from "@/src/db/schema-helper";
 import { IdGenerator } from "@/src/utils";
+import { updateSettings } from "@/src/lib/queries/settings";
+import { DEFAULT_SETTINGS } from "@/src/lib/queries/settings/config";
 
 async function main() {
   try {
@@ -467,6 +470,7 @@ async function main() {
         role_id: adminRole.id,
         auth_type: "local",
         title: "Chief Editor",
+        email_verified: true,
         bio: "I am the Chief Editor of this blog. I am responsible for overseeing the editorial content and ensuring the quality and accuracy of the articles.",
       });
       const adminUser = await db.query.users.findFirst({
@@ -489,7 +493,11 @@ async function main() {
     } else {
       console.log("Admin user already exists");
     }
-
+    try {
+      await updateSettings(DEFAULT_SETTINGS);
+    } catch (error) {
+      console.log("❌ Error creating site settings:", error);
+    }
     console.log("✅ Seed completed successfully");
   } catch (error) {
     console.error("❌ Error during seed:", error);

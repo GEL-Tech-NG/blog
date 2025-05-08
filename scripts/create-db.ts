@@ -1,5 +1,5 @@
 import mysql from "mysql2/promise";
-
+import "dotenv/config";
 // Function to create database if it doesn't exist
 export async function createDatabaseIfNotExists() {
   const { DB_PORT, DB_USER_NAME, DB_USER_PASS, DB_HOST, DB_NAME } = process.env;

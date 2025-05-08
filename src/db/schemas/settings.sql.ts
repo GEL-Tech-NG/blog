@@ -21,6 +21,7 @@ export const siteSettings = mysqlTable(
     value: text("value"),
     encrypted: boolean("encrypted").default(false),
     enabled: boolean("enabled").default(false),
+    canEncrypt: boolean("can_encrypt").default(false),
     created_at,
     updated_at,
   },
@@ -28,6 +29,7 @@ export const siteSettings = mysqlTable(
     keyIndex: uniqueIndex("idx_key").on(table.key),
     encryptedIndex: index("idx_encrypted").on(table.encrypted),
     enabledIndex: index("idx_enabled").on(table.enabled),
+    canEncryptIndex: index("idx_can_encrypt").on(table.canEncrypt),
     createdAtIndex: index("idx_created_at").on(table.created_at),
     updatedAtIndex: index("idx_updated_at").on(table.updated_at),
   })

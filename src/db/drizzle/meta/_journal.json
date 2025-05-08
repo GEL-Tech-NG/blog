@@ -15,6 +15,13 @@
       "when": 1740781093393,
       "tag": "0001_outgoing_darkhawk",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1746743171428,
+      "tag": "0002_good_sue_storm",
+      "breakpoints": true
     }
   ]
 }

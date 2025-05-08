@@ -43,6 +43,8 @@ export async function updateSettings(newSettings: SiteSettings) {
         key,
         value,
         enabled: setting.enabled,
+        encrypted: setting.encrypted,
+        canEncrypt: setting.canEncrypt,
       })
       .onDuplicateKeyUpdate({
         set: { key, value, updated_at: new Date() },
