@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import mysql2 from "mysql2/promise";
 import * as schema from "./schemas";
 import isEmpty from "just-is-empty";
-
+import "dotenv/config";
 const {
   DB_NAME,
   DB_PORT,

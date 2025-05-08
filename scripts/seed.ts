@@ -13,10 +13,10 @@ import {
 } from "../src/db/schemas";
 import { eq, sql } from "drizzle-orm";
 import { permissionsEnum, rolesEnum } from "@/src/db/schema-helper";
-import { IdGenerator } from "@/src/utils";
+import { IdGenerator, isSecretKey } from "@/src/utils";
 import { updateSettings } from "@/src/lib/queries/settings";
 import { DEFAULT_SETTINGS } from "@/src/lib/queries/settings/config";
-
+import crypto from "crypto";
 async function main() {
   try {
     console.log("🌱 Starting seed...");
@@ -494,15 +494,62 @@ async function main() {
       console.log("Admin user already exists");
     }
     try {
-      await updateSettings(DEFAULT_SETTINGS);
+      const operations = Object.entries(DEFAULT_SETTINGS).map(
+        ([key, setting]) => {
+          const value =
+            isSecretKey(key) &&
+            setting.value &&
+            !setting.encrypted &&
+            setting.canEncrypt
+              ? encryptKey(setting.value)
+              : setting.value;
+
+          return db
+            .insert(siteSettings)
+            .values({
+              key,
+              value,
+              enabled: setting.enabled,
+              encrypted: setting.encrypted,
+              canEncrypt: setting.canEncrypt,
+            })
+            .onDuplicateKeyUpdate({
+              set: { key, value, updated_at: new Date() },
+            });
+        }
+      );
+
+      for (const operation of operations) {
+        await operation;
+      }
+      console.log("✅ Site settings created successfully");
     } catch (error) {
       console.log("❌ Error creating site settings:", error);
     }
     console.log("✅ Seed completed successfully");
+    process.exit(0);
   } catch (error) {
     console.error("❌ Error during seed:", error);
     throw error;
   }
 }
+export function encryptKey(key: string): string {
+  if (!process.env.ENCRYPTION_KEY) {
+    throw new Error("ENCRYPTION_KEY is not set");
+  }
+  const iv = crypto.randomBytes(16);
+  const keyBuffer = Buffer.from(process.env.ENCRYPTION_KEY as string, "hex");
 
+  const cipher = crypto.createCipheriv(
+    "aes-256-gcm",
+    keyBuffer as crypto.CipherKey,
+    iv as crypto.BinaryLike
+  );
+
+  const encrypted = cipher.update(key, "utf8", "hex") + cipher.final("hex");
+  const authTag = cipher.getAuthTag();
+
+  // Combine IV + encrypted data + auth tag
+  return iv.toString("hex") + encrypted + authTag.toString("hex");
+}
 main();
