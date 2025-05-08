@@ -154,6 +154,7 @@ export type SettingEntry = {
   value: string;
   enabled: boolean;
   encrypted: boolean;
+  canEncrypt?: boolean;
 };
 
 export type SiteSettings = {
@@ -183,6 +184,9 @@ export type SiteSettings = {
   emailFromName: SettingEntry;
   localPostAnalytics: SettingEntry;
   showSiteNameWithLogo: SettingEntry;
+  resendApiKey: SettingEntry;
+  cloudinaryApiKey: SettingEntry;
+  cloudinaryApiSecret: SettingEntry;
   [key: string]: SettingEntry;
 };
 export type ResendWebhookEvent = {

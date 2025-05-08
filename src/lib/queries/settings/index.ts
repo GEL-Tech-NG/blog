@@ -30,7 +30,10 @@ export const getSettings = unstable_cache(
 export async function updateSettings(newSettings: SiteSettings) {
   const operations = Object.entries(newSettings).map(([key, setting]) => {
     const value =
-      isSecretKey(key) && setting.value && !setting.encrypted
+      isSecretKey(key) &&
+      setting.value &&
+      !setting.encrypted &&
+      setting.canEncrypt
         ? encryptKey(setting.value)
         : setting.value;
 

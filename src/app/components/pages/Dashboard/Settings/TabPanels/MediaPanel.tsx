@@ -13,6 +13,30 @@ export const MediaPanel = ({
   return (
     <VStack spacing={6} align="stretch">
       <FormControl isRequired>
+        <FormLabel>Cloudinary Api Key</FormLabel>
+        <Input
+          maxW={600}
+          rounded="md"
+          value={settings.cloudinaryApiKey.value}
+          onChange={(e) =>
+            handleInputChange("cloudinaryApiKey", e.target.value)
+          }
+          placeholder="your-cloudinary-api-key"
+        />
+      </FormControl>
+      <FormControl isRequired>
+        <FormLabel>Cloudinary Api Secret</FormLabel>
+        <Input
+          maxW={600}
+          rounded="md"
+          value={settings.cloudinaryApiSecret.value}
+          onChange={(e) =>
+            handleInputChange("cloudinaryApiSecret", e.target.value)
+          }
+          placeholder="your-cloudinary-api-secret"
+        />
+      </FormControl>
+      <FormControl isRequired>
         <FormLabel>Cloudinary Cloud Name</FormLabel>
         <Input
           maxW={600}
