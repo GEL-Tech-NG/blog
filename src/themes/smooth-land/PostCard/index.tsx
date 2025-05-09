@@ -36,8 +36,8 @@ export default function PostCard({
 }) {
   const textColor = useColorModeValue("gray.600", "gray.400");
   const tagBgColor = "transparent";
-  const tagColor = useColorModeValue("blue.400", "blue.300");
-  const bgColor = useColorModeValue("transparent", "gray.900");
+  const tagColor = useColorModeValue("brandPurple.600", "brandPurple.300");
+  const bgColor = "none!important";
   return (
     <Card
       rounded={"none"}
@@ -59,9 +59,12 @@ export default function PostCard({
       <Box
         position="relative"
         pb={0}
-        rounded={"sm"}
+        rounded={"md"}
         overflow={"hidden"}
         height={"200px"}
+        border={"1px solid"}
+        borderColor={"brand.50"}
+        mb={2}
       >
         <Image
           src={

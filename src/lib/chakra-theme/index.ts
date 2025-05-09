@@ -64,6 +64,30 @@ export const chakraTheme = extendTheme(
         800: "#0C0C0F", // Nearly black with blue tint
         900: "#05050A", // Almost black
       },
+      brandPurple: {
+        50: "#F1E9FE", // Very light purple
+        100: "#E3D3FD", // Light purple
+        200: "#CEB0FC", // Light-medium purple
+        300: "#B288FB", // Medium purple
+        400: "#955EFB", // Medium-bright purple
+        500: "#7734FB", // Original vibrant purple (#7734FB)
+        600: "#621BFA", // Slightly darker purple
+        700: "#5011D3", // Dark purple
+        800: "#3E0CA6", // Very dark purple
+        900: "#2C077A", // Extremely dark purple
+      },
+      brandBlue: {
+        50: "#EEF2FF", // Very light blue
+        100: "#DCE4FF", // Light blue
+        200: "#BDC9FF", // Light-medium blue
+        300: "#9AAFFF", // Medium blue
+        400: "#7690FF", // Medium-bright blue
+        500: "#5271FF", // Original bright blue (#5271FF)
+        600: "#395CFF", // Slightly darker blue
+        700: "#2044FF", // Dark blue
+        800: "#0A30EA", // Very dark blue
+        900: "#0825B8", // Extremely dark blue
+      },
     },
     sizes,
     styles: {
@@ -73,7 +97,7 @@ export const chakraTheme = extendTheme(
           "--dash-sidebar-w": "230px",
           "--dash-header-h": "65px",
           "--custom-accent-color": "#0070f3",
-          "--link-color": "var(--chakra-colors-brand-500)",
+          "--link-color": "var(--chakra-colors-brandBlue-500)",
           "--card-raised-soft":
             "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
           "--card-raised": "var(--card-raised-soft)",

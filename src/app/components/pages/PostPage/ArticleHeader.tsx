@@ -37,11 +37,13 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = ({ post }) => {
       >
         {post?.category?.name && (
           <Badge
-            px={3}
+            px={0}
             fontSize={{ base: "0.8em" }}
             py={1}
-            mb={1}
-            rounded={"xl"}
+            mb={{ base: 0, md: 1 }}
+            color={"brandPurple.500"}
+            _dark={{ color: "brandPurple.300" }}
+            bg="transparent"
           >
             {post?.category?.name}
           </Badge>
@@ -59,7 +61,7 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = ({ post }) => {
 
         {post?.summary && (
           <>
-            <Divider my={1} />
+            {/* <Divider my={1} /> */}
             <Text
               fontSize={{ base: "md", md: "lg" }}
               my={2}

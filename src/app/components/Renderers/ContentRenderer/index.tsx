@@ -104,7 +104,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
           // Handle block elements with Chakra UI components
           if (domNode.name === "p" && !domNode.parent) {
             return (
-              <Text mb={4}>
+              <Text my={"1em"}>
                 {domToReact(domNode.children as Element[], options)}
               </Text>
             );
@@ -199,10 +199,11 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
             return (
               <Link
                 href={domNode.attribs.href}
+                rel={domNode.attribs.rel}
                 isExternal={domNode.attribs.target === "_blank"}
                 _hover={{ textDecoration: "underline" }}
-                color={"brand.600"}
-                _dark={{ color: "brand.300" }}
+                color={"brandBlue.600"}
+                _dark={{ color: "brandBlue.300" }}
               >
                 {domToReact(domNode.children as Element[], options)}
               </Link>
@@ -210,7 +211,11 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
           }
           if (domNode.name === "img") {
             return (
-              <Image src={domNode.attribs.src} alt={domNode.attribs.alt} />
+              <Image
+                src={domNode.attribs.src}
+                alt={domNode.attribs.alt}
+                {...domNode.attribs}
+              />
             );
           }
           if (domNode.name === "blockquote") {

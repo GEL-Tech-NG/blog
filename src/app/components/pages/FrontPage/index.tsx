@@ -7,7 +7,7 @@ import { Link } from "@chakra-ui/next-js";
 import { usePosts } from "@/src/hooks";
 import { LuArrowRight } from "react-icons/lu";
 import { CategoryItemList } from "../../CategoryItemList";
-import { FeaturedPost } from "@/src/themes/raised-land/FeaturedPost";
+import { FeaturedPost } from "@/src/themes/smooth-land/FeaturedPost";
 import { FeaturedPostType, PostSelect } from "@/src/types";
 import { useSearchParams } from "next/navigation";
 import { useQueryState } from "nuqs";
@@ -48,7 +48,7 @@ const FrontPage: FC<FrontPageProps> = ({ featuredPost, posts }) => {
     >
       <Box mb={12}>
         <Box
-          maxW="1440px"
+          maxW="1300px"
           mx="auto"
           px={{ base: 2, md: 4, lg: 2 }}
           // pt={2}

@@ -49,6 +49,9 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
       <Container maxW="container.xl" py={8}>
         <Breadcrumb
           spacing="8px"
+          fontSize={"smaller"}
+          display={"flex"}
+          justifyContent={{ base: "start", md: "center" }}
           separator={<ChevronRightIcon color={metaColor} />}
           mb={6}
           listProps={{ flexWrap: "wrap" }}
@@ -124,10 +127,10 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
 
           {/* Article Content */}
           {/* <Box> */}
-            <ArticleContent post={post} />
-            {/* <AuthorSection post={post} /> */}
+          <ArticleContent post={post} />
+          {/* <AuthorSection post={post} /> */}
 
-            {/* Comments Section */}
+          {/* Comments Section */}
           {/* </Box> */}
           <VStack
             w={sidebarWidth}
