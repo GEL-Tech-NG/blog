@@ -52,7 +52,18 @@ export const chakraTheme = extendTheme(
     colors: {
       charcoalBlack: "#121212",
       customBlue: "#0070f3",
-      brand: { ...baseTheme.colors.green },
+      brand: {
+        50: "#CECEDE", // Light blue-tinted gray (much darker than previous 50)
+        100: "#ACACC6", // Light-medium blue-tinted gray
+        200: "#8989AB", // Medium blue-tinted gray
+        300: "#686891", // Medium-dark blue-tinted gray
+        400: "#4B4B6A", // Dark blue-tinted gray
+        500: "#18181C", // Original color (hsl(240, 5.9%, 10%))
+        600: "#141418", // Darker than original
+        700: "#111114", // Very dark blue-tinted gray
+        800: "#0C0C0F", // Nearly black with blue tint
+        900: "#05050A", // Almost black
+      },
     },
     sizes,
     styles: {

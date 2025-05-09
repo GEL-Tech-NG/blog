@@ -1,4 +1,5 @@
 import "server-only";
+import "dotenv/config";
 import { type AuthOptions, getServerSession } from "next-auth";
 import { eq, or, and } from "drizzle-orm";
 import { type User } from "next-auth";
@@ -160,7 +161,7 @@ const authOptions: AuthOptions = {
   ],
   jwt: {
     async encode(params: JWTEncodeParams): Promise<string> {
-      if (params.token === undefined) {
+      if (!params.token) {
         throw new Error("Token is undefined");
       }
       return await encode({
@@ -170,7 +171,7 @@ const authOptions: AuthOptions = {
       });
     },
     async decode(params: JWTDecodeParams): Promise<JWT | null> {
-      if (params.token === undefined) {
+      if (!params.token) {
         return null;
       }
       return await decode({

@@ -485,6 +485,7 @@ async function main() {
           status: "published",
           category_id: 1,
           post_id: uuidv4(),
+          published_at: new Date(),
         });
         console.log("✅ Post created successfully");
       } catch (error) {
