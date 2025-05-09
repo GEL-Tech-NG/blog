@@ -528,7 +528,6 @@ async function main() {
       console.log("❌ Error creating site settings:", error);
     }
     console.log("✅ Seed completed successfully");
-    process.exit(0);
   } catch (error) {
     console.error("❌ Error during seed:", error);
     throw error;
