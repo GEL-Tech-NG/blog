@@ -1,6 +1,6 @@
 "use client";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { Box, Button, HStack } from "@chakra-ui/react";
+import { Box, Button, HStack, useColorModeValue } from "@chakra-ui/react";
 import PageWrapper from "../../PageWrapper";
 import { PostsCards } from "@/src/themes/smooth-land/PostsCards";
 import { Link } from "@chakra-ui/next-js";
@@ -39,8 +39,13 @@ const FrontPage: FC<FrontPageProps> = ({ featuredPost, posts }) => {
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [category]);
+  const bgColor = useColorModeValue("white", "brand.800");
   return (
-    <PageWrapper>
+    <PageWrapper
+      styleProps={{
+        bg: bgColor,
+      }}
+    >
       <Box mb={12}>
         <Box
           maxW="1440px"

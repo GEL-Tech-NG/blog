@@ -35,34 +35,23 @@ export default function PostCard({
   post: PostSelect;
 }) {
   const textColor = useColorModeValue("gray.600", "gray.400");
-  const tagBgColor = useColorModeValue("blackAlpha.700", "black");
-  const tagColor = useColorModeValue("gray.50", "gray.300");
+  const tagBgColor = "transparent";
+  const tagColor = useColorModeValue("blue.400", "blue.300");
   const bgColor = useColorModeValue("transparent", "gray.900");
   return (
     <Card
-      // initial={{ opacity: 0, y: 50 }}
-      // whileInView={{
-      //   opacity: 1,
-      //   y: 0,
-      //   transition: {
-      //     duration: 0.5,
-      //   },
-      //   }}
-      //   viewport={{ once: true, margin: "-50px" }}
-      rounded={"xl"}
+      rounded={"none"}
+      shadow={"none"}
       as={LinkBox}
       key={post?.id}
       bg={bgColor}
       maxW={{ base: "full", md: 380 }}
       overflow="hidden"
       transition="all 0.3s"
-      py={3}
-      px={{ base: 3, sm: 4, md: 3 }}
-      _hover={{ shadow: "lg" }}
       sx={{
         "&:hover": {
           ".post-card-img": {
-            transform: "scale(1.08)",
+            opacity: 0.8,
           },
         },
       }}
@@ -70,9 +59,9 @@ export default function PostCard({
       <Box
         position="relative"
         pb={0}
-        rounded={"xl"}
+        rounded={"sm"}
         overflow={"hidden"}
-        height={"180"}
+        height={"200px"}
       >
         <Image
           src={
@@ -96,75 +85,71 @@ export default function PostCard({
           h="full"
           width="full"
         />
-        {post?.category && post?.category?.name && (
-          <Box position="absolute" top={3} left={3}>
-            <Tag
-              size="sm"
-              variant={"unstyled"}
-              bg={tagBgColor}
-              color={tagColor}
-              borderRadius="full"
-              fontWeight={"normal"}
-              px={3}
-              py={2}
-            >
-              {post?.category?.name}
-            </Tag>
-          </Box>
-        )}
       </Box>
       <CardBody px={0} pt={3} pb={0} display={"flex"} flexDir={"column"}>
         <Stack flex={1}>
           <VStack align={"start"} spacing={2} flex={1}>
-            <HStack mb={2}>
-              <Text fontSize="small" as={"span"} color={textColor}>
-                {post?.published_at
-                  ? `${formatDate(new Date(post?.published_at))}`
-                  : formatDate(new Date(post?.updated_at as Date))}
+            {post?.category && post?.category?.name && (
+              <Text
+                as="span"
+                bg={tagBgColor}
+                color={tagColor}
+                fontSize={"smaller"}
+                fontWeight={"600"}
+              >
+                {post?.category?.name}
               </Text>
-              <Box w={"1"} h={1} bg={textColor} rounded="full"></Box>
-              <Text fontSize="small" as={"span"} color={textColor}>
-                {post?.reading_time || 1} min read
-              </Text>
-            </HStack>
+            )}
             <LinkOverlay
               href={generatePostUrl(post)}
               _hover={{ textDecoration: "underline" }}
             >
-              <Heading
-                size={"md"}
-                fontWeight={500}
-                noOfLines={3}
-                lineHeight={1.05}
-              >
+              <Heading className="!text-xl" fontWeight={600} noOfLines={3}>
                 {post?.title}
               </Heading>
             </LinkOverlay>
 
-            <Text noOfLines={2} color={textColor} fontSize={"small"}>
+            <Text noOfLines={2} color={textColor} fontSize={"15px"}>
               {post?.summary ||
                 stripHtml(decodeAndSanitizeHtml(post?.content || ""))}
             </Text>
           </VStack>
-          {showAuthor && (
-            <Link href={`/author/${post?.author?.username}`}>
-              <HStack gap={3} display={"inline-flex"} mt={1}>
-                <Avatar
-                  src={post?.author?.avatar || ""}
-                  name={post?.author?.name}
-                  size="xs"
-                />
+          {/* {showAuthor && ( */}
+          <HStack gap={2} display={"inline-flex"} mt={1}>
+            <Avatar
+              src={post?.author?.avatar || ""}
+              name={post?.author?.name}
+              // size="md"
+              boxSize={"36px"}
+              // w={"40px"}
+              // h={"40px"}
+            />
+            <Stack gap={0}>
+              <Link href={`/author/${post?.author?.username}`}>
                 <Text
-                  fontWeight="500"
+                  fontWeight="600"
                   as={"span"}
-                  fontSize={"small"}
+                  fontSize={"smaller"}
                   _hover={{ textDecoration: "underline" }}
                 >
                   {post?.author?.name}
                 </Text>
+              </Link>
+
+              <HStack gap={1}>
+                <Text fontSize="smaller" as={"span"} color={textColor}>
+                  {post?.published_at
+                    ? `${formatDate(new Date(post?.published_at))}`
+                    : formatDate(new Date(post?.updated_at as Date))}
+                </Text>
+                <Box w={"1"} h={1} bg={textColor} rounded="full"></Box>
+                <Text fontSize="smaller" as={"span"} color={textColor}>
+                  {post?.reading_time || 1} min read
+                </Text>
               </HStack>
-            </Link>
-          )}
+            </Stack>
+          </HStack>
+          {/* )} */}
         </Stack>
       </CardBody>
     </Card>
