@@ -41,8 +41,10 @@ export const MediaPanel = ({
         <Input
           maxW={600}
           rounded="md"
-          value={settings.cloudinaryName.value}
-          onChange={(e) => handleInputChange("cloudinaryName", e.target.value)}
+          value={settings.cloudinaryCloudName.value}
+          onChange={(e) =>
+            handleInputChange("cloudinaryCloudName", e.target.value)
+          }
           placeholder="your-cloud-name"
         />
       </FormControl>

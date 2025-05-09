@@ -174,7 +174,7 @@ export type SiteSettings = {
   sentryEnvironment: SettingEntry;
   errorTracking: SettingEntry;
   performanceMonitoring: SettingEntry;
-  cloudinaryName: SettingEntry;
+  cloudinaryCloudName: SettingEntry;
   maxUploadSize: SettingEntry;
   defaultMediaFolder: SettingEntry;
   apiRateLimit: SettingEntry;

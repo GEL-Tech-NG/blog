@@ -9,7 +9,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   },
   siteDescription: {
     value:
-      "Penstack is a modern, clean, and minimalistic and customizable nextjs blog",
+      "Penstack is a modern, clean, minimalistic and customizable nextjs blog",
     enabled: true,
     encrypted: false,
     canEncrypt: false,
@@ -79,7 +79,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     encrypted: false,
     canEncrypt: true,
   },
-  cloudinaryName: {
+  cloudinaryCloudName: {
     value: "",
     enabled: true,
     encrypted: false,

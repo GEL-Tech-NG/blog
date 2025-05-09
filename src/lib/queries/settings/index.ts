@@ -17,6 +17,7 @@ export const getSettings = unstable_cache(
         value: setting.value || "",
         enabled: setting.enabled as boolean,
         encrypted: setting.encrypted as boolean,
+        canEncrypt: setting.canEncrypt as boolean,
       };
       return acc;
     }, {} as SiteSettings);
