@@ -30,7 +30,9 @@ export const FeaturedPost = ({ post }: { post: FeaturedPostType }) => {
           <Card
             overflow="hidden"
             transition="all 0.2s"
-            _hover={{ boxShadow: "lg" }}
+            // _hover={{ boxShadow: "lg" }}
+            // shadow='none'
+            rounded={"none"}
           >
             <Box
               position="relative"
@@ -82,7 +84,10 @@ export const FeaturedPost = ({ post }: { post: FeaturedPostType }) => {
                   {post?.category?.name}
                 </Text>
               )}
-              <LinkOverlay href={`${generatePostUrl(post)}`}>
+              <LinkOverlay
+                href={`${generatePostUrl(post)}`}
+                _hover={{ textDecoration: "underline" }}
+              >
                 <Heading size={{ base: "xl", md: "2xl" }} mb={2}>
                   {post?.title}
                 </Heading>
@@ -108,7 +113,7 @@ export const FeaturedPost = ({ post }: { post: FeaturedPostType }) => {
                         day: "numeric",
                         year: "numeric",
                       }
-                    )}
+                    )} 
                   </Text>
                 </VStack>
               </HStack>

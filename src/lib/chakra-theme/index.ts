@@ -7,8 +7,8 @@ import {
 } from "@chakra-ui/react";
 import { CardConfig, InputConfig } from "./card";
 const config: ThemeConfig = {
-  useSystemColorMode: true,
-  initialColorMode: "system",
+  useSystemColorMode: false,
+  initialColorMode: "light",
 };
 
 const sizes = {

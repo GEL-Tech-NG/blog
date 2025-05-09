@@ -3,6 +3,7 @@ import {
   decodeAndSanitizeHtml,
   formatDate,
   generatePostUrl,
+  nativeFormatDate,
   objectToQueryParams,
   stripHtml,
 } from "@/src/utils";
@@ -142,8 +143,8 @@ export default function PostCard({
               <HStack gap={1}>
                 <Text fontSize="smaller" as={"span"} color={textColor}>
                   {post?.published_at
-                    ? `${formatDate(new Date(post?.published_at))}`
-                    : formatDate(new Date(post?.updated_at as Date))}
+                    ? `${nativeFormatDate(new Date(post?.published_at))}`
+                    : `${nativeFormatDate(new Date(post?.updated_at as Date))}`}
                 </Text>
                 <Box w={"1"} h={1} bg={textColor} rounded="full"></Box>
                 <Text fontSize="smaller" as={"span"} color={textColor}>

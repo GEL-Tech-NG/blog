@@ -1,17 +1,12 @@
 "use client";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC } from "react";
 import { Box, Button, HStack, useColorModeValue } from "@chakra-ui/react";
 import PageWrapper from "../../PageWrapper";
 import { PostsCards } from "@/src/themes/smooth-land/PostsCards";
 import { Link } from "@chakra-ui/next-js";
-import { usePosts } from "@/src/hooks";
 import { LuArrowRight } from "react-icons/lu";
-import { CategoryItemList } from "../../CategoryItemList";
 import { FeaturedPost } from "@/src/themes/smooth-land/FeaturedPost";
 import { FeaturedPostType, PostSelect } from "@/src/types";
-import { useSearchParams } from "next/navigation";
-import { useQueryState } from "nuqs";
-import isEmpty from "just-is-empty";
 
 interface FrontPageProps {
   featuredPost: FeaturedPostType;
@@ -39,7 +34,7 @@ const FrontPage: FC<FrontPageProps> = ({ featuredPost, posts }) => {
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [category]);
-  const bgColor = useColorModeValue("white", "brand.800");
+  const bgColor = useColorModeValue("white", "brand.400");
   return (
     <PageWrapper
       styleProps={{

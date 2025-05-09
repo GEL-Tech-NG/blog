@@ -75,7 +75,7 @@ const Header = () => {
 
   const resources = [
     { name: "Articles", href: "/articles" },
-    { name: "Tutorials", href: "/resources/tutorials" },
+    // { name: "Tutorials", href: "/resources/tutorials" },
     { name: "Newsletter", href: "/newsletter" },
   ];
   function isActiveUrl(url: string) {
