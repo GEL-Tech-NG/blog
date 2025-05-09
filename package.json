@@ -13,8 +13,7 @@
     "db:create": "tsx scripts/create-db.ts",
     "db:seeds": "tsx scripts/seed.ts",
     "db:setup": "tsx scripts/setup.ts",
-    "db:init": "node -r dotenv/config scripts/init-db.mjs",
-    "postinstall": "npm run db:setup"
+    "db:init": "node -r dotenv/config scripts/init-db.mjs"
   },
   "dependencies": {
     "@auth/core": "^0.37.2",
