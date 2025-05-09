@@ -4,6 +4,7 @@ import { db } from "@/src/db";
 import { medias } from "@/src/db/schemas";
 import { eq } from "drizzle-orm";
 import { determineFileType } from "@/src/utils/upload";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
         where: eq(medias.id, response.id),
       });
     });
+    revalidateTag("media-filters");
     return NextResponse.json(result);
   } catch (error) {
     console.error("Upload error server:", error);

@@ -2,14 +2,28 @@ import { db } from "@/src/db";
 import { medias } from "@/src/db/schemas";
 import { asc } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
 
-export async function GET(req: NextRequest) {
-  try {
+const fetchMediaFolders = unstable_cache(
+  async () => {
     const folders = await db
       .selectDistinct({ folder: medias.folder })
       .from(medias)
       .orderBy(asc(medias.folder));
-    const _folders = folders?.length ? folders.map((f) => f.folder) : [];
+
+    return folders?.length ? folders.map((f) => f.folder) : [];
+  },
+  ["media-folders"],
+  {
+    revalidate: 60 * 60, // 1 hour
+    tags: ["media-folders"],
+  }
+);
+
+export async function GET(req: NextRequest) {
+  try {
+    const _folders = await fetchMediaFolders();
+
     return NextResponse.json({
       message: "Folders retrieved successfully",
       data: _folders,

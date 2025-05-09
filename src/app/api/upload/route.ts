@@ -5,6 +5,7 @@ import { MediaType } from "@/src/types";
 import { eq } from "drizzle-orm";
 import { determineFileType } from "@/src/utils/upload";
 import { checkPermission } from "@/src/lib/auth/check-permission";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: NextRequest) {
   return await checkPermission(
@@ -12,7 +13,6 @@ export async function POST(request: NextRequest) {
     async () => {
       try {
         const data = await request.json();
-
         const result = await db.transaction(async (tx) => {
           const [response] = await tx
             .insert(medias)
@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
               alt_text: data.alt_text || "",
             })
             .$returningId();
+          revalidateTag("media-filters");
           return await tx.query.medias.findFirst({
             where: eq(medias.id, response.id),
           });

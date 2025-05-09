@@ -120,7 +120,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
       }
       queryClient.invalidateQueries({
         queryKey: ["media"],
-        refetchType: "active",
+        refetchType: "all",
+        exact: false,
       });
       toast({
         title: "Media uploaded successfully",
@@ -283,6 +284,7 @@ export const FileUrlUpload: React.FC<UrlUploadProps> = ({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const queryClient = useQueryClient();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url) return;
@@ -303,6 +305,11 @@ export const FileUrlUpload: React.FC<UrlUploadProps> = ({
       onUploadComplete?.(result);
       setUrl("");
       setFilename("");
+      queryClient.invalidateQueries({
+        queryKey: ["media"],
+        refetchType: "all",
+        exact: false,
+      });
       toast({ title: "Uploaded successfully" });
     } catch (err) {
       setError("Failed to upload from URL. Please try again.");

@@ -43,6 +43,7 @@ export const uploadFromUrl = async ({
   folder = "uploads",
   filename,
 }: UrlUploadProps) => {
+  await getCloudinary();
   try {
     const uploadResult = await cloudinary.uploader.upload(url, {
       folder,
@@ -50,6 +51,7 @@ export const uploadFromUrl = async ({
     });
     return uploadResult;
   } catch (error) {
+    console.error(error);
     throw new Error("Failed to upload file from URL");
   }
 };
