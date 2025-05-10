@@ -15,12 +15,16 @@ export default function PageWrapper({
 }>) {
   const bgColor = useColorModeValue("gray.50", "#121212");
   return (
-    <NetworkAvailabiltyCheck>
-      <Box bg={bgColor} minH={"var(--chakra-vh)"} pt={pt} {...styleProps}>
-        <Header />
-        {children}
-        <Footer />
-      </Box>
-    </NetworkAvailabiltyCheck>
+    <Box
+      bg={bgColor}
+      minH={"var(--chakra-vh)"}
+      pt={pt}
+      w="full"
+      {...styleProps}
+    >
+      <Header />
+      {children}
+      <Footer />
+    </Box>
   );
 }

@@ -130,12 +130,55 @@ const SocialShareButton = memo<SocialShareButtonProps>(
       }
     };
 
+    // Filter out any non-HTML standard props before passing to the button element
+    const buttonProps = { ...props };
+
+    // Remove any boolean attributes that might cause the warning
+    // or convert them to string values if they're intended to be passed to the DOM
+    Object.keys(buttonProps).forEach((key) => {
+      if (typeof buttonProps[key as keyof typeof buttonProps] === "boolean") {
+        // Convert boolean values to strings for non-boolean HTML attributes
+        if (
+          ![
+            "disabled",
+            "checked",
+            "readOnly",
+            "required",
+            "hidden",
+            "multiple",
+            "selected",
+            "open",
+            "autoFocus",
+            "autoPlay",
+            "controls",
+            "loop",
+            "muted",
+            "playsInline",
+            "default",
+            "capture",
+            "formNoValidate",
+            "noValidate",
+            "allowFullScreen",
+            "async",
+            "defer",
+            "reversed",
+            "scoped",
+            "seamless",
+            "itemScope",
+          ].includes(key)
+        ) {
+          buttonProps[key as keyof typeof buttonProps] =
+            buttonProps[key as keyof typeof buttonProps].toString();
+        }
+      }
+    });
+
     return (
       <button
         onClick={handleClick}
         className={`flex items-center ${showLabel ? gap : ""} ${padding} ${bgColor} ${textColor} ${hoverBgColor} ${hoverTextColor} ${rounded} ${transition} ${className}`}
         aria-label={`Share on ${label}`}
-        {...props}
+        {...buttonProps}
       >
         {Icon && <Icon size={iconSize} className={iconClassName} />}
         {showLabel && label && (
@@ -283,7 +326,7 @@ const CopyLinkButton = memo<CopyLinkButtonProps>(
     successLabel = "Copied!",
     ...props
   }) => {
-    if (!url) return;
+    if (!url) return null;
     const [copied, setCopied] = useState<boolean>(false);
     const handleCopy = async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -335,13 +378,27 @@ const SocialShareGroup = memo<SocialShareGroupProps>(
     spacing = "gap-2",
     ...props
   }) => {
+    // Filter out non-standard HTML attributes that might be passed as boolean
+    const sanitizedProps = { ...props };
+
+    // Remove any properties that shouldn't be passed directly to child components
+    // or convert boolean values to strings for non-boolean HTML attributes
+    Object.keys(sanitizedProps).forEach((key) => {
+      if (
+        typeof sanitizedProps[key] === "boolean" &&
+        !["showLabels", "iconSize"].includes(key)
+      ) {
+        sanitizedProps[key] = sanitizedProps[key].toString();
+      }
+    });
+
     const renderPlatformButton = (platform: string) => {
       const commonProps = {
         url,
         title,
         showLabel: showLabels,
         iconSize,
-        ...props,
+        ...sanitizedProps,
       };
 
       switch (platform.toLowerCase()) {
@@ -423,15 +480,61 @@ const ShareButton = memo<ShareButtonProps>(
       };
     }, [isMenuOpen, onToggleMenu]);
 
+    // Sanitize button props to handle boolean attributes
+    const sanitizedButtonProps = { ...buttonProps };
+    Object.keys(sanitizedButtonProps).forEach((key) => {
+      if (
+        typeof sanitizedButtonProps[
+          key as keyof typeof sanitizedButtonProps
+        ] === "boolean"
+      ) {
+        // Convert boolean values to strings for non-boolean HTML attributes
+        if (
+          ![
+            "disabled",
+            "checked",
+            "readOnly",
+            "required",
+            "hidden",
+            "multiple",
+            "selected",
+            "open",
+            "autoFocus",
+            "autoPlay",
+            "controls",
+            "loop",
+            "muted",
+            "playsInline",
+            "default",
+            "capture",
+            "formNoValidate",
+            "noValidate",
+            "allowFullScreen",
+            "async",
+            "defer",
+            "reversed",
+            "scoped",
+            "seamless",
+            "itemScope",
+          ].includes(key)
+        ) {
+          sanitizedButtonProps[key as keyof typeof sanitizedButtonProps] =
+            sanitizedButtonProps[
+              key as keyof typeof sanitizedButtonProps
+            ].toString();
+        }
+      }
+    });
+
     return (
       <div className="relative" ref={menuRef}>
         <SocialShareButton
           icon={LuShare2}
           label="Share"
           onClick={toggleMenu}
-          aria-expanded={isMenuOpen}
+          aria-expanded={isMenuOpen ? "true" : "false"} // Convert boolean to string
           aria-haspopup="true"
-          {...buttonProps}
+          {...sanitizedButtonProps}
         />
 
         {isMenuOpen && (

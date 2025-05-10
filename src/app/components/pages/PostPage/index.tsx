@@ -110,7 +110,6 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             justify={"space-between"}
             gap={4}
             flexWrap={"wrap"}
-            // maxW={"1150px"}
             mx={"auto"}
             mt={2}
           >
@@ -169,27 +168,20 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
         </Box>
         {/* Main Content Area */}
         <Flex
-          gap={8}
+          gap={[4, 8]}
           w="full"
-          pos={"relative"}
           justify={"space-between"}
           flexDirection={{ base: "column", lg: "row" }}
         >
-          {/* Sidebar */}
-
-          {/* Article Content */}
-          {/* <Box> */}
           <ArticleContent post={post} />
-          {/* <AuthorSection post={post} /> */}
 
-          {/* Comments Section */}
-          {/* </Box> */}
           <VStack
             w={sidebarWidth}
             position="sticky"
-            top={6}
+            top={55}
             minW={350}
             spacing={4}
+            alignSelf={"start"}
             // justify={"center"}
             // display={{ base: "none", lg: "flex" }}
           >
