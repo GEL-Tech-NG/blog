@@ -236,7 +236,9 @@ const Header = () => {
                       borderBottomColor={"transparent"}
                     >
                       <HStack>
-                        <Text>Topics</Text>
+                        <Text as={"span"} fontWeight={600}>
+                          Topics
+                        </Text>
                         <Icon
                           as={LuChevronDown}
                           transition={"0.2s ease-out"}

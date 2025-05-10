@@ -13,7 +13,7 @@ import {
 import { PostSelect } from "@/src/types";
 import { Link } from "@chakra-ui/next-js";
 import { formatDate } from "@/src/utils";
-import { ShareButtons } from "./ShareButtons";
+import { SocialShareGroup } from "./ShareButtons";
 
 interface ArticleHeaderProps {
   post: PostSelect;
@@ -50,7 +50,7 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = ({ post }) => {
         )}
         <Heading
           as="h1"
-          mb={2}
+          mb={{ base: 1, md: 2 }}
           size={{ base: "xl", sm: "2xl", md: "3xl" }}
           // lineHeight={"1"}
           fontWeight={700}
@@ -74,49 +74,6 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = ({ post }) => {
             </Text>
           </>
         )}
-      </Stack>
-      <Divider mb={3} />
-      <Stack align={{ base: "flex-start", md: "center" }}>
-        <HStack>
-          <Text as="span">By</Text>
-          {post?.author.avatar && (
-            <Avatar
-              src={post?.author.avatar}
-              name={post?.author.name}
-              size={"sm"}
-            />
-          )}
-
-          <Link
-            href={"/author/" + post?.author.username}
-            fontWeight={500}
-            textDecor={"underline"}
-            lineHeight={"tighter"}
-          >
-            {post?.author.name}
-          </Link>
-        </HStack>
-        <HStack>
-          <Text as={"span"} fontSize={"14px"}>
-            {formatDate(
-              new Date(
-                (post?.published_at
-                  ? post?.published_at
-                  : post?.created_at) as Date
-              )
-            )}
-          </Text>
-          <Box w={1} h={1} rounded={"full"} bg={dividerColor}></Box>
-          <Text as={"span"} fontSize={"14px"}>
-            {post?.reading_time || 1} min read
-          </Text>
-        </HStack>
-        <HStack align={"center"} wrap={"wrap"} mt={4}>
-          <Text as={"span"} fontWeight={"semibold"}>
-            Share this post:
-          </Text>
-          <ShareButtons url={shareUrl} title={post?.title || ""} />
-        </HStack>
       </Stack>
     </Box>
   );

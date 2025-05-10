@@ -20,7 +20,11 @@ export const sendEmail = async ({
   react: ReactNode;
 }) => {
   const siteSettings = await getSettings();
-  const resendApiKey = decryptKey(siteSettings?.resendApiKey?.value);
+  let resendApiKey = siteSettings?.resendApiKey?.value;
+  if (!resendApiKey) {
+    throw new Error("Error sending email, check your site settings");
+  }
+  resendApiKey = decryptKey(siteSettings?.resendApiKey?.value);
   const resend = new Resend(resendApiKey);
   let defaultFrom = "";
 

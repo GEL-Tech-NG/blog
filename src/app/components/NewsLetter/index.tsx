@@ -55,6 +55,7 @@ export const Newsletter = ({
 
       return data;
     } catch (error) {
+      throw error;
       console.log(error);
     }
   }
@@ -71,9 +72,14 @@ export const Newsletter = ({
         if (data.isSubscribed && data.isVerified) {
           setStatus("info");
         } else {
-          await sendVerificationEmail(body.email);
-          setStatus("success");
-          setEmail("");
+          try {
+            await sendVerificationEmail(body.email);
+            setStatus("success");
+            setEmail("");
+          } catch (error) {
+            setStatus("error");
+            throw error;
+          }
         }
         setTimeout(() => {
           setStatus(null);
@@ -104,7 +110,7 @@ export const Newsletter = ({
           </Heading>
         )}
         {description && (
-          <Text color={textColor} fontSize={"small"}>
+          <Text color={textColor}>
             {description ||
               "Subscribe to our newsletter to get the latest updates."}
           </Text>
