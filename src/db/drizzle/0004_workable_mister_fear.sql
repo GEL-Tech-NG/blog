@@ -1,0 +1,1 @@
+ALTER TABLE `Posts` MODIFY COLUMN `post_id` varchar(255) NOT NULL DEFAULT (UUID());

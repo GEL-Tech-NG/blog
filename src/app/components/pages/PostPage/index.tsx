@@ -20,7 +20,12 @@ import {
 import { PostSelect } from "@/src/types";
 import Loader from "../../Loader";
 import PageWrapper from "../../PageWrapper";
-import { formatDate, nativeFormatDate, objectToQueryParams } from "@/src/utils";
+import {
+  decodeAndSanitizeHtml,
+  formatDate,
+  nativeFormatDate,
+  objectToQueryParams,
+} from "@/src/utils";
 import { ArticleHeader } from "./ArticleHeader";
 import { ArticleContent } from "./ArticleContent";
 import { CommentsSection } from "./CommentSection";
@@ -30,6 +35,7 @@ import { ViewTracker } from "../../ViewTracker";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/next-js";
 import { CopyLinkButton, SocialShareGroup } from "./ShareButtons";
+import { TOCRenderer } from "../../Renderers/TOCRenderer";
 
 const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
   const settings = useSiteConfig();
@@ -182,9 +188,12 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             minW={350}
             spacing={4}
             alignSelf={"start"}
-            // justify={"center"}
-            // display={{ base: "none", lg: "flex" }}
           >
+            <Box>
+              <TOCRenderer
+                content={decodeAndSanitizeHtml(post?.content || "") || ""}
+              />
+            </Box>
             <Box rounded={"xl"} p={4} bg={newsletterBgColor} w={"full"}>
               <Newsletter
                 title="Subscribe to our newsletter"

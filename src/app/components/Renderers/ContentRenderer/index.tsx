@@ -30,6 +30,7 @@ import {
 import { PenstackCodeBlockRenderer } from "../PenstackCodeBlockRenderer";
 import PenstackBlockquoteRenderer from "../PenstackBlockquoteRenderer";
 import { PenstackHeadingsRenderer } from "../HeadingsRenderer";
+import MediaRenderer from "../MediaRenderer";
 interface ContentRendererProps {
   content: string;
   className?: string;
@@ -70,6 +71,17 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
                     customTitle: domNode.attribs.customtitle,
                   },
                 }}
+              />
+            );
+          }
+          if (domNode.attribs?.["data-type"] === "media") {
+            return (
+              <MediaRenderer
+                url={domNode.attribs.src}
+                type={domNode.attribs.type}
+                alt={domNode.attribs.alt}
+                title={domNode.attribs.title}
+                caption={domNode.attribs.caption}
               />
             );
           }

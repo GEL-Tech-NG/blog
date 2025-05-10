@@ -27,7 +27,7 @@ export const posts = mysqlTable(
     summary: varchar("summary", { length: 500 }),
     seo_meta_id: int("meta_id"),
     post_id: varchar("post_id", { length: 255 })
-      .$defaultFn(() => IdGenerator.uuid())
+      .default(sql`(UUID())`)
       .unique()
       .notNull(),
     slug: varchar("slug", { length: 255 }).notNull().unique(),
@@ -48,10 +48,7 @@ export const posts = mysqlTable(
     newsletter_sent_at: timestamp("newsletter_sent_at"),
     featured_image_id: int("featured_image_id"),
     created_at,
-    published_at: timestamp("published_at").generatedAlwaysAs(
-      sql`(CASE WHEN status = 'published' THEN updated_at ELSE NULL END)`,
-      { mode: "stored" }
-    ),
+    published_at: timestamp("published_at"),
     updated_at,
   },
   (table) => ({

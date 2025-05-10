@@ -14,6 +14,7 @@ import {
   stripHtml,
 } from "@/src/utils";
 import { or, eq } from "drizzle-orm";
+import isEmpty from "just-is-empty";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -72,6 +73,12 @@ export async function PUT(
           .update(posts)
           .set({
             ...body,
+            published_at:
+              oldPost.status === "published" && isEmpty(oldPost.published_at)
+                ? new Date()
+                : body?.status === "published" && oldPost.published_at !== null
+                  ? new Date(oldPost.published_at as Date)
+                  : null,
             scheduled_at: body.scheduled_at
               ? new Date(body.scheduled_at)
               : null,
