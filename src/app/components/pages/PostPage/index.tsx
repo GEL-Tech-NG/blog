@@ -29,7 +29,8 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 
 const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
   const settings = useSiteConfig();
-  const sidebarWidth = useBreakpointValue({ base: "full", md: "300px" });
+  const sidebarWidth = useBreakpointValue({ base: "full", lg: "300px" });
+  const canWrapNewsletter = useBreakpointValue({ base: false, lg: true });
   const metaColor = useColorModeValue("gray.500", "gray.400");
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const bgColor = useColorModeValue("white", "#121212");
@@ -100,18 +101,11 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
         </Box>
 
         {post?.tags?.length > 0 && (
-          <HStack
-            wrap="wrap"
-            gap={2}
-            mb={{ base: 4, md: 6 }}
-            py={2}
-            borderY={"1px solid"}
-            borderColor={borderColor}
-          >
+          <HStack wrap="wrap" gap={2} mb={{ base: 4, md: 6 }} py={2}>
             {post?.tags?.map((tag, index) => (
               <Tag
                 key={index}
-                rounded={"lg"}
+                rounded={"md"}
                 px={3}
                 textTransform={"capitalize"}
               >
@@ -122,7 +116,12 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
         )}
 
         {/* Main Content Area */}
-        <Flex gap={8}>
+        <Flex
+          gap={8}
+          w="full"
+          pos={"relative"}
+          flexDirection={{ base: "column", lg: "row" }}
+        >
           {/* Sidebar */}
 
           {/* Article Content */}
@@ -139,13 +138,14 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             minW={350}
             spacing={4}
             // justify={"center"}
-            display={{ base: "none", lg: "flex" }}
+            // display={{ base: "none", lg: "flex" }}
           >
-            <Box rounded={"xl"} p={4} bg={newsletterBgColor}>
+            <Box rounded={"xl"} p={4} bg={newsletterBgColor} w={"full"}>
               <Newsletter
                 title="Subscribe to our newsletter"
                 description=" Get the latest posts delivered right to your inbox!"
-                canWrap
+                canWrap={canWrapNewsletter}
+                maxW={"1200px"}
                 isDark={false}
               />
             </Box>

@@ -33,7 +33,7 @@ export const CategoryItemList = ({
   }
 
   return (
-    <Card rounded={"none"}>
+    <Card rounded={"sm"}>
       <CardBody>
         <HStack overflowX={"auto"} spacing={4} flexShrink={0}>
           {isCategoryLoading && !categories?.length ? (

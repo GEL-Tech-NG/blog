@@ -13,7 +13,7 @@ export default function PageWrapper({
   pt?: string | number | Record<string, string | number>;
   styleProps?: Record<string, any>;
 }>) {
-  const bgColor = useColorModeValue("gray.100", "#121212");
+  const bgColor = useColorModeValue("gray.50", "#121212");
   return (
     <NetworkAvailabiltyCheck>
       <Box bg={bgColor} minH={"var(--chakra-vh)"} pt={pt} {...styleProps}>

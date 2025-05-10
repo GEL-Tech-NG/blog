@@ -78,9 +78,15 @@ export const PenstackHeadingsRenderer: React.FC<HeadingsRendererProps> = memo(
         {isEditing ? (
           <NodeViewWrapper>{heading}</NodeViewWrapper>
         ) : (
-          <Link href={`#${node?.attrs?.id}`} color={"inherit"}>
-            {heading}
-          </Link>
+          <Heading
+            {...node?.attrs}
+            as={("h" + node?.attrs?.level) as As}
+            {...styles[("h" + node?.attrs?.level) as any]}
+          >
+            <Link href={`#${node?.attrs?.id}`} color={"inherit"}>
+              {content}
+            </Link>
+          </Heading>
         )}
       </>
     );

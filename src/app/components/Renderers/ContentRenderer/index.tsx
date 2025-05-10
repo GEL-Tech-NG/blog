@@ -101,10 +101,22 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
             );
           }
 
-          // Handle block elements with Chakra UI components
+          // Handle P elements without parent
           if (domNode.name === "p" && !domNode.parent) {
             return (
-              <Text my={"1em"}>
+              <Text
+                my={"1em"}
+                fontSize={["1.1rem", "1.2rem"]}
+                className="leading"
+              >
+                {domToReact(domNode.children as Element[], options)}
+              </Text>
+            );
+          }
+          // Handle P elements with parent
+          if (domNode.name === "p" && domNode.parent) {
+            return (
+              <Text fontSize={["1rem", "1.05rem"]} className="leading">
                 {domToReact(domNode.children as Element[], options)}
               </Text>
             );
@@ -142,7 +154,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
           }
           if (domNode.name === "li") {
             return (
-              <ListItem mb={"0.5rem"}>
+              <ListItem my={"0.25em"}>
                 {domToReact(domNode.children as Element[], options)}
               </ListItem>
             );
