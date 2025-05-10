@@ -10,7 +10,6 @@ import {
   LuInstagram,
   LuCopy,
 } from "react-icons/lu";
-import { useClipboard } from "@chakra-ui/react";
 
 // Types for props
 interface SocialShareButtonProps
@@ -326,8 +325,8 @@ const CopyLinkButton = memo<CopyLinkButtonProps>(
     successLabel = "Copied!",
     ...props
   }) => {
-    if (!url) return null;
     const [copied, setCopied] = useState<boolean>(false);
+    if (!url) return null;
     const handleCopy = async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
 

@@ -185,7 +185,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             w={sidebarWidth}
             position="sticky"
             top={55}
-            minW={350}
+            minW={320}
             spacing={4}
             alignSelf={"start"}
           >
@@ -194,7 +194,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
                 content={decodeAndSanitizeHtml(post?.content || "") || ""}
               />
             </Box>
-            <Box rounded={"xl"} p={4} bg={newsletterBgColor} w={"full"}>
+            <Box rounded={"xl"} p={4} bg={newsletterBgColor} maxW={"full"}>
               <Newsletter
                 title="Subscribe to our newsletter"
                 description=" Get the latest posts delivered right to your inbox!"

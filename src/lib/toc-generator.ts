@@ -113,10 +113,10 @@ function extractHeadings(
     );
 
     // Match elements with level attributes (<div level="2" ...>, etc.)
-    // const levelAttrPattern = new RegExp(
-    //   `<([a-z][a-z0-9]*)\\b[^>]*?\\blevel=["']${level}["'][^>]*?>((?:.|\\s)*?)<\\/\\1>`,
-    //   "gi"
-    // );
+    const levelAttrPattern = new RegExp(
+      `<([a-z][a-z0-9]*)\\b[^>]*?\\blevel=["']${level}["'][^>]*?>((?:.|\\s)*?)<\\/\\1>`,
+      "gi"
+    );
 
     // Process standard heading tags
     let match: RegExpExecArray | null;
@@ -125,15 +125,14 @@ function extractHeadings(
     }
 
     // Process elements with level attributes
-    //   while ((match = levelAttrPattern.exec(htmlString)) !== null) {
-    //     // Bug fix: In the original code, we were using match[0] which included the entire tag
-    //     // Instead, we should extract just the attributes portion
-    //     const openingTag = match[0].substring(0, match[0].indexOf(">"));
-    //     const tagNameLength = match[1].length + 1; // +1 for '<'
-    //     const attributesStr = openingTag.substring(tagNameLength);
+    while ((match = levelAttrPattern.exec(htmlString)) !== null) {
+      // Extract just the attributes portion
+      const openingTag = match[0].substring(0, match[0].indexOf(">"));
+      const tagNameLength = match[1].length + 1; // +1 for '<'
+      const attributesStr = openingTag.substring(tagNameLength);
 
-    //     processHeadingMatch(attributesStr, match[2], level);
-    //   }
+      processHeadingMatch(attributesStr, match[2], level);
+    }
   }
 
   return headings;
@@ -252,50 +251,50 @@ function generateTableOfContents(
     if (depth > maxDepth) return [];
 
     const result: TocItem[] = [];
+    let i = 0;
 
-    for (let i = 0; i < items.length; i++) {
+    while (i < items.length) {
       const heading = items[i];
 
-      if (heading.level === currentLevel) {
-        // Create TOC item
-        const tocItem: TocItem = {
-          id: heading.id || generateHeadingId(heading.text),
-          text: heading.text,
-          level: heading.level,
-          children: [],
-        };
+      // Skip headings with levels different from what we're currently processing
+      if (heading.level !== currentLevel) {
+        i++;
+        continue;
+      }
 
-        // Find child headings
-        const childrenStartIndex = i + 1;
-        let childrenEndIndex = items.length;
+      // Create TOC item
+      const tocItem: TocItem = {
+        id: heading.id || generateHeadingId(heading.text),
+        text: heading.text,
+        level: heading.level,
+        children: [],
+      };
 
-        // Find where children end (at next heading of same or higher level)
-        for (let j = childrenStartIndex; j < items.length; j++) {
-          if (items[j].level <= currentLevel) {
-            childrenEndIndex = j;
-            break;
-          }
+      // Add to result array
+      result.push(tocItem);
+      i++;
+
+      // Find child headings (all consecutive headings with deeper levels)
+      const childHeadings = [];
+      let j = i;
+
+      while (j < items.length && items[j].level > currentLevel) {
+        childHeadings.push(items[j]);
+        j++;
+      }
+
+      // Process child headings if we have any
+      if (childHeadings.length > 0) {
+        // Find the next level down
+        const nextLevel = Math.min(...childHeadings.map((h) => h.level));
+
+        // Process children if we haven't reached max depth
+        if (depth < maxDepth) {
+          tocItem.children = buildTocTree(childHeadings, nextLevel, depth + 1);
         }
 
-        // Extract children
-        const childHeadings = items.slice(childrenStartIndex, childrenEndIndex);
-
-        // If we have children
-        if (childHeadings.length > 0) {
-          // Find the next level down
-          const nextLevel = Math.min(...childHeadings.map((h) => h.level));
-          // Only process if the level is actually deeper
-          if (nextLevel > currentLevel) {
-            tocItem.children = buildTocTree(
-              childHeadings,
-              nextLevel,
-              depth + 1
-            );
-          }
-        }
-
-        result.push(tocItem);
-        i = childrenEndIndex - 1; // Skip processed children
+        // Skip past the children we just processed
+        i = j;
       }
     }
 
