@@ -189,11 +189,11 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             spacing={4}
             alignSelf={"start"}
           >
-            <Box>
+            {/* <Box>
               <TOCRenderer
                 content={decodeAndSanitizeHtml(post?.content || "") || ""}
               />
-            </Box>
+            </Box> */}
             <Box rounded={"xl"} p={4} bg={newsletterBgColor} maxW={"full"}>
               <Newsletter
                 title="Subscribe to our newsletter"

@@ -9,7 +9,9 @@ export default async function Home({
 }) {
   const category = searchParams?.category as string;
 
-  const posts = await getPosts({ category });
+  const postsWithMeta = await getPosts({ category });
   const featuredPost = await getFeaturedPost();
-  return <FrontPage posts={posts.data} featuredPost={featuredPost} />;
+  return (
+    <FrontPage postsWithMeta={postsWithMeta} featuredPost={featuredPost} />
+  );
 }

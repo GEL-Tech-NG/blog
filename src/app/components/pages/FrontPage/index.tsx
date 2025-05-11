@@ -1,18 +1,25 @@
 "use client";
 import React, { FC } from "react";
-import { Box, Button, HStack, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import PageWrapper from "../../PageWrapper";
 import { PostsCards } from "@/src/themes/smooth-land/PostsCards";
 import { Link } from "@chakra-ui/next-js";
 import { LuArrowRight } from "react-icons/lu";
 import { FeaturedPost } from "@/src/themes/smooth-land/FeaturedPost";
-import { FeaturedPostType, PostSelect } from "@/src/types";
+import { FeaturedPostType, PaginatedResponse, PostSelect } from "@/src/types";
+import isEmpty from "just-is-empty";
 
 interface FrontPageProps {
   featuredPost: FeaturedPostType;
-  posts?: PostSelect[];
+  postsWithMeta?: PaginatedResponse<PostSelect>;
 }
-const FrontPage: FC<FrontPageProps> = ({ featuredPost, posts }) => {
+const FrontPage: FC<FrontPageProps> = ({ featuredPost, postsWithMeta }) => {
   // const [loading, setLoading] = useState(false);
   // const [canFetch, setCanFetch] = useState(false);
   // const {
@@ -34,7 +41,7 @@ const FrontPage: FC<FrontPageProps> = ({ featuredPost, posts }) => {
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [category]);
-  const bgColor = useColorModeValue("white", "brand.400");
+  const bgColor = useColorModeValue("white", "brand.700");
   return (
     <PageWrapper
       styleProps={{
@@ -45,30 +52,34 @@ const FrontPage: FC<FrontPageProps> = ({ featuredPost, posts }) => {
         <Box
           maxW="1300px"
           mx="auto"
-          px={{ base: 2, md: 4, lg: 2 }}
+          px={{ base: 3, md: 4 }}
           // pt={2}
         >
           <Box px={{ base: 0, lg: 4 }}>
-            <FeaturedPost post={featuredPost} />
+            {!isEmpty(featuredPost) && <FeaturedPost post={featuredPost} />}
             {/* <Box mt={0} mb={6}>
               <CategoryItemList
                 onChange={(category) => updateParams({ category })}
               />
             </Box> */}
 
-            <PostsCards posts={posts} loading={false} />
-
-            <HStack justify={"center"} my={8}>
-              <Button
-                as={Link}
-                href={"/articles"}
-                px={6}
-                py={2}
-                rightIcon={<LuArrowRight />}
-              >
-                View all posts
-              </Button>
-            </HStack>
+            <Box my={8}>
+              <Heading>Recent Posts</Heading>
+            </Box>
+            <PostsCards posts={postsWithMeta?.data} loading={false} />
+            {postsWithMeta?.meta && postsWithMeta?.meta.totalPages > 1 && (
+              <HStack justify={"center"} my={8}>
+                <Button
+                  as={Link}
+                  href={"/articles"}
+                  px={6}
+                  py={2}
+                  rightIcon={<LuArrowRight />}
+                >
+                  View all posts
+                </Button>
+              </HStack>
+            )}
           </Box>
         </Box>
       </Box>
