@@ -34,10 +34,9 @@ import { LuEye, LuEyeOff } from "react-icons/lu";
 import { Link } from "@chakra-ui/next-js";
 
 export default function SignIn() {
-  
   return (
     <PageWrapper>
-      <SignInComponent/>
+      <SignInComponent />
     </PageWrapper>
   );
 }
@@ -175,12 +174,12 @@ export const SignInComponent = ({ cbUrl }: { cbUrl?: string }) => {
             <Box position="relative" padding="10">
               <Divider />
               <AbsoluteCenter bg={dividerBg} px="4">
-                <Text color="gray.500">or continue with</Text>
+                <Text color="gray.500">or </Text>
               </AbsoluteCenter>
             </Box>
 
-            <Stack direction="row" spacing={4}>
-              <Button
+            <Stack spacing={4}>
+              {/* <Button
                 onClick={() => signIn("github", { callbackUrl })}
                 leftIcon={<FaGithub />}
                 width="full"
@@ -188,7 +187,7 @@ export const SignInComponent = ({ cbUrl }: { cbUrl?: string }) => {
                 colorScheme="gray"
               >
                 GitHub
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => signIn("google", { callbackUrl })}
                 leftIcon={<FaGoogle />}
@@ -197,7 +196,7 @@ export const SignInComponent = ({ cbUrl }: { cbUrl?: string }) => {
                 borderRadius="xl"
                 colorScheme="red"
               >
-                Google
+                Continue with Google
               </Button>
             </Stack>
           </VStack>

@@ -166,12 +166,12 @@ export default function SignUp() {
               <Box position="relative" padding="10">
                 <Divider />
                 <AbsoluteCenter bg={dividerBg} px="4">
-                  <Text color="gray.500">or continue with</Text>
+                  <Text color="gray.500">or</Text>
                 </AbsoluteCenter>
               </Box>
 
-              <Stack direction="row" spacing={4}>
-                <Button
+              <Stack spacing={4}>
+                {/* <Button
                   onClick={() => signIn("github")}
                   leftIcon={<FaGithub />}
                   width="full"
@@ -179,7 +179,7 @@ export default function SignUp() {
                   colorScheme="gray"
                 >
                   GitHub
-                </Button>
+                </Button> */}
                 <Button
                   onClick={() => signIn("google")}
                   leftIcon={<FaGoogle />}
@@ -188,7 +188,7 @@ export default function SignUp() {
                   borderRadius="xl"
                   colorScheme="red"
                 >
-                  Google
+                  Continue with Google
                 </Button>
               </Stack>
             </VStack>

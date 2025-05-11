@@ -26,7 +26,7 @@ const Footer = () => {
   const siteSettings = useSiteConfig();
   const navItems = useMemo(
     () => [
-      { label: "Resources", href: "/resources/tutorials" },
+      // { label: "Resources", href: "/resources/tutorials" },
 
       { label: "Contact", href: "/contact" },
     ],
