@@ -13,6 +13,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { SiteSettings } from "@/src/types";
+import { useEffect } from "react";
 
 interface GeneralPanelProps {
   settings: SiteSettings;
@@ -29,6 +30,23 @@ export const GeneralPanel = ({
   handleToggle,
   openMediaModal,
 }: GeneralPanelProps) => {
+  useEffect(() => {
+    const settingsKeys = Object.keys(settings);
+    const settingsArray = Object.values(settings);
+    const settingsTransformed = settingsKeys.map((key) => {
+      return {
+        key,
+        value: settings[key].value,
+        enabled: settings[key].enabled,
+        encrypted: settings[key].encrypted,
+        canEncrypt: settings[key].canEncrypt,
+        folder: settings[key].folder,
+        name: settings[key].name,
+        description: settings[key].description,
+      };
+    });
+    console.log({ settingsTransformed, settingsArray });
+  }, [settings]);
   return (
     <VStack spacing={6} align="stretch">
       <FormControl>

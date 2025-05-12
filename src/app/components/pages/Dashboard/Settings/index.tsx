@@ -141,7 +141,6 @@ export default function DashboardSettingsPage() {
       if (status < 200 || status >= 400)
         throw new Error("Failed to save settings");
 
-      // setOriginalSettings({ ...settings });
       setHasChanges(false);
       queryClient.invalidateQueries({
         queryKey: ["settings"],
