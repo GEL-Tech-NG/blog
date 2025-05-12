@@ -5,7 +5,7 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_SITE_URL:
       process.env.NEXT_PUBLIC_SITE_URL ||
-      (productionUrl ? `https://${productionUrl}` : "http://localhost:3000"),
+      (productionUrl ? `https://${productionUrl}` : "http://localhost:3001"),
   },
 };
 

@@ -9,7 +9,12 @@ import {
   uniqueIndex,
   index,
 } from "drizzle-orm/mysql-core";
-import { created_at, updated_at, id } from "../schema-helper";
+import {
+  created_at,
+  updated_at,
+  id,
+  settingsFolderEnum,
+} from "../schema-helper";
 
 export const siteSettings = mysqlTable(
   "SiteSettings",
@@ -19,9 +24,19 @@ export const siteSettings = mysqlTable(
       length: 255,
     }).notNull(),
     value: text("value"),
+    name: varchar("name", {
+      length: 100,
+    }).notNull(),
     encrypted: boolean("encrypted").default(false),
     enabled: boolean("enabled").default(false),
     canEncrypt: boolean("can_encrypt").default(false),
+    description: text("description"),
+    folder: varchar("folder", {
+      length: 40,
+      enum: settingsFolderEnum,
+    })
+      .notNull()
+      .default("misc"),
     created_at,
     updated_at,
   },

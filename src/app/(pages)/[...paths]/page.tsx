@@ -16,6 +16,8 @@ import {
 } from "@/src/utils";
 import { ResolvingMetadata, Metadata } from "next";
 import { getSiteUrl } from "@/src/utils/url";
+import { getData } from "@/src/utils/post";
+import { generatePostDescription } from "@/src/utils/post";
 
 interface PageProps {
   params: {
@@ -23,37 +25,6 @@ interface PageProps {
   };
 }
 
-async function getData(path: string, firstSegment: string) {
-  try {
-    let post;
-    if (defaultPermalinkType in permalinkFormats) {
-      let match;
-      if (
-        defaultPermalinkType === "with_prefix" &&
-        (await isAllowedPrefix(firstSegment))
-      ) {
-        match = matchPermalink(path, defaultPermalinkType, firstSegment);
-      } else {
-        match = matchPermalink(path, defaultPermalinkType);
-      }
-      if (match?.postname) {
-        post = await getPostBySlug(match.postname);
-      }
-    }
-    return post;
-  } catch (error) {
-    console.log(error);
-
-    return null;
-  }
-}
-function generatePostDescription(post: any) {
-  const description = shortenText(
-    post?.summary || stripHtml(decodeAndSanitizeHtml(post?.content || "")),
-    200
-  );
-  return description;
-}
 export async function generateMetadata(
   { params }: PageProps,
   parent: ResolvingMetadata
@@ -65,11 +36,47 @@ export async function generateMetadata(
 
   const previousImages = (await parent).openGraph?.images || [];
   if (post) {
+    // Add JSON-LD script
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: generatePostDescription(post),
+      author: {
+        "@type": "Person",
+        name: post.author?.name,
+        url: `${getSiteUrl()}/author/${post.author?.username}`,
+      },
+      datePublished: post.published_at || post.created_at,
+      image:
+        post.featured_image?.url ||
+        `${getSiteUrl()}/api/og?${objectToQueryParams({
+          title: post.title,
+          date: post.published_at || post.created_at,
+        })}`,
+      publisher: {
+        "@type": "Organization",
+        name: "Your Blog Name", // Replace with your blog name
+        url: getSiteUrl(),
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `${getSiteUrl()}/${path}`,
+      },
+      articleSection: post.category?.name,
+      wordCount: post.reading_time ? post.reading_time * 200 : undefined, // Rough estimate based on reading time
+    };
+
     return {
       title: post?.title,
       description: generatePostDescription(post),
       creator: post?.author?.name,
-      authors: [{ name: post?.author?.name, url: getSiteUrl() }],
+      authors: [
+        {
+          name: post?.author?.name,
+          url: `${getSiteUrl()}/author/${post?.author?.username}`,
+        },
+      ],
       category: post?.category?.name,
       openGraph: {
         images: [
@@ -138,7 +145,4 @@ export default async function DynamicPage({ params }: PageProps) {
   // 2. Fall back to a file-based page if one exists at this path
   //    (though Next.js should handle this automatically)
   return notFound();
-}
-async function isAllowedPrefix(path: string) {
-  return path === defaultPermalinkPrefix;
 }

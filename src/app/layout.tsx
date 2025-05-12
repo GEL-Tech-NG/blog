@@ -11,6 +11,7 @@ import { NuqsProvider } from "../providers/nuqs";
 import { AnalyticsProviders } from "../providers/analytics";
 import { getSiteUrl } from "../utils/url";
 import { objectToQueryParams } from "../utils";
+import Script from "next/script";
 
 type Props = {
   params: { slug?: string } & Record<string, string | string[] | undefined>;
@@ -81,6 +82,42 @@ export default async function RootLayout({
       lang="en"
       className={`${fonts.body.variable} ${fonts.heading.variable}`}
     >
+      <head>
+        <Script id="json-ld" strategy="beforeInteractive">
+          {`
+      <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://www.yourblog.com/authors/jane-smith/",
+  "name": "Jane Smith",
+  "givenName": "Jane",
+  "familyName": "Smith",
+  "alternateName": "JS Digital",
+  "description": "SEO Specialist with 8 years of experience in digital marketing and content optimization",
+  "image": "https://www.yourblog.com/images/jane-smith.jpg",
+  "url": "https://www.yourblog.com/authors/jane-smith/",
+  "jobTitle": "Head of SEO",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "SEO Insights Media"
+  },
+  "alumniOf": {
+    "@type": "EducationalOrganization",
+    "name": "University of Digital Marketing"
+  },
+  "sameAs": [
+    "https://twitter.com/janesmith",
+    "https://www.linkedin.com/in/janesmith",
+    "https://www.facebook.com/janesmith"
+  ],
+  "email": "jsmith@example.com",
+  "telephone": "+1-555-123-4567"
+}
+</script>
+          `}
+        </Script>
+      </head>
       <body>
         <AnalyticsProviders settings={siteSettings} />
         <SiteConfigProvider initialConfig={siteSettings}>

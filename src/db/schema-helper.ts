@@ -4,6 +4,16 @@ export const id = int("id").autoincrement().primaryKey();
 export const created_at = timestamp("created_at").defaultNow();
 export const updated_at = timestamp("updated_at").onUpdateNow();
 export const deleted_at = timestamp("deleted_at");
+export const settingsFolderEnum = [
+  "general",
+  "analytics",
+  "monitoring",
+  "media",
+  "email",
+  "advanced",
+  "social",
+  "misc",
+] as const;
 export const permissionsEnum = [
   "dashboard:access",
   "posts:create",

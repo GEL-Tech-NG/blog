@@ -33,7 +33,7 @@ import { PageTitleHeader } from "../../../Dashboard/PageTitleCard";
 import { useSiteConfig } from "@/src/context/SiteConfig";
 import { parseAsString, useQueryState } from "nuqs";
 import { isEqual } from "lodash";
-
+import { MiscPanel } from "./TabPanels/MiscPanel";
 export default function DashboardSettingsPage() {
   const toast = useToast({ position: "top" });
   const [isLoading, setIsLoading] = useState(false);
@@ -85,6 +85,7 @@ export default function DashboardSettingsPage() {
     { slug: "media", title: "Media" },
     { slug: "email", title: "Email" },
     { slug: "advanced", title: "Advanced" },
+    { slug: "misci", title: "Miscilaneous" },
   ];
 
   useEffect(() => {
@@ -240,6 +241,12 @@ export default function DashboardSettingsPage() {
                 </TabPanel>
                 <TabPanel>
                   <AdvancedPanel
+                    settings={settings}
+                    handleInputChange={handleInputChange}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <MiscPanel
                     settings={settings}
                     handleInputChange={handleInputChange}
                   />
