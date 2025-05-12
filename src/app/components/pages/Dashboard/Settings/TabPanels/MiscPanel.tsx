@@ -9,24 +9,16 @@ import {
   HStack,
 } from "@chakra-ui/react";
 
-interface SettingItem {
-  key: string;
-  value: string | null;
-  encrypted: boolean;
-  enabled: boolean;
-  canEncrypt: boolean;
-}
-
 export function MiscPanel({
   settings,
   handleInputChange,
 }: {
-  settings: SettingItem[];
+  settings: SiteSettings;
   handleInputChange: (key: string, value: string) => void;
 }) {
   return (
     <VStack spacing={6} align="stretch">
-      {settings.map((setting) => (
+      {Object.values(settings).map((setting) => (
         <FormControl key={setting.key}>
           <HStack justify="space-between" align="center">
             <FormLabel mb={0}>{setting.key}</FormLabel>

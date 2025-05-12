@@ -79,13 +79,14 @@ export default function DashboardSettingsPage() {
     parseAsString.withDefault("general")
   );
   const tabs = [
-    { slug: "general", title: "General" },
-    { slug: "analytics", title: "Analytics" },
-    { slug: "monitoring", title: "Monitoring" },
-    { slug: "media", title: "Media" },
-    { slug: "email", title: "Email" },
-    { slug: "advanced", title: "Advanced" },
-    { slug: "misci", title: "Miscilaneous" },
+    { folder: "general", title: "General" },
+    { folder: "analytics", title: "Analytics" },
+    { folder: "monitoring", title: "Monitoring" },
+    { folder: "media", title: "Media" },
+    { folder: "email", title: "Email" },
+    { folder: "social", title: "Socials" },
+    { folder: "advanced", title: "Advanced" },
+    { folder: "misc", title: "Miscilaneous" },
   ];
 
   useEffect(() => {
@@ -163,7 +164,7 @@ export default function DashboardSettingsPage() {
   };
 
   if (isFetching) {
-    return <Loader loadingText="Loading settings" />;
+    return <Loader loadingText="Loading settings..." />;
   }
 
   return (
@@ -191,14 +192,17 @@ export default function DashboardSettingsPage() {
             )}
 
             <Tabs
-              defaultIndex={tabs.findIndex((tab) => tab.slug === activeTab)}
+              defaultIndex={tabs.findIndex((tab) => tab.folder === activeTab)}
               onChange={(index) => {
-                setActiveTab(tabs[index].slug);
+                setActiveTab(tabs[index].folder);
               }}
             >
               <TabList overflowX="auto" className="no-scrollbar" pb={1} gap={3}>
                 {tabs.map((tab) => (
-                  <Tab key={tab.slug} onClick={() => setActiveTab(tab.slug)}>
+                  <Tab
+                    key={tab.folder}
+                    onClick={() => setActiveTab(tab.folder)}
+                  >
                     {tab.title}
                   </Tab>
                 ))}

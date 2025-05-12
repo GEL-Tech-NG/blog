@@ -155,6 +155,9 @@ export type SettingEntry = {
   enabled: boolean;
   encrypted: boolean;
   canEncrypt?: boolean;
+  folder: string;
+  name: string;
+  description?: string;
 };
 
 export type SiteSettings = {

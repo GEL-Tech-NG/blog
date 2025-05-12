@@ -43,9 +43,6 @@ export default function BlogPage({ post }: { post: PostSelect }) {
   };
   return (
     <>
-      <Script id="blog-post-json-ld" strategy="beforeInteractive">
-        {JSON.stringify(jsonLd)}
-      </Script>
       <PostPage post={post as any} />;
     </>
   );
