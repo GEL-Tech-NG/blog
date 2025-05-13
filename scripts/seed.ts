@@ -508,6 +508,17 @@ async function main() {
           return db
             .insert(siteSettings)
             .values({
+              name: setting.name,
+              description: setting.description,
+              folder: setting.folder as
+                | "email"
+                | "general"
+                | "analytics"
+                | "monitoring"
+                | "media"
+                | "advanced"
+                | "social"
+                | "misc",
               key,
               value,
               enabled: setting.enabled,
