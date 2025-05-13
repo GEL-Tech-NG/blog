@@ -5,7 +5,7 @@ import {
   parseHtmlHeadings,
   TocItem,
 } from "@/src/lib/toc-generator";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 
 const TOCItemComponent = ({
@@ -18,11 +18,28 @@ const TOCItemComponent = ({
   activeId: string;
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const itemRef = useRef<HTMLDivElement>(null);
   const hasChildren = item.children.length > 0;
   const isActive = activeId === item.id;
 
+  // Check if this item or any of its children are active
+  const isActiveOrHasActiveChild = useMemo(() => {
+    const checkActive = (item: TocItem): boolean => {
+      if (item.id === activeId) return true;
+      return item.children.some(checkActive);
+    };
+    return checkActive(item);
+  }, [item, activeId]);
+
+  // Auto-expand and scroll into view when active
+  useEffect(() => {
+    if (isActiveOrHasActiveChild) {
+      setIsExpanded(true);
+    }
+  }, [isActiveOrHasActiveChild]);
+
   return (
-    <div style={{ marginLeft: `${depth * 16}px` }}>
+    <div ref={itemRef} style={{ marginLeft: `${depth * 16}px` }}>
       <div
         className={`flex items-center gap-2 py-1 hover:bg-gray-100 cursor-pointer ${
           isActive ? "bg-gray-100 font-medium text-blue-600" : ""
