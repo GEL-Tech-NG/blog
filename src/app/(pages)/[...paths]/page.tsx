@@ -18,7 +18,8 @@ import { ResolvingMetadata, Metadata } from "next";
 import { getSiteUrl } from "@/src/utils/url";
 import { getData } from "@/src/utils/post";
 import { generatePostDescription } from "@/src/utils/post";
-
+import { getSettings } from "@/src/lib/queries/settings";
+import { format } from "date-fns";
 interface PageProps {
   params: {
     paths?: string[];
@@ -31,7 +32,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const path = params.paths?.join("/") || "";
   const firstSegment = params.paths?.[0] || "";
-
+  const siteSettings = await getSettings();
   const post = await getData(path, firstSegment);
 
   const previousImages = (await parent).openGraph?.images || [];
@@ -48,6 +49,7 @@ export async function generateMetadata(
         url: `${getSiteUrl()}/author/${post.author?.username}`,
       },
       datePublished: post.published_at || post.created_at,
+      dateModified: post.updated_at || post.published_at || post.created_at,
       image:
         post.featured_image?.url ||
         `${getSiteUrl()}/api/og?${objectToQueryParams({
@@ -56,7 +58,7 @@ export async function generateMetadata(
         })}`,
       publisher: {
         "@type": "Organization",
-        name: "Your Blog Name", // Replace with your blog name
+        name: siteSettings.siteName.value,
         url: getSiteUrl(),
       },
       mainEntityOfPage: {
@@ -71,6 +73,7 @@ export async function generateMetadata(
       title: post?.title,
       description: generatePostDescription(post),
       creator: post?.author?.name,
+
       authors: [
         {
           name: post?.author?.name,
@@ -79,8 +82,22 @@ export async function generateMetadata(
       ],
       category: post?.category?.name,
       openGraph: {
+        publishedTime: format(
+          new Date(post?.published_at || (post?.created_at as Date)),
+          "yyyy-MM-dd"
+        ),
+        modifiedTime: format(
+          new Date(
+            post?.updated_at || post?.published_at || (post?.created_at as Date)
+          ),
+          "yyyy-MM-dd"
+        ),
+        url: `${getSiteUrl()}/${path}`,
+        title: post?.title,
+        description: generatePostDescription(post),
+        siteName: siteSettings.siteName.value,
+        tags: post?.tags?.map((tag) => tag.name),
         images: [
-          ...previousImages,
           {
             url:
               post?.featured_image?.url ||
