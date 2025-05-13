@@ -11,7 +11,13 @@ interface ArticleContentProps {
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({ post }) => {
   return (
-    <Box w="full" pb={8} flexShrink={0} flex={1} maxW="container.md">
+    <Box
+      w="full"
+      pb={{ base: 4, md: 6, lg: 8 }}
+      flexShrink={0}
+      flex={1}
+      maxW="container.md"
+    >
       <ContentRenderer content={decodeAndSanitizeHtml(post?.content || "")} />
     </Box>
   );

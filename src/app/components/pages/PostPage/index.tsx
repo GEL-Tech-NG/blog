@@ -167,7 +167,6 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
                 <CopyLinkButton url={shareUrl} />
                 <SocialShareGroup
                   showLabels={false}
-                  s
                   url={shareUrl}
                   title={post?.title || ""}
                 />
@@ -177,27 +176,49 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
         </Box>
         {/* Main Content Area */}
         <Flex
-          gap={[4, 8]}
+          gap={{ base: 4, md: 5, lg: 8 }}
           w="full"
           justify={"space-between"}
           flexDirection={{ base: "column", lg: "row" }}
         >
           <ArticleContent post={post} />
-
           <VStack
             w={sidebarWidth}
             position="sticky"
             top={55}
-            minW={320}
+            minW={{ base: "full", md: 320 }}
             spacing={4}
             alignSelf={"start"}
+            alignItems={"stretch"}
           >
-            {/* <Box>
+            <Box my={2}>
+              {post?.tags?.length > 0 && (
+                <HStack
+                  wrap="wrap"
+                  gap={2}
+                  mb={{ base: 4, md: 6 }}
+                  py={2}
+                  justify={{ base: "center", md: "center", lg: "start" }}
+                >
+                  {post?.tags?.map((tag, index) => (
+                    <Tag
+                      key={index}
+                      rounded={"md"}
+                      px={3}
+                      textTransform={"capitalize"}
+                    >
+                      #{tag?.name}
+                    </Tag>
+                  ))}
+                </HStack>
+              )}
+            </Box>
+            <Box display={{ base: "none", lg: "block" }}>
               <TOCRenderer
                 content={decodeAndSanitizeHtml(post?.content || "") || ""}
               />
-            </Box> */}
-            <Box rounded={"xl"} p={4} bg={newsletterBgColor} maxW={"full"}>
+            </Box>
+            <Box rounded={"xl"} mb={5} bg={newsletterBgColor} maxW={"full"}>
               <Newsletter
                 title="Subscribe to our newsletter"
                 description=" Get the latest posts delivered right to your inbox!"
@@ -208,22 +229,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             </Box>
           </VStack>
         </Flex>
-        <Box my={2}>
-          {post?.tags?.length > 0 && (
-            <HStack wrap="wrap" gap={2} mb={{ base: 4, md: 6 }} py={2}>
-              {post?.tags?.map((tag, index) => (
-                <Tag
-                  key={index}
-                  rounded={"md"}
-                  px={3}
-                  textTransform={"capitalize"}
-                >
-                  #{tag?.name}
-                </Tag>
-              ))}
-            </HStack>
-          )}
-        </Box>
+
         {post?.allow_comments && (
           <Suspense fallback={<Loader />}>
             <CommentsSection post={post} />

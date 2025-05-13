@@ -102,42 +102,21 @@ function extractHeadings(
     });
   }
 
-  // Process each heading level
-  for (let level = config.minLevel; level <= config.maxLevel; level++) {
-    const tagName = `h${level}`;
+  // Create a pattern that matches any heading within the specified range
+  const combinedPattern = new RegExp(
+    `<h([${config.minLevel}-${config.maxLevel}])\\b([^>]*?)>((?:.|\\s)*?)<\\/h\\1>`,
+    "gi"
+  );
 
-    // Match standard heading tags (<h1>, <h2>, etc.)
-    const standardPattern = new RegExp(
-      `<${tagName}\\b([^>]*?)>((?:.|\\s)*?)<\\/${tagName}>`,
-      "gi"
-    );
-
-    // Match elements with level attributes (<div level="2" ...>, etc.)
-    const levelAttrPattern = new RegExp(
-      `<([a-z][a-z0-9]*)\\b[^>]*?\\blevel=["']${level}["'][^>]*?>((?:.|\\s)*?)<\\/\\1>`,
-      "gi"
-    );
-
-    // Process standard heading tags
-    let match: RegExpExecArray | null;
-    while ((match = standardPattern.exec(htmlString)) !== null) {
-      processHeadingMatch(match[1], match[2], level);
-    }
-
-    // Process elements with level attributes
-    while ((match = levelAttrPattern.exec(htmlString)) !== null) {
-      // Extract just the attributes portion
-      const openingTag = match[0].substring(0, match[0].indexOf(">"));
-      const tagNameLength = match[1].length + 1; // +1 for '<'
-      const attributesStr = openingTag.substring(tagNameLength);
-
-      processHeadingMatch(attributesStr, match[2], level);
-    }
+  // Process headings in the order they appear in the document
+  let match: RegExpExecArray | null;
+  while ((match = combinedPattern.exec(htmlString)) !== null) {
+    const level = parseInt(match[1], 10);
+    processHeadingMatch(match[2], match[3], level);
   }
 
   return headings;
 }
-
 /**
  * Clean HTML content by removing nested tags and decoding entities
  * @param {string} html - HTML content string
@@ -353,7 +332,7 @@ export function example(): ParseHtmlHeadingsResult {
     maxLevel: 6,
     generateIds: true,
     generateToc: true,
-    maxDepth: 3,
+    maxDepth: 4,
   });
 
   console.log("Extracted Headings:", result.headings);
