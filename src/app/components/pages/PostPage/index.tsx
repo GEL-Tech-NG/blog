@@ -64,7 +64,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
       )}
 
       {/* Post Content Section */}
-      <Container maxW="1200px" py={8} px={{ base: 0, md: 5, lg: 8 }}>
+      <Container maxW="1250px" py={8} px={{ base: 0, md: 5, lg: 8 }}>
         <Breadcrumb
           spacing="8px"
           fontSize={"smaller"}
@@ -90,7 +90,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
         </Breadcrumb>
 
         <ArticleHeader post={post} />
-        <Box maxW={"1200px"} w={"full"} mb={8}>
+        <Box maxW={"1250px"} w={"full"} mb={8}>
           <Box mb={6} w={"full"}>
             <Image
               src={
@@ -176,19 +176,18 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
         </Box>
         {/* Main Content Area */}
         <Flex
-          gap={{ base: 4, md: 5, lg: 8 }}
+          gap={{ base: 4, md: 5, lg: 8, xl: 10 }}
           w="full"
           justify={"space-between"}
           flexDirection={{ base: "column", lg: "row" }}
         >
-          <ArticleContent post={post} />
           <VStack
             w={sidebarWidth}
-            // position="sticky"
+            position="sticky"
             top={55}
             minW={{ base: "full", md: 320 }}
             spacing={4}
-            // alignSelf={"start"}
+            alignSelf={"start"}
             alignItems={"stretch"}
           >
             <Box my={2}>
@@ -228,6 +227,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
               />
             </Box>
           </VStack>
+          <ArticleContent post={post} />
         </Flex>
 
         {post?.allow_comments && (
