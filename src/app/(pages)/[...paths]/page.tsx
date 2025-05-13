@@ -35,39 +35,8 @@ export async function generateMetadata(
   const siteSettings = await getSettings();
   const post = await getData(path, firstSegment);
 
-  const previousImages = (await parent).openGraph?.images || [];
   if (post) {
     // Add JSON-LD script
-    const jsonLd = {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      headline: post.title,
-      description: generatePostDescription(post),
-      author: {
-        "@type": "Person",
-        name: post.author?.name,
-        url: `${getSiteUrl()}/author/${post.author?.username}`,
-      },
-      datePublished: post.published_at || post.created_at,
-      dateModified: post.updated_at || post.published_at || post.created_at,
-      image:
-        post.featured_image?.url ||
-        `${getSiteUrl()}/api/og?${objectToQueryParams({
-          title: post.title,
-          date: post.published_at || post.created_at,
-        })}`,
-      publisher: {
-        "@type": "Organization",
-        name: siteSettings.siteName.value,
-        url: getSiteUrl(),
-      },
-      mainEntityOfPage: {
-        "@type": "WebPage",
-        "@id": `${getSiteUrl()}/${path}`,
-      },
-      articleSection: post.category?.name,
-      wordCount: post.reading_time ? post.reading_time * 200 : undefined, // Rough estimate based on reading time
-    };
 
     return {
       title: post?.title,
@@ -144,6 +113,7 @@ export async function generateMetadata(
 export default async function DynamicPage({ params }: PageProps) {
   const path = params.paths?.join("/") || "";
   const firstSegment = params.paths?.[0] || "";
+  const siteSettings = await getSettings();
 
   // Skip processing if this is a known Next.js file route
   // This is a safety check but should rarely be needed since
@@ -154,7 +124,45 @@ export default async function DynamicPage({ params }: PageProps) {
 
   const post = await getData(path, firstSegment);
   if (post) {
-    return <BlogPage post={post} />;
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: generatePostDescription(post),
+      author: {
+        "@type": "Person",
+        name: post.author?.name,
+        url: `${getSiteUrl()}/author/${post.author?.username}`,
+      },
+      datePublished: post.published_at || post.created_at,
+      dateModified: post.updated_at || post.published_at || post.created_at,
+      image:
+        post.featured_image?.url ||
+        `${getSiteUrl()}/api/og?${objectToQueryParams({
+          title: post.title,
+          date: post.published_at || post.created_at,
+        })}`,
+      publisher: {
+        "@type": "Organization",
+        name: siteSettings.siteName.value,
+        url: getSiteUrl(),
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `${getSiteUrl()}/${path}`,
+      },
+      articleSection: post.category?.name,
+      wordCount: post.reading_time ? post.reading_time * 200 : undefined, // Rough estimate based on reading time
+    };
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <BlogPage post={post} />;
+      </>
+    );
   }
 
   // If no blog post is found, you have two options:

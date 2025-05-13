@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -43,13 +43,16 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
   const canWrapNewsletter = useBreakpointValue({ base: false, lg: true });
   const metaColor = useColorModeValue("gray.500", "gray.400");
   const dividerColor = useColorModeValue("gray.600", "gray.400");
-
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const [shareUrl, setShareUrl] = useState("");
 
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const bgColor = useColorModeValue("white", "#121212");
   const newsletterBgColor = useColorModeValue("white", "gray.800");
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setShareUrl(window.location.href || "");
+    }
+  }, []);
   if (!post) {
     return <Loader />;
   }

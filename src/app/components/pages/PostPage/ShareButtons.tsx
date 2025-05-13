@@ -86,8 +86,8 @@ const SocialShareButton = memo<SocialShareButtonProps>(
   ({
     icon: Icon,
     label,
-    url,
-    title,
+    url = "",
+    title = "",
     onClick,
     showLabel = true,
     iconSize = 20,
