@@ -18,6 +18,9 @@ export const getSettings = unstable_cache(
         enabled: setting.enabled as boolean,
         encrypted: setting.encrypted as boolean,
         canEncrypt: setting.canEncrypt as boolean,
+        folder: setting.folder || "misc",
+        name: setting.name || "",
+        description: setting.description || "",
       };
       return acc;
     }, {} as SiteSettings);
@@ -25,7 +28,7 @@ export const getSettings = unstable_cache(
     return { ...DEFAULT_SETTINGS, ...settingsObj };
   },
   ["getSettings"],
-  { tags: ["getSettings"] }
+  { tags: ["getSettings"], revalidate: 5 }
 );
 
 export async function updateSettings(newSettings: SiteSettings) {
@@ -46,6 +49,17 @@ export async function updateSettings(newSettings: SiteSettings) {
         enabled: setting.enabled,
         encrypted: setting.encrypted,
         canEncrypt: setting.canEncrypt,
+        name: setting.name,
+        description: setting.description,
+        folder: setting.folder as
+          | "email"
+          | "general"
+          | "analytics"
+          | "monitoring"
+          | "media"
+          | "advanced"
+          | "social"
+          | "misc",
       })
       .onDuplicateKeyUpdate({
         set: { key, value, updated_at: new Date() },

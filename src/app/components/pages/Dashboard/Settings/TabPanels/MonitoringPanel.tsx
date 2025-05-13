@@ -1,13 +1,7 @@
-import {
-  VStack,
-  FormControl,
-  FormLabel,
-  HStack,
-  Text,
-  Switch,
-  Input,
-} from "@chakra-ui/react";
+import { VStack, Button, useDisclosure } from "@chakra-ui/react";
 import { SiteSettings } from "@/src/types";
+import { SettingField } from "../components/SettingField";
+import { groupSettingsByFolder } from "../utils";
 
 interface MonitoringPanelProps {
   settings: SiteSettings;
@@ -20,40 +14,23 @@ export const MonitoringPanel = ({
   handleInputChange,
   handleToggle,
 }: MonitoringPanelProps) => {
+  const { isOpen, onToggle } = useDisclosure();
+  const groupedSettings = groupSettingsByFolder(settings);
+  const monitoringSettings = groupedSettings["monitoring"] || [];
+
   return (
     <VStack spacing={6} align="stretch">
-      <FormControl>
-        <FormLabel>Sentry DSN</FormLabel>
-        <HStack mb={1}>
-          <Text>{settings.sentryDsn.enabled ? "Enabled" : "Disabled"}</Text>
-          <Switch
-            isDisabled={!settings.sentryDsn.value}
-            isChecked={settings.sentryDsn.enabled}
-            onChange={() => handleToggle("sentryDsn")}
-          />
-        </HStack>
-        <Input
-          maxW={600}
-          rounded="md"
-          value={settings.sentryDsn.value}
-          onChange={(e) => handleInputChange("sentryDsn", e.target.value)}
-          placeholder="https://xxxxx@xxxxx.ingest.sentry.io/xxxxx"
+      {monitoringSettings.map((setting) => (
+        <SettingField
+          key={setting.key}
+          setting={setting}
+          handleInputChange={handleInputChange}
+          handleToggle={handleToggle}
         />
-      </FormControl>
-      <FormControl display="flex" alignItems="center">
-        <FormLabel mb={0}>Enable Error Tracking</FormLabel>
-        <Switch
-          isChecked={settings.errorTracking.enabled}
-          onChange={() => handleToggle("errorTracking")}
-        />
-      </FormControl>
-      <FormControl display="flex" alignItems="center">
-        <FormLabel mb={0}>Enable Performance Monitoring</FormLabel>
-        <Switch
-          isChecked={settings.performanceMonitoring.enabled}
-          onChange={() => handleToggle("performanceMonitoring")}
-        />
-      </FormControl>
+      ))}
+      <Button onClick={onToggle} size="sm" variant="outline">
+        {isOpen ? "Cancel" : "Add New Monitoring Setting"}
+      </Button>
     </VStack>
   );
 };
