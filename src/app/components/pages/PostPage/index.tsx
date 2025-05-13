@@ -179,7 +179,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
           gap={{ base: 4, md: 5, lg: 8, xl: 10 }}
           w="full"
           justify={"space-between"}
-          flexDirection={{ base: "column", lg: "row" }}
+          flexDirection={{ base: "column-reverse", lg: "row" }}
         >
           <VStack
             w={sidebarWidth}

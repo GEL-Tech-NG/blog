@@ -84,7 +84,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     value: "",
     enabled: false,
     encrypted: false,
-    canEncrypt: true,
+    canEncrypt: false,
     folder: "analytics",
     name: "Mixpanel Token",
   },
