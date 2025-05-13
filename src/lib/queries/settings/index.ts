@@ -62,7 +62,25 @@ export async function updateSettings(newSettings: SiteSettings) {
           | "misc",
       })
       .onDuplicateKeyUpdate({
-        set: { key, value, updated_at: new Date() },
+        set: {
+          key,
+          value,
+          enabled: setting.enabled,
+          encrypted: setting.encrypted,
+          canEncrypt: setting.canEncrypt,
+          name: setting.name,
+          description: setting.description,
+          folder: setting.folder as
+            | "email"
+            | "general"
+            | "analytics"
+            | "monitoring"
+            | "media"
+            | "advanced"
+            | "social"
+            | "misc",
+          updated_at: new Date(),
+        },
       });
   });
 

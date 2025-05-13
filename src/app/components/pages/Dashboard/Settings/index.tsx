@@ -236,30 +236,35 @@ export default function DashboardSettingsPage() {
                   <MediaPanel
                     settings={settings}
                     handleInputChange={handleInputChange}
+                    handleToggle={handleToggle}
                   />
                 </TabPanel>
                 <TabPanel>
                   <EmailPanel
                     settings={settings}
                     handleInputChange={handleInputChange}
+                    handleToggle={handleToggle}
                   />
                 </TabPanel>
                 <TabPanel>
                   <SocialPanel
                     settings={settings}
                     handleInputChange={handleInputChange}
+                    handleToggle={handleToggle}
                   />
                 </TabPanel>
                 <TabPanel>
                   <AdvancedPanel
                     settings={settings}
                     handleInputChange={handleInputChange}
+                    handleToggle={handleToggle}
                   />
                 </TabPanel>
                 <TabPanel>
                   <MiscPanel
                     settings={settings}
                     handleInputChange={handleInputChange}
+                    handleToggle={handleToggle}
                   />
                 </TabPanel>
               </TabPanels>

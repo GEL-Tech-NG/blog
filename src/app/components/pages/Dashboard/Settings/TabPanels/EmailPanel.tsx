@@ -6,11 +6,13 @@ import { groupSettingsByFolder } from "../utils";
 interface EmailPanelProps {
   settings: SiteSettings;
   handleInputChange: (key: string, value: string) => void;
+  handleToggle: (key: string) => void;
 }
 
 export const EmailPanel = ({
   settings,
   handleInputChange,
+  handleToggle,
 }: EmailPanelProps) => {
   const groupedSettings = groupSettingsByFolder(settings);
   const emailSettings = groupedSettings["email"] || [];
@@ -22,7 +24,7 @@ export const EmailPanel = ({
           key={setting.key}
           setting={setting}
           handleInputChange={handleInputChange}
-          handleToggle={() => {}}
+          handleToggle={handleToggle}
         />
       ))}
     </VStack>

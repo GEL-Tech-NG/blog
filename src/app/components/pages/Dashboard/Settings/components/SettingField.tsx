@@ -6,7 +6,12 @@ import {
   HStack,
   FormHelperText,
   Text,
+  InputGroup,
+  InputRightElement,
+  IconButton,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface SettingFieldProps {
   setting: any;
@@ -19,6 +24,8 @@ export const SettingField = ({
   handleInputChange,
   handleToggle,
 }: SettingFieldProps) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <FormControl key={setting.key}>
       <FormLabel>{setting.name || setting.key}</FormLabel>
@@ -33,16 +40,34 @@ export const SettingField = ({
         </HStack>
       )}
       {setting.key !== "localPostAnalytics" && (
-        <Input
-          maxW={600}
-          rounded="md"
-          type={setting.encrypted ? "password" : "text"}
-          value={setting.value || ""}
-          onChange={(e) => handleInputChange(setting.key, e.target.value)}
-          placeholder={setting.description}
-        />
+        <InputGroup>
+          <Input
+            maxW={600}
+            rounded="md"
+            type={setting.encrypted && !showPassword ? "password" : "text"}
+            value={setting.value || ""}
+            onChange={(e) => handleInputChange(setting.key, e.target.value)}
+            placeholder={setting.description}
+          />
+          {setting.encrypted && (
+            <InputRightElement>
+              <IconButton
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                icon={showPassword ? <FaEyeSlash /> : <FaEye />}
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowPassword(!showPassword)}
+              />
+            </InputRightElement>
+          )}
+        </InputGroup>
       )}
-      {setting.description && (
+      {setting.canEncrypt && (
+        <FormHelperText>
+          This field can be encrypted for additional security
+        </FormHelperText>
+      )}
+      {setting.description && !setting.canEncrypt && (
         <FormHelperText>{setting.description}</FormHelperText>
       )}
     </FormControl>

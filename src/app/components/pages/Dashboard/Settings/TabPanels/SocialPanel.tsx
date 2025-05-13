@@ -12,11 +12,13 @@ import { groupSettingsByFolder } from "../utils";
 interface SocialPanelProps {
   settings: SiteSettings;
   handleInputChange: (key: string, value: string) => void;
+  handleToggle: (key: string) => void;
 }
 
 export const SocialPanel = ({
   settings,
   handleInputChange,
+  handleToggle,
 }: SocialPanelProps) => {
   const groupedSettings = groupSettingsByFolder(settings);
   const socialSettings = groupedSettings["social"] || [];
@@ -26,15 +28,10 @@ export const SocialPanel = ({
       {socialSettings.map((setting) => (
         <FormControl key={setting.key}>
           <HStack justify="space-between" align="center">
-            <FormLabel>{setting.name || setting.key}</FormLabel>
+            <FormLabel mb={0}>{setting.name || setting.key}</FormLabel>
             <Switch
               isChecked={setting.enabled}
-              onChange={(e) =>
-                handleInputChange(
-                  `${setting.key}_enabled`,
-                  e.target.checked.toString()
-                )
-              }
+              onChange={() => handleToggle(setting.key)}
             />
           </HStack>
 

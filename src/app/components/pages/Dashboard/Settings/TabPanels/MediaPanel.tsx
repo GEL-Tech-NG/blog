@@ -6,11 +6,13 @@ import { groupSettingsByFolder } from "../utils";
 interface MediaPanelProps {
   settings: SiteSettings;
   handleInputChange: (key: string, value: string) => void;
+  handleToggle: (key: string) => void;
 }
 
 export const MediaPanel = ({
   settings,
   handleInputChange,
+  handleToggle,
 }: MediaPanelProps) => {
   const groupedSettings = groupSettingsByFolder(settings);
   const mediaSettings = groupedSettings["media"] || [];
@@ -22,7 +24,7 @@ export const MediaPanel = ({
           key={setting.key}
           setting={setting}
           handleInputChange={handleInputChange}
-          handleToggle={() => {}}
+          handleToggle={handleToggle}
         />
       ))}
     </VStack>

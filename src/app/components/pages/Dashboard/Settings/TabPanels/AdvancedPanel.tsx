@@ -6,11 +6,13 @@ import { groupSettingsByFolder } from "../utils";
 interface AdvancedPanelProps {
   settings: SiteSettings;
   handleInputChange: (key: string, value: string) => void;
+  handleToggle: (key: string) => void;
 }
 
 export const AdvancedPanel = ({
   settings,
   handleInputChange,
+  handleToggle,
 }: AdvancedPanelProps) => {
   const groupedSettings = groupSettingsByFolder(settings);
   const advancedSettings = groupedSettings["advanced"] || [];
@@ -22,7 +24,7 @@ export const AdvancedPanel = ({
           key={setting.key}
           setting={setting}
           handleInputChange={handleInputChange}
-          handleToggle={() => {}}
+          handleToggle={handleToggle}
         />
       ))}
       <Box>
