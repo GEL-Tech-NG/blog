@@ -64,7 +64,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
       )}
 
       {/* Post Content Section */}
-      <Container maxW="1250px" py={8} px={{ base: 0, md: 5, lg: 8 }}>
+      <Container maxW="1250px" py={8} px={{ base: 4, md: 5, lg: 8 }}>
         <Breadcrumb
           spacing="8px"
           fontSize={"smaller"}
