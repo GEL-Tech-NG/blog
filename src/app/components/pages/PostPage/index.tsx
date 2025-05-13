@@ -64,7 +64,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
       )}
 
       {/* Post Content Section */}
-      <Container maxW="1200px" py={8}>
+      <Container maxW="1200px" py={8} px={{ base: 0, md: 5, lg: 8 }}>
         <Breadcrumb
           spacing="8px"
           fontSize={"smaller"}
@@ -184,11 +184,11 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
           <ArticleContent post={post} />
           <VStack
             w={sidebarWidth}
-            position="sticky"
+            // position="sticky"
             top={55}
             minW={{ base: "full", md: 320 }}
             spacing={4}
-            alignSelf={"start"}
+            // alignSelf={"start"}
             alignItems={"stretch"}
           >
             <Box my={2}>
@@ -196,7 +196,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
                 <HStack
                   wrap="wrap"
                   gap={2}
-                  mb={{ base: 4, md: 6 }}
+                  mb={4}
                   py={2}
                   justify={{ base: "center", md: "center", lg: "start" }}
                 >
@@ -213,7 +213,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
                 </HStack>
               )}
             </Box>
-            <Box display={{ base: "none", lg: "block" }}>
+            <Box display={{ base: "none", lg: "block" }} mb={5}>
               <TOCRenderer
                 content={decodeAndSanitizeHtml(post?.content || "") || ""}
               />

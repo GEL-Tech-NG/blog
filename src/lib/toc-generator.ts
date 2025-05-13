@@ -4,17 +4,16 @@
  * Extracts headings from any HTML string without using DOMParser
  * Handles complex HTML including both standard h1-h6 tags and custom elements with level attributes
  *
- * @author Claude
  */
 
 // Define types
-interface HeadingObject {
+export interface HeadingObject {
   level: number;
   text: string;
   id: string | null;
 }
 
-interface TocItem extends HeadingObject {
+export interface TocItem extends HeadingObject {
   children: TocItem[];
 }
 
@@ -291,7 +290,7 @@ function generateTableOfContents(
  */
 function parseHtmlHeadings(
   html: string,
-  options: ParseHtmlHeadingsOptions = {}
+  options: ParseHtmlHeadingsOptions = { generateToc: true }
 ): ParseHtmlHeadingsResult {
   // Extract headings
   const headings = extractHeadings(html, options);
