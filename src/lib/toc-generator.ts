@@ -308,37 +308,37 @@ function parseHtmlHeadings(
 }
 
 // Example usage
-export function example(): ParseHtmlHeadingsResult {
-  const htmlContent = `
-    <div>
-      <h1 id="main-title">Main Title</h1>
-      <p>Some content here...</p>
-      <h2 id="section1">Section One</h2>
-      <p>More content...</p>
-      <div level="3" id="subsection1" class="heading">Subsection 1.1</div>
-      <p>Details here...</p>
-      <h3 id="subsection2"><strong>Subsection 1.2</strong> with <em>formatting</em></h3>
-      <p>More details...</p>
-      <h2 level="2" id="section2">Section Two</h2>
-      <p>Second section content...</p>
-      <h3>Subsection 2.1 (no ID)</h3>
-      <h4 id="deep">Deep nested</h4>
-    </div>
-  `;
+// export function example(): ParseHtmlHeadingsResult {
+//   const htmlContent = `
+//     <div>
+//       <h1 id="main-title">Main Title</h1>
+//       <p>Some content here...</p>
+//       <h2 id="section1">Section One</h2>
+//       <p>More content...</p>
+//       <div level="3" id="subsection1" class="heading">Subsection 1.1</div>
+//       <p>Details here...</p>
+//       <h3 id="subsection2"><strong>Subsection 1.2</strong> with <em>formatting</em></h3>
+//       <p>More details...</p>
+//       <h2 level="2" id="section2">Section Two</h2>
+//       <p>Second section content...</p>
+//       <h3>Subsection 2.1 (no ID)</h3>
+//       <h4 id="deep">Deep nested</h4>
+//     </div>
+//   `;
 
-  const result = parseHtmlHeadings(htmlContent, {
-    minLevel: 1,
-    maxLevel: 6,
-    generateIds: true,
-    generateToc: true,
-    maxDepth: 4,
-  });
+//   const result = parseHtmlHeadings(htmlContent, {
+//     minLevel: 1,
+//     maxLevel: 6,
+//     generateIds: true,
+//     generateToc: true,
+//     maxDepth: 4,
+//   });
 
-  console.log("Extracted Headings:", result.headings);
-  console.log("Table of Contents:", JSON.stringify(result.toc, null, 2));
+//   console.log("Extracted Headings:", result.headings);
+//   console.log("Table of Contents:", JSON.stringify(result.toc, null, 2));
 
-  return result;
-}
+//   return result;
+// }
 
 // Export the functions
 export { extractHeadings, generateTableOfContents, parseHtmlHeadings };

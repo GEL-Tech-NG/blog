@@ -13,7 +13,7 @@ export const AnalyticsProviders = ({
     return null;
   }
   const mixpanelTokenValue = settings.mixpanelToken.enabled
-    ? decryptKey(settings.mixpanelToken.value)
+    ? settings.mixpanelToken.value
     : "";
   return (
     <>

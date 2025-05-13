@@ -1,10 +1,5 @@
 "use client";
-import {
-  example,
-  generateTableOfContents,
-  parseHtmlHeadings,
-  TocItem,
-} from "@/src/lib/toc-generator";
+import { parseHtmlHeadings, TocItem } from "@/src/lib/toc-generator";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 

@@ -8,9 +8,6 @@ export default async function Page() {
 
   const permissions = session?.user?.permissions as TPermissions[];
   const firstAccessiblePage = getDashboardNavigation(permissions);
-  console.log({
-    firstAccessiblePage,
-  });
 
   return redirect(firstAccessiblePage[0].href);
 }
