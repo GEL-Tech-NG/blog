@@ -133,6 +133,12 @@ export default async function DynamicPage({ params }: PageProps) {
         "@type": "Person",
         name: post.author?.name,
         url: `${getSiteUrl()}/author/${post.author?.username}`,
+        image: {
+          "@type": "ImageObject",
+          url: post.author?.avatar,
+          width: "96",
+          height: "96",
+        },
       },
       datePublished: post.published_at || post.created_at,
       dateModified: post.updated_at || post.published_at || post.created_at,
@@ -142,15 +148,23 @@ export default async function DynamicPage({ params }: PageProps) {
           title: post.title,
           date: post.published_at || post.created_at,
         })}`,
-      publisher: {
-        "@type": "Organization",
-        name: siteSettings.siteName.value,
-        url: getSiteUrl(),
-      },
+
       mainEntityOfPage: {
         "@type": "WebPage",
         "@id": `${getSiteUrl()}/${path}`,
       },
+      publisher: {
+        "@type": "Organization",
+        name: siteSettings.siteName.value,
+        logo: {
+          "@type": "ImageObject",
+          url: siteSettings.siteLogo.value,
+          width: "300",
+          height: "300",
+        },
+      },
+      articleBody: stripHtml(decodeAndSanitizeHtml(post.content || "")),
+      keywords: post.tags?.map((tag) => tag.name),
       articleSection: post.category?.name,
       wordCount: post.reading_time ? post.reading_time * 200 : undefined, // Rough estimate based on reading time
     };

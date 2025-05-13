@@ -12,6 +12,7 @@ import { AnalyticsProviders } from "../providers/analytics";
 import { getSiteUrl } from "../utils/url";
 import { objectToQueryParams } from "../utils";
 import Script from "next/script";
+import { groupSettingsByFolder } from "./components/pages/Dashboard/Settings/utils";
 
 type Props = {
   params: { slug?: string } & Record<string, string | string[] | undefined>;
@@ -76,23 +77,98 @@ export default async function RootLayout({
 }) {
   const session = await getSession();
   const siteSettings = await getSettings();
+  const groupedSettings = groupSettingsByFolder(siteSettings);
+  const socialSettings = groupedSettings["social"] || [];
+  const siteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: getSiteUrl(),
+    name: siteSettings.siteName.value,
+    description: siteSettings.siteDescription.value,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${getSiteUrl()}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteSettings.siteName.value,
+      logo: {
+        "@type": "ImageObject",
+        url: siteSettings.siteLogo.value,
+      },
+    },
+    inLanguage: "en-US",
+    copyrightYear: "2025",
 
+    copyrightHolder: {
+      "@type": "Organization",
+      name: "GEL Tech NG",
+    },
+  };
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `https://geltechng.com`,
+    name: "GEL Tech NG",
+    url: "https://geltechng.com",
+    logo: {
+      "@type": "ImageObject",
+      url: siteSettings.siteLogo.value,
+      width: "300",
+      height: "300",
+    },
+    description: siteSettings.siteDescription.value,
+    foundingDate: "2025-01-10",
+    founder: {
+      "@type": "Person",
+      name: "Victory Lucky",
+    },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "13/15 Fadu Avenue",
+      addressLocality: "Ejigbo",
+      addressRegion: "Lagos",
+      postalCode: "100261",
+      addressCountry: "Nigeria",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+234-8162872504",
+      contactType: "customer service",
+      email: "info@geltechng.com",
+      availableLanguage: "English",
+    },
+    sameAs: socialSettings.map((setting) => setting.value),
+  };
   return (
     <html
       lang="en"
       className={`${fonts.body.variable} ${fonts.heading.variable}`}
     >
       <body>
-        <AnalyticsProviders settings={siteSettings} />
-        <SiteConfigProvider initialConfig={siteSettings}>
-          <ReactQueryClient>
-            <AuthProvider session={session}>
-              <NuqsProvider>
-                <ChakraProvider>{children}</ChakraProvider>
-              </NuqsProvider>
-            </AuthProvider>
-          </ReactQueryClient>
-        </SiteConfigProvider>
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(organizationJsonLd),
+            }}
+          />
+          <AnalyticsProviders settings={siteSettings} />
+          <SiteConfigProvider initialConfig={siteSettings}>
+            <ReactQueryClient>
+              <AuthProvider session={session}>
+                <NuqsProvider>
+                  <ChakraProvider>{children}</ChakraProvider>
+                </NuqsProvider>
+              </AuthProvider>
+            </ReactQueryClient>
+          </SiteConfigProvider>
+        </>
       </body>
     </html>
   );
