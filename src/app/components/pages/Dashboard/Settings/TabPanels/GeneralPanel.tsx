@@ -1,19 +1,20 @@
 import {
   VStack,
+  HStack,
+  Box,
+  Button,
   FormControl,
   FormLabel,
   Input,
   Textarea,
-  HStack,
-  Box,
-  Button,
   FormHelperText,
   Image,
   Switch,
   Stack,
 } from "@chakra-ui/react";
 import { SiteSettings } from "@/src/types";
-import { useEffect } from "react";
+import { groupSettingsByFolder } from "../utils";
+import { SettingField } from "../components/SettingField";
 
 interface GeneralPanelProps {
   settings: SiteSettings;
@@ -30,23 +31,9 @@ export const GeneralPanel = ({
   handleToggle,
   openMediaModal,
 }: GeneralPanelProps) => {
-  useEffect(() => {
-    const settingsKeys = Object.keys(settings);
-    const settingsArray = Object.values(settings);
-    const settingsTransformed = settingsKeys.map((key) => {
-      return {
-        key,
-        value: settings[key].value,
-        enabled: settings[key].enabled,
-        encrypted: settings[key].encrypted,
-        canEncrypt: settings[key].canEncrypt,
-        folder: settings[key].folder,
-        name: settings[key].name,
-        description: settings[key].description,
-      };
-    });
-    console.log({ settingsTransformed, settingsArray });
-  }, [settings]);
+  const groupedSettings = groupSettingsByFolder(settings);
+  const generalSettings = groupedSettings["general"] || [];
+
   return (
     <VStack spacing={6} align="stretch">
       <FormControl>
@@ -201,20 +188,21 @@ export const GeneralPanel = ({
         </FormControl>
       </Box>
       <Stack>
-        <FormControl display="flex" alignItems="center">
-          <FormLabel mb={0}>Show Site Name with Logo</FormLabel>
-          <Switch
-            isChecked={settings.showSiteNameWithLogo?.enabled}
-            onChange={() => handleToggle("showSiteNameWithLogo")}
-          />
-        </FormControl>
-        <FormControl display="flex" alignItems="center">
-          <FormLabel mb={0}>Maintenance Mode</FormLabel>
-          <Switch
-            isChecked={settings.maintenanceMode.enabled}
-            onChange={() => handleToggle("maintenanceMode")}
-          />
-        </FormControl>
+        {generalSettings
+          .filter(
+            (setting) =>
+              setting.key.startsWith("show") ||
+              setting.key === "maintenanceMode"
+          )
+          .map((setting) => (
+            <FormControl key={setting.key} display="flex" alignItems="center">
+              <FormLabel mb={0}>{setting.name}</FormLabel>
+              <Switch
+                isChecked={setting.enabled}
+                onChange={() => handleToggle(setting.key)}
+              />
+            </FormControl>
+          ))}
       </Stack>
     </VStack>
   );

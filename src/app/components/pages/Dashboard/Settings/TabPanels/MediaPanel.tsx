@@ -1,5 +1,7 @@
-import { VStack, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import { SiteSettings } from "@/src/types";
+import { SettingField } from "../components/SettingField";
+import { groupSettingsByFolder } from "../utils";
 
 interface MediaPanelProps {
   settings: SiteSettings;
@@ -10,66 +12,19 @@ export const MediaPanel = ({
   settings,
   handleInputChange,
 }: MediaPanelProps) => {
+  const groupedSettings = groupSettingsByFolder(settings);
+  const mediaSettings = groupedSettings["media"] || [];
+
   return (
     <VStack spacing={6} align="stretch">
-      <FormControl isRequired>
-        <FormLabel>Cloudinary Api Key</FormLabel>
-        <Input
-          maxW={600}
-          rounded="md"
-          value={settings.cloudinaryApiKey.value}
-          onChange={(e) =>
-            handleInputChange("cloudinaryApiKey", e.target.value)
-          }
-          placeholder="your-cloudinary-api-key"
+      {mediaSettings.map((setting) => (
+        <SettingField
+          key={setting.key}
+          setting={setting}
+          handleInputChange={handleInputChange}
+          handleToggle={() => {}}
         />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>Cloudinary Api Secret</FormLabel>
-        <Input
-          maxW={600}
-          rounded="md"
-          value={settings.cloudinaryApiSecret.value}
-          onChange={(e) =>
-            handleInputChange("cloudinaryApiSecret", e.target.value)
-          }
-          placeholder="your-cloudinary-api-secret"
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>Cloudinary Cloud Name</FormLabel>
-        <Input
-          maxW={600}
-          rounded="md"
-          value={settings.cloudinaryCloudName.value}
-          onChange={(e) =>
-            handleInputChange("cloudinaryCloudName", e.target.value)
-          }
-          placeholder="your-cloud-name"
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Max Upload Size (MB)</FormLabel>
-        <Input
-          maxW={600}
-          rounded="md"
-          type="number"
-          value={settings.maxUploadSize.value}
-          onChange={(e) => handleInputChange("maxUploadSize", e.target.value)}
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Default Media Folder</FormLabel>
-        <Input
-          maxW={600}
-          rounded="md"
-          value={settings.defaultMediaFolder.value}
-          onChange={(e) =>
-            handleInputChange("defaultMediaFolder", e.target.value)
-          }
-          placeholder="uploads"
-        />
-      </FormControl>
+      ))}
     </VStack>
   );
 };

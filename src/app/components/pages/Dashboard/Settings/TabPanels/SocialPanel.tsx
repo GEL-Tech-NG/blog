@@ -1,30 +1,32 @@
-import { SiteSettings } from "@/src/types";
 import {
-  FormLabel,
   VStack,
   FormControl,
+  FormLabel,
   Input,
   Switch,
-  FormHelperText,
   HStack,
 } from "@chakra-ui/react";
+import { SiteSettings } from "@/src/types";
 import { groupSettingsByFolder } from "../utils";
 
-interface MiscPanelProps {
+interface SocialPanelProps {
   settings: SiteSettings;
   handleInputChange: (key: string, value: string) => void;
 }
 
-export function MiscPanel({ settings, handleInputChange }: MiscPanelProps) {
+export const SocialPanel = ({
+  settings,
+  handleInputChange,
+}: SocialPanelProps) => {
   const groupedSettings = groupSettingsByFolder(settings);
-  const miscSettings = groupedSettings["misc"] || [];
+  const socialSettings = groupedSettings["social"] || [];
 
   return (
     <VStack spacing={6} align="stretch">
-      {miscSettings.map((setting) => (
+      {socialSettings.map((setting) => (
         <FormControl key={setting.key}>
           <HStack justify="space-between" align="center">
-            <FormLabel mb={0}>{setting.name || setting.key}</FormLabel>
+            <FormLabel>{setting.name || setting.key}</FormLabel>
             <Switch
               isChecked={setting.enabled}
               onChange={(e) =>
@@ -38,22 +40,12 @@ export function MiscPanel({ settings, handleInputChange }: MiscPanelProps) {
 
           <Input
             value={setting.value || ""}
-            type={setting.encrypted ? "password" : "text"}
             onChange={(e) => handleInputChange(setting.key, e.target.value)}
-            // isDisabled={!setting.enabled}
-            placeholder={setting.description}
+            isDisabled={!setting.enabled}
+            placeholder={`Enter your ${setting.name.toLowerCase()} URL`}
           />
-
-          {setting.canEncrypt && (
-            <FormHelperText>
-              This field is encrypted for additional security
-            </FormHelperText>
-          )}
-          {setting.description && !setting.canEncrypt && (
-            <FormHelperText>{setting.description}</FormHelperText>
-          )}
         </FormControl>
       ))}
     </VStack>
   );
-}
+};

@@ -1,12 +1,7 @@
-import {
-  VStack,
-  FormControl,
-  FormLabel,
-  Input,
-  Box,
-  Button,
-} from "@chakra-ui/react";
+import { VStack, Box, Button } from "@chakra-ui/react";
 import { SiteSettings } from "@/src/types";
+import { SettingField } from "../components/SettingField";
+import { groupSettingsByFolder } from "../utils";
 
 interface AdvancedPanelProps {
   settings: SiteSettings;
@@ -17,28 +12,19 @@ export const AdvancedPanel = ({
   settings,
   handleInputChange,
 }: AdvancedPanelProps) => {
+  const groupedSettings = groupSettingsByFolder(settings);
+  const advancedSettings = groupedSettings["advanced"] || [];
+
   return (
     <VStack spacing={6} align="stretch">
-      <FormControl>
-        <FormLabel>API Rate Limit</FormLabel>
-        <Input
-          maxW={600}
-          rounded="md"
-          type="number"
-          value={settings.apiRateLimit.value}
-          onChange={(e) => handleInputChange("apiRateLimit", e.target.value)}
+      {advancedSettings.map((setting) => (
+        <SettingField
+          key={setting.key}
+          setting={setting}
+          handleInputChange={handleInputChange}
+          handleToggle={() => {}}
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Cache Duration (minutes)</FormLabel>
-        <Input
-          maxW={600}
-          rounded="md"
-          type="number"
-          value={settings.cacheDuration.value}
-          onChange={(e) => handleInputChange("cacheDuration", e.target.value)}
-        />
-      </FormControl>
+      ))}
       <Box>
         <Button colorScheme="red" variant="outline">
           Clear Cache

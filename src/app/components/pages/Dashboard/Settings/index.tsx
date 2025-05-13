@@ -34,6 +34,8 @@ import { useSiteConfig } from "@/src/context/SiteConfig";
 import { parseAsString, useQueryState } from "nuqs";
 import { isEqual } from "lodash";
 import { MiscPanel } from "./TabPanels/MiscPanel";
+import { SocialPanel } from "./TabPanels/SocialPanel";
+
 export default function DashboardSettingsPage() {
   const toast = useToast({ position: "top" });
   const [isLoading, setIsLoading] = useState(false);
@@ -207,7 +209,7 @@ export default function DashboardSettingsPage() {
                 ))}
               </TabList>
 
-              <TabPanels>
+              <TabPanels py={5}>
                 <TabPanel px={2}>
                   <GeneralPanel
                     settings={settings}
@@ -238,6 +240,12 @@ export default function DashboardSettingsPage() {
                 </TabPanel>
                 <TabPanel>
                   <EmailPanel
+                    settings={settings}
+                    handleInputChange={handleInputChange}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <SocialPanel
                     settings={settings}
                     handleInputChange={handleInputChange}
                   />
