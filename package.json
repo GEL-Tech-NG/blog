@@ -12,7 +12,7 @@
     "db:gen": "drizzle-kit generate",
     "db:create": "tsx scripts/create-db.ts",
     "db:seeds": "tsx scripts/seed.ts",
-    "db:setup": "tsx scripts/setup.ts",
+    "db:setup": "npm run db:create && npm run db:migrate && npm run db:seeds",
     "db:init": "node -r dotenv/config scripts/init-db.mjs"
   },
   "dependencies": {
