@@ -2,6 +2,7 @@
 import { parseHtmlHeadings, TocItem } from "@/src/lib/toc-generator";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
+import { ScrollArea, ScrollBar } from "../../ui/scroll-area";
 
 const TOCItemComponent = ({
   item,
@@ -73,6 +74,7 @@ export const TOCRenderer = ({ content }: { content: string }) => {
   const parsedContent = parseHtmlHeadings(content);
   const tocData = parsedContent.toc;
   const [activeId, setActiveId] = useState("");
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -97,11 +99,33 @@ export const TOCRenderer = ({ content }: { content: string }) => {
   }, []);
 
   return (
-    <div className="w-full max-w-md border rounded-lg p-4 bg-white shadow-sm">
-      <h2 className="text-lg font-semibold mb-4">Table of Contents</h2>
-      {tocData.map((item) => (
-        <TOCItemComponent key={item.id} item={item} activeId={activeId} />
-      ))}
+    <div
+      className={`w-[350px] border rounded-lg bg-white transition-all duration-200 ${
+        isCollapsed ? "h-auto" : "h-[400px]"
+      }`}
+    >
+      <div className="p-4 border-b sticky top-0 bg-white rounded-t-lg">
+        <div
+          className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -m-2 p-2 rounded"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <h2 className="text-lg font-semibold">Table of Contents</h2>
+          <span className="text-gray-500 hover:text-blue-600 transition-colors">
+            {isCollapsed ? <LuChevronRight /> : <LuChevronDown />}
+          </span>
+        </div>
+      </div>
+
+      {!isCollapsed && (
+        <ScrollArea className="h-[340px]">
+          <div className="p-4 pt-2">
+            {tocData.map((item) => (
+              <TOCItemComponent key={item.id} item={item} activeId={activeId} />
+            ))}
+          </div>
+          <ScrollBar />
+        </ScrollArea>
+      )}
     </div>
   );
 };

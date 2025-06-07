@@ -44,7 +44,7 @@ export const Newsletter = ({
   const formWrapBgColor = isDark || colorMode === "dark" ? "gray.800" : "white";
   const formWrapBorderColor =
     isDark || colorMode === "dark" ? "gray.700" : "gray.300";
-  const textColor = useColorModeValue("gray.500", "gray.300");
+  const textColor = useColorModeValue("gray.600", "gray.300");
   const headingColor = isDark || colorMode === "dark" ? "white" : "gray.800";
 
   async function sendVerificationEmail(email: string) {
@@ -102,8 +102,8 @@ export const Newsletter = ({
   };
 
   return (
-    <Box maxW={maxW} w={"full"}>
-      <Stack spacing={4}>
+    <Box maxW={maxW}>
+      <Stack spacing={2}>
         {title && (
           <Heading size="md" color={headingColor} fontWeight={500}>
             {title || "Get Updates"}

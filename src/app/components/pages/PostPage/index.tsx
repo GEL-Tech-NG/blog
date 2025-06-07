@@ -41,7 +41,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
   const settings = useSiteConfig();
   const sidebarWidth = useBreakpointValue({ base: "full", lg: "350px" });
   const canWrapNewsletter = useBreakpointValue({ base: false, lg: true });
-  const metaColor = useColorModeValue("gray.500", "gray.400");
+  const metaColor = useColorModeValue("gray.600", "gray.300");
   const dividerColor = useColorModeValue("gray.600", "gray.400");
   const [shareUrl, setShareUrl] = useState("");
 
@@ -182,42 +182,27 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
           flexDirection={{ base: "column-reverse", lg: "row" }}
         >
           <VStack
-            w={sidebarWidth}
-            position="sticky"
-            top={55}
+            w={sidebarWidth || "300px"}
             minW={{ base: "full", md: 320 }}
             spacing={4}
-            alignSelf={"start"}
+            // alignSelf={"start"}
             alignItems={"stretch"}
           >
-            <Box my={2}>
-              {post?.tags?.length > 0 && (
-                <HStack
-                  wrap="wrap"
-                  gap={2}
-                  mb={4}
-                  py={2}
-                  justify={{ base: "center", md: "center", lg: "start" }}
-                >
-                  {post?.tags?.map((tag, index) => (
-                    <Tag
-                      key={index}
-                      rounded={"md"}
-                      px={3}
-                      textTransform={"capitalize"}
-                    >
-                      #{tag?.name}
-                    </Tag>
-                  ))}
-                </HStack>
-              )}
-            </Box>
             <Box display={{ base: "none", lg: "block" }} mb={5}>
               <TOCRenderer
                 content={decodeAndSanitizeHtml(post?.content || "") || ""}
               />
             </Box>
-            <Box rounded={"xl"} mb={5} bg={newsletterBgColor} maxW={"full"}>
+            <Box
+              rounded={"xl"}
+              mb={4}
+              bg={newsletterBgColor}
+              maxW={"full"}
+              pt={{ base: 0, lg: 5 }}
+              position="sticky"
+              style={{ scrollPaddingTop: "50px" }}
+              top={{ base: 0, lg: 55 }}
+            >
               <Newsletter
                 title="Subscribe to our newsletter"
                 description=" Get the latest posts delivered right to your inbox!"
