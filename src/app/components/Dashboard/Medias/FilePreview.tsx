@@ -159,6 +159,10 @@ const FilePreview = ({
                     <p className="mt-1">{file.caption}</p>
                   </div>
                 )}
+                <div className="flex flex-col gap-2">
+                  <p className="text-gray-500">URL</p>
+                  <p className="font-medium">{file.url}</p>
+                </div>
               </CardBody>
             </Card>
           )}

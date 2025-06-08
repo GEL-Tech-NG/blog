@@ -36,6 +36,8 @@ export const AuthorSection: React.FC<AuthorSectionProps> = ({ post }) => {
           <Link href={`/author/${post?.author.username}`} alignSelf={"start"}>
             <Avatar
               size={{ base: "md", md: "lg" }}
+              width={"40px"}
+              height={"40px"}
               src={post?.author.avatar || ""}
               name={post?.author.name}
             />

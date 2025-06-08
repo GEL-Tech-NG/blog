@@ -272,9 +272,9 @@ const Header = () => {
               </Box>
 
               <HStack spacing={2} display={{ base: "none", xl: "flex" }}>
-                <Show above="lg">
+                {/* <Show above="lg">
                   <LightDarkModeSwitch />
-                </Show>
+                </Show> */}
                 <AuthButtons />
               </HStack>
               <Show below="lg">
@@ -346,7 +346,7 @@ const Header = () => {
 
                 <AuthButtons />
 
-                <LightDarkModeSwitch showLabel />
+                {/* <LightDarkModeSwitch showLabel /> */}
               </VStack>
             </DrawerBody>
           </DrawerContent>

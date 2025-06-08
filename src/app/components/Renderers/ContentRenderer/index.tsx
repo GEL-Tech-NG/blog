@@ -152,7 +152,12 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
           }
           if (domNode.name === "ul") {
             return (
-              <UnorderedList my={4} spacing={0} pl={"1rem"}>
+              <UnorderedList
+                my={4}
+                spacing={0}
+                // pl={"1rem"}
+                className="gradient-bullets"
+              >
                 {domToReact(domNode.children as Element[], options)}
               </UnorderedList>
             );

@@ -105,7 +105,11 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
           w={"full"}
           className="border-b border-gray-200 pb-3 mb-5"
         >
-          <Box mb={6} w={"full"}>
+          <Box
+            mb={6}
+            w={"full"}
+            className="relative h-[220px] sm:h-[360px] md:h-[400px] lg:h-[500px] xl:h-[600px] border-2 border-gray-200 rounded-lg overflow-hidden"
+          >
             <Image
               src={
                 post?.featured_image?.url ||
@@ -121,9 +125,14 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
                 })}`
               }
               alt={post?.featured_image?.alt_text || post?.title || ""}
-              w="full"
-              h="auto"
-              minH={{ base: 150, lg: 500 }}
+              width="full"
+              loading="lazy"
+              height="full"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
               maxH={600}
               // aspectRatio={"16/9"}
               objectFit="cover"
@@ -142,6 +151,8 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
                   src={post?.author.avatar || ""}
                   name={post?.author.name}
                   boxSize={"38px"}
+                  width={"38px"}
+                  height={"38px"}
                 />
                 <Stack gap={0}>
                   <Text as="span" className="sr-only">

@@ -10,7 +10,15 @@ export const AppLogo = ({
   bg?: string;
 }) => {
   return src ? (
-    <Image bg={bg} src={src} alt="Logo" maxH={size} />
+    <Image
+      srcSet={`${src} 1x`}
+      bg={bg}
+      w={"auto"}
+      h={size}
+      loading="lazy"
+      src={src}
+      alt="Logo"
+    />
   ) : (
     <DefaultLogo />
   );
