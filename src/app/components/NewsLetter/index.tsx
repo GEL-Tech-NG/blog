@@ -105,12 +105,17 @@ export const Newsletter = ({
     <Box maxW={maxW} className="rounded-lg border border-gray-200 p-4">
       <Stack spacing={2}>
         {title && (
-          <Heading size="md" color={headingColor} fontWeight={500}>
+          <Heading
+            size="md"
+            color={headingColor}
+            fontWeight={500}
+            className="text-center"
+          >
             {title || "Get Updates"}
           </Heading>
         )}
         {description && (
-          <Text color={textColor}>
+          <Text color={textColor} className="text-center">
             {description ||
               "Subscribe to our newsletter to get the latest updates."}
           </Text>

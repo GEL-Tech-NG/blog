@@ -102,7 +102,7 @@ const TOCItemComponent = ({
 
 export const TOCRenderer = ({
   content,
-  initialItemsToShow = 5,
+  initialItemsToShow = 3,
 }: {
   content: string;
   initialItemsToShow?: number;
@@ -164,7 +164,7 @@ export const TOCRenderer = ({
     <nav
       className={cn(
         "w-full lg:w-[350px] border rounded-lg bg-white transition-all duration-200 overflow-hidden",
-        isCollapsed ? "h-auto" : "h-[400px]"
+        isCollapsed ? "h-auto" : "h-[360px]"
       )}
       aria-label="Table of Contents"
     >
@@ -194,7 +194,7 @@ export const TOCRenderer = ({
 
       {!isCollapsed && (
         <div id="toc-content">
-          <ScrollArea className="h-[340px]">
+          <ScrollArea className="h-[300px]">
             <div
               className="p-4 pt-2"
               role="tree"

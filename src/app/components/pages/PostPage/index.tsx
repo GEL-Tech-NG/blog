@@ -67,7 +67,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
       <Container maxW="1250px" py={8} px={{ base: 4, md: 5, lg: 8 }}>
         <Breadcrumb
           spacing="8px"
-          fontSize={"smaller"}
+          fontSize={"0.9em"}
           display={"flex"}
           justifyContent={{ base: "start", md: "center" }}
           separator={<ChevronRightIcon color={metaColor} />}
@@ -75,11 +75,21 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
           listProps={{ flexWrap: "wrap" }}
         >
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <BreadcrumbLink
+              href="/"
+              color={"var(--link-color)"}
+              fontWeight={600}
+            >
+              Home
+            </BreadcrumbLink>
           </BreadcrumbItem>
           {post?.category && (
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/category/${post?.category.slug}`}>
+              <BreadcrumbLink
+                href={`/category/${post?.category.slug}`}
+                color={"var(--link-color)"}
+                fontWeight={600}
+              >
                 {post?.category.name}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -90,7 +100,11 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
         </Breadcrumb>
 
         <ArticleHeader post={post} />
-        <Box maxW={"1250px"} w={"full"} mb={8}>
+        <Box
+          maxW={"1250px"}
+          w={"full"}
+          className="border-b border-gray-200 pb-3 mb-5"
+        >
           <Box mb={6} w={"full"}>
             <Image
               src={

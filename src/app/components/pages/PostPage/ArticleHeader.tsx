@@ -38,7 +38,7 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = ({ post }) => {
         {post?.category?.name && (
           <Badge
             px={0}
-            fontSize={{ base: "0.8em" }}
+            fontSize={{ base: "0.9em" }}
             py={1}
             mb={{ base: 0, md: 1 }}
             color={"brandPurple.500"}
