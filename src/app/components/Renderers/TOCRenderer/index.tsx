@@ -53,6 +53,7 @@ const TOCItemComponent = ({
       ref={itemRef}
       style={{ marginLeft: `${depth * 16}px` }}
       role="treeitem"
+      aria-selected={isActive ? "true" : undefined}
       aria-expanded={hasChildren ? isExpanded : undefined}
       aria-level={depth + 1}
     >
@@ -63,7 +64,7 @@ const TOCItemComponent = ({
       >
         {hasChildren && (
           <button
-            className="w-4 text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 p-1 -m-1 rounded"
+            className="w-4 text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 p-1 -m-1 mr-1 rounded"
             onClick={handleToggle}
             onKeyDown={handleKeyDown}
             aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.text} section`}
@@ -99,11 +100,18 @@ const TOCItemComponent = ({
   );
 };
 
-export const TOCRenderer = ({ content }: { content: string }) => {
+export const TOCRenderer = ({
+  content,
+  initialItemsToShow = 5,
+}: {
+  content: string;
+  initialItemsToShow?: number;
+}) => {
   const parsedContent = parseHtmlHeadings(content);
   const tocData = parsedContent.toc;
   const [activeId, setActiveId] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -138,11 +146,25 @@ export const TOCRenderer = ({ content }: { content: string }) => {
     }
   };
 
+  const handleSeeMoreToggle = () => {
+    setShowAll(!showAll);
+  };
+
+  const handleSeeMoreKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setShowAll(!showAll);
+    }
+  };
+
+  const visibleItems = showAll ? tocData : tocData.slice(0, initialItemsToShow);
+  const hasMoreItems = tocData.length > initialItemsToShow;
+
   return (
     <nav
       className={cn(
-        "w-[350px] border rounded-lg bg-white transition-all duration-200",
-        isCollapsed ? "h-auto overflow-hidden" : "h-[400px]"
+        "w-full lg:w-[350px] border rounded-lg bg-white transition-all duration-200 overflow-hidden",
+        isCollapsed ? "h-auto" : "h-[400px]"
       )}
       aria-label="Table of Contents"
     >
@@ -178,13 +200,29 @@ export const TOCRenderer = ({ content }: { content: string }) => {
               role="tree"
               aria-label="Table of contents navigation"
             >
-              {tocData.map((item) => (
+              {visibleItems.map((item) => (
                 <TOCItemComponent
                   key={item.id}
                   item={item}
                   activeId={activeId}
                 />
               ))}
+
+              {hasMoreItems && (
+                <div className="pt-2 border-t border-gray-200 sticky bottom-0 pb-1.5 bg-white overflow-hidden">
+                  <button
+                    className="text-blue-600 hover:text-blue-800 font-medium text-sm focus:outline-none focus:underline transition-colors"
+                    onClick={handleSeeMoreToggle}
+                    onKeyDown={handleSeeMoreKeyDown}
+                    aria-expanded={showAll}
+                    aria-label={`${showAll ? "Show fewer" : "Show more"} table of contents items. ${showAll ? "Currently showing all" : `Currently showing ${initialItemsToShow} of ${tocData.length}`} items`}
+                  >
+                    {showAll
+                      ? "See less"
+                      : `See more (${tocData.length - initialItemsToShow} more)`}
+                  </button>
+                </div>
+              )}
             </div>
             <ScrollBar />
           </ScrollArea>

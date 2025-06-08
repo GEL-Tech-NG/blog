@@ -5,6 +5,7 @@ import { ContentRenderer } from "../../Renderers/ContentRenderer";
 
 import { decodeAndSanitizeHtml } from "@/src/utils";
 import { LuTags } from "react-icons/lu";
+import { TOCRenderer } from "../../Renderers/TOCRenderer";
 
 interface ArticleContentProps {
   post: PostSelect;
@@ -19,6 +20,11 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ post }) => {
       flex={1}
       maxW="container.md"
     >
+      <Box display={{ base: "block", lg: "none" }} pt={5}>
+        <TOCRenderer
+          content={decodeAndSanitizeHtml(post?.content || "") || ""}
+        />
+      </Box>
       <ContentRenderer content={decodeAndSanitizeHtml(post?.content || "")} />
       <Box my={2}>
         {post?.tags && post?.tags?.length > 0 && (

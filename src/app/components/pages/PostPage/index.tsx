@@ -182,14 +182,15 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
           flexDirection={{ base: "column-reverse", lg: "row" }}
         >
           <VStack
-            w={sidebarWidth || "300px"}
+            w={sidebarWidth || "320px"}
             minW={{ base: "full", md: 320 }}
-            spacing={4}
+            spacing={2}
             alignSelf={"start"}
             position="sticky"
-            style={{ scrollPaddingTop: "50px" }}
+            style={{ scrollPaddingTop: "10px" }}
             top={{ base: 0, lg: 55 }}
             alignItems={"stretch"}
+            pb={6}
           >
             <Box display={{ base: "none", lg: "block" }} pt={5}>
               <TOCRenderer
@@ -201,7 +202,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
               mb={4}
               bg={newsletterBgColor}
               maxW={"full"}
-              pt={{ base: 0, lg: 5 }}
+              pt={{ base: 0, lg: 4 }}
             >
               <Newsletter
                 title="Subscribe to our newsletter"

@@ -102,7 +102,7 @@ export const Newsletter = ({
   };
 
   return (
-    <Box maxW={maxW}>
+    <Box maxW={maxW} className="rounded-lg border border-gray-200 p-4">
       <Stack spacing={2}>
         {title && (
           <Heading size="md" color={headingColor} fontWeight={500}>
