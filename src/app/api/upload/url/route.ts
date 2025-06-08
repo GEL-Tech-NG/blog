@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { uploadFromUrl } from "@/src/lib/cloudinary";
+import { generateCloudinaryUrl, uploadFromUrl } from "@/src/lib/cloudinary";
 import { db } from "@/src/db";
 import { medias } from "@/src/db/schemas";
 import { eq } from "drizzle-orm";
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         .insert(medias)
         .values({
           name: filename || cloudinaryResponse.original_filename,
-          url: cloudinaryResponse.secure_url,
+          url: await generateCloudinaryUrl(cloudinaryResponse as any),
           type: determineFileType(
             cloudinaryResponse.format || cloudinaryResponse.resource_type
           ),
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
             : cloudinaryResponse.resource_type,
           width: cloudinaryResponse.width,
           height: cloudinaryResponse.height,
-          folder: cloudinaryResponse.folder,
+          folder: cloudinaryResponse.asset_folder,
           caption: cloudinaryResponse.caption,
           alt_text:
             cloudinaryResponse.alt_text ||

@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { determineFileType } from "@/src/utils/upload";
 import { checkPermission } from "@/src/lib/auth/check-permission";
 import { revalidateTag } from "next/cache";
+import { generateCloudinaryUrl } from "@/src/lib/cloudinary";
 
 export async function POST(request: NextRequest) {
   return await checkPermission(
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
             .insert(medias)
             .values({
               name: data.original_filename,
-              url: data.secure_url,
+              url: await generateCloudinaryUrl(data),
               type: determineFileType(data.format || data.resource_type),
               size: data.bytes,
               mime_type: data.format
@@ -26,16 +27,16 @@ export async function POST(request: NextRequest) {
                 : data.resource_type,
               width: data.width,
               height: data.height,
-              folder: data.folder,
+              folder: data.asset_folder,
               caption: data.caption,
-              alt_text: data.alt_text || "",
+              alt_text: data.alt_text || data.original_filename,
             })
             .$returningId();
-          revalidateTag("media-filters");
           return await tx.query.medias.findFirst({
             where: eq(medias.id, response.id),
           });
         });
+        revalidateTag("media-filters");
 
         return NextResponse.json(result);
       } catch (error) {

@@ -91,6 +91,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   const saveToDatabase = async (cloudinaryData: any) => {
+    console.log(cloudinaryData);
+
     const response = await axios.post("/api/upload", cloudinaryData);
     return response.data;
   };
