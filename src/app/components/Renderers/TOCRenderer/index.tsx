@@ -35,28 +35,56 @@ const TOCItemComponent = ({
     }
   }, [isActiveOrHasActiveChild]);
 
+  const handleToggle = () => {
+    if (hasChildren) {
+      setIsExpanded(!isExpanded);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (hasChildren && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      setIsExpanded(!isExpanded);
+    }
+  };
+
   return (
-    <div ref={itemRef} style={{ marginLeft: `${depth * 16}px` }}>
+    <div
+      ref={itemRef}
+      style={{ marginLeft: `${depth * 16}px` }}
+      role="treeitem"
+      aria-expanded={hasChildren ? isExpanded : undefined}
+      aria-level={depth + 1}
+    >
       <div
-        className={`flex items-center gap-2 py-1 hover:bg-gray-100 cursor-pointer ${
+        className={`flex items-center gap-2 py-1 hover:bg-gray-100 cursor-pointer rounded focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-1 ${
           isActive ? "bg-gray-100 font-medium text-blue-600" : ""
         }`}
-        onClick={() => hasChildren && setIsExpanded(!isExpanded)}
       >
         {hasChildren && (
-          <span className="w-4 text-gray-500">
+          <button
+            className="w-4 text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 p-1 -m-1 rounded"
+            onClick={handleToggle}
+            onKeyDown={handleKeyDown}
+            aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.text} section`}
+            tabIndex={0}
+          >
             {isExpanded ? <LuChevronDown /> : <LuChevronRight />}
-          </span>
+          </button>
         )}
         <a
           href={`#${item.id}`}
-          className={`text-gray-700 hover:text-blue-600 ${isActive ? "text-blue-600" : ""}`}
+          className={`text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline flex-1 ${
+            isActive ? "text-blue-600" : ""
+          }`}
+          aria-current={isActive ? "location" : undefined}
+          tabIndex={0}
         >
           {item.text}
         </a>
       </div>
       {isExpanded && hasChildren && (
-        <div>
+        <div role="group">
           {item.children.map((child) => (
             <TOCItemComponent
               key={child.id}
@@ -99,12 +127,24 @@ export const TOCRenderer = ({ content }: { content: string }) => {
     };
   }, []);
 
+  const handleToggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setIsCollapsed(!isCollapsed);
+    }
+  };
+
   return (
-    <div
+    <nav
       className={cn(
         "w-[350px] border rounded-lg bg-white transition-all duration-200",
         isCollapsed ? "h-auto overflow-hidden" : "h-[400px]"
       )}
+      aria-label="Table of Contents"
     >
       <div
         className={cn(
@@ -112,27 +152,44 @@ export const TOCRenderer = ({ content }: { content: string }) => {
           isCollapsed ? "border-b-0" : " border-b"
         )}
       >
-        <div
-          className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -m-2 p-2 rounded"
-          onClick={() => setIsCollapsed(!isCollapsed)}
+        <button
+          className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -m-2 p-2 rounded w-full text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+          onClick={handleToggleCollapse}
+          onKeyDown={handleKeyDown}
+          aria-expanded={!isCollapsed}
+          aria-controls="toc-content"
+          aria-label={`${isCollapsed ? "Expand" : "Collapse"} table of contents`}
         >
           <h2 className="text-lg font-semibold">Table of Contents</h2>
-          <span className="text-gray-500 hover:text-blue-600 transition-colors">
+          <span
+            className="text-gray-500 hover:text-blue-600 transition-colors"
+            aria-hidden="true"
+          >
             {isCollapsed ? <LuChevronRight /> : <LuChevronDown />}
           </span>
-        </div>
+        </button>
       </div>
 
       {!isCollapsed && (
-        <ScrollArea className="h-[340px]">
-          <div className="p-4 pt-2">
-            {tocData.map((item) => (
-              <TOCItemComponent key={item.id} item={item} activeId={activeId} />
-            ))}
-          </div>
-          <ScrollBar />
-        </ScrollArea>
+        <div id="toc-content">
+          <ScrollArea className="h-[340px]">
+            <div
+              className="p-4 pt-2"
+              role="tree"
+              aria-label="Table of contents navigation"
+            >
+              {tocData.map((item) => (
+                <TOCItemComponent
+                  key={item.id}
+                  item={item}
+                  activeId={activeId}
+                />
+              ))}
+            </div>
+            <ScrollBar />
+          </ScrollArea>
+        </div>
       )}
-    </div>
+    </nav>
   );
 };

@@ -185,10 +185,13 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             w={sidebarWidth || "300px"}
             minW={{ base: "full", md: 320 }}
             spacing={4}
-            // alignSelf={"start"}
+            alignSelf={"start"}
+            position="sticky"
+            style={{ scrollPaddingTop: "50px" }}
+            top={{ base: 0, lg: 55 }}
             alignItems={"stretch"}
           >
-            <Box display={{ base: "none", lg: "block" }} mb={5}>
+            <Box display={{ base: "none", lg: "block" }} pt={5}>
               <TOCRenderer
                 content={decodeAndSanitizeHtml(post?.content || "") || ""}
               />
@@ -199,9 +202,6 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
               bg={newsletterBgColor}
               maxW={"full"}
               pt={{ base: 0, lg: 5 }}
-              position="sticky"
-              style={{ scrollPaddingTop: "50px" }}
-              top={{ base: 0, lg: 55 }}
             >
               <Newsletter
                 title="Subscribe to our newsletter"
