@@ -3,6 +3,7 @@ import { parseHtmlHeadings, TocItem } from "@/src/lib/toc-generator";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { ScrollArea, ScrollBar } from "../../ui/scroll-area";
+import { cn } from "@/src/lib/utils";
 
 const TOCItemComponent = ({
   item,
@@ -100,11 +101,17 @@ export const TOCRenderer = ({ content }: { content: string }) => {
 
   return (
     <div
-      className={`w-[350px] border rounded-lg bg-white transition-all duration-200 ${
-        isCollapsed ? "h-auto" : "h-[400px]"
-      }`}
+      className={cn(
+        "w-[350px] border rounded-lg bg-white transition-all duration-200",
+        isCollapsed ? "h-auto overflow-hidden" : "h-[400px]"
+      )}
     >
-      <div className="p-4 border-b sticky top-0 bg-white rounded-t-lg">
+      <div
+        className={cn(
+          "p-4 border-b sticky top-0 bg-white rounded-t-lg",
+          isCollapsed ? "border-b-0" : " border-b"
+        )}
+      >
         <div
           className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -m-2 p-2 rounded"
           onClick={() => setIsCollapsed(!isCollapsed)}
