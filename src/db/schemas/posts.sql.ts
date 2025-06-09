@@ -11,12 +11,14 @@ import {
   boolean,
   uniqueIndex,
   index,
+  json,
 } from "drizzle-orm/mysql-core";
 import { users } from "./users.sql";
 import { medias } from "./media.sql";
 import { postViews } from "./posts-analytics.sql";
 import { postReactions } from "./posts-reactions.sql";
 import { id, created_at, updated_at } from "../schema-helper";
+import { TocItem } from "@/src/lib/toc-generator";
 
 export const posts = mysqlTable(
   "Posts",
@@ -26,6 +28,9 @@ export const posts = mysqlTable(
     content: longtext("content"),
     summary: varchar("summary", { length: 500 }),
     seo_meta_id: int("meta_id"),
+    generate_toc: boolean("generate_toc").default(true),
+    toc_depth: int("toc_depth").default(2),
+    toc: json("toc").$type<TocItem[]>(),
     post_id: varchar("post_id", { length: 255 })
       .default(sql`(UUID())`)
       .unique()

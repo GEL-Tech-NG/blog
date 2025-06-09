@@ -11,8 +11,8 @@ import { NuqsProvider } from "../providers/nuqs";
 import { AnalyticsProviders } from "../providers/analytics";
 import { getSiteUrl } from "../utils/url";
 import { objectToQueryParams } from "../utils";
-import Script from "next/script";
 import { groupSettingsByFolder } from "./components/pages/Dashboard/Settings/utils";
+import { TelegramFab } from "./components/Telegram/Fab";
 
 type Props = {
   params: { slug?: string } & Record<string, string | string[] | undefined>;
@@ -169,6 +169,8 @@ export default async function RootLayout({
             </ReactQueryClient>
           </SiteConfigProvider>
         </>
+
+        <TelegramFab />
       </body>
     </html>
   );

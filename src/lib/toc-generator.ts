@@ -207,7 +207,7 @@ function generateTableOfContents(
   headings: HeadingObject[],
   options: TableOfContentsOptions = {}
 ): TocItem[] {
-  const maxDepth = options.maxDepth || Infinity;
+  const maxDepth = options.maxDepth || 4;
 
   if (!headings || !headings.length) return [];
 

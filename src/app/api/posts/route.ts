@@ -3,6 +3,7 @@ import { posts } from "@/src/db/schemas";
 import { checkPermission } from "@/src/lib/auth/check-permission";
 import { getSession } from "@/src/lib/auth/next-auth";
 import { getPosts } from "@/src/lib/queries/posts";
+import { parseHtmlHeadings } from "@/src/lib/toc-generator";
 import { PostInsert } from "@/src/types";
 import {
   calculateReadingTime,
@@ -61,32 +62,18 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   await checkPermission({ requiredPermission: "posts:create" }, async () => {
-    const {
-      title,
-      content,
-      summary,
-      slug,
-      featured_image_id,
-      status,
-      author_id,
-      visibility,
-      category_id,
-    } = await req.json();
+    const { content, ...rest } = await req.json();
 
     try {
       const post = await db.transaction(async (tx) => {
         const [insertResponse] = await tx
           .insert(posts)
           .values({
-            title,
-            content,
-            summary,
-            slug,
-            featured_image_id,
-            author_id,
-            status,
-            visibility,
-            category_id,
+            ...rest,
+            toc:
+              rest?.generate_toc && rest?.status === "published"
+                ? sql`${generateToc(content, rest?.toc_depth ?? 2)}`
+                : null,
             reading_time: calculateReadingTime(
               stripHtml(decodeAndSanitizeHtml(content))
             ),
@@ -109,4 +96,11 @@ export async function POST(req: NextRequest) {
       });
     }
   });
+}
+function generateToc(content: string, depth: number) {
+  const toc = parseHtmlHeadings(content, {
+    maxDepth: depth,
+    maxLevel: 3,
+  }).toc;
+  return toc;
 }

@@ -44,6 +44,8 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = ({ post }) => {
             color={"brandPurple.500"}
             _dark={{ color: "brandPurple.300" }}
             bg="transparent"
+            as={Link}
+            href={`/category/${post?.category?.slug}`}
           >
             {post?.category?.name}
           </Badge>
