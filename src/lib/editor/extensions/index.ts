@@ -23,7 +23,6 @@ import { MarkdownPasteExtension } from "./markdown-paste";
 import { PenstackHeadingExtension } from "./heading";
 import { TableOfContents } from "./table-of-content";
 
-
 export const extensions = [
   StarterKit.configure({
     heading: false,
@@ -43,9 +42,7 @@ export const extensions = [
     placeholder: "Write something…",
   }),
   Link.configure({
-    HTMLAttributes: {
-      rel: "noopener noreferrer",
-    },
+    HTMLAttributes: {},
     openOnClick: false,
     autolink: true,
   }),

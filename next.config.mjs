@@ -2,7 +2,7 @@
 
 const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
 const netlifySiteUrl = process.env.NETLIFY && process.env.URL;
-let Url =
+let url =
   process.env.NODE_ENV === "production"
     ? process.env.NEXT_PUBLIC_SITE_URL ||
       netlifySiteUrl ||
@@ -10,8 +10,8 @@ let Url =
     : "http://localhost:3000";
 const nextConfig = {
   env: {
-    NEXTAUTH_URL: Url,
-    NEXT_PUBLIC_SITE_URL: Url,
+    NEXTAUTH_URL: url,
+    NEXT_PUBLIC_SITE_URL: url,
   },
 };
 

@@ -2,7 +2,7 @@ import { int, timestamp } from "drizzle-orm/mysql-core";
 
 export const id = int("id").autoincrement().primaryKey();
 export const created_at = timestamp("created_at").defaultNow();
-export const updated_at = timestamp("updated_at").onUpdateNow();
+export const updated_at = timestamp("updated_at").defaultNow().onUpdateNow();
 export const deleted_at = timestamp("deleted_at");
 export const settingsFolderEnum = [
   "general",
@@ -14,6 +14,7 @@ export const settingsFolderEnum = [
   "social",
   "misc",
 ] as const;
+export type SettingsFolderEnum = (typeof settingsFolderEnum)[number];
 export const permissionsEnum = [
   "dashboard:access",
   "posts:create",
@@ -60,6 +61,7 @@ export const permissionsEnum = [
   "analytics:view",
   "analytics:export",
 ] as const;
+export type PermissionsEnum = (typeof permissionsEnum)[number];
 export const rolesEnum = [
   "admin",
   "editor",
@@ -71,6 +73,7 @@ export const rolesEnum = [
   "subscriber",
   "public",
 ] as const;
+export type RolesEnum = (typeof rolesEnum)[number];
 export const emailEventsEnum = [
   "sent",
   "delivered",
@@ -80,3 +83,4 @@ export const emailEventsEnum = [
   "opened",
   "clicked",
 ] as const;
+export type EmailsEventsEnum = (typeof emailEventsEnum)[number];

@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import "server-only";
 import { db } from "@/src/db";
 import { posts } from "@/src/db/schemas";
@@ -148,3 +149,60 @@ export async function getPosts({
     throw new Error("Failed to fetch posts");
   }
 }
+export const getPostsForSitemap = unstable_cache(
+  async ({
+    page = 1,
+    limit = 1000,
+  }: {
+    page?: number;
+    limit?: number;
+  } = {}) => {
+    const offset = (page - 1) * limit;
+
+    // Build where conditions
+    const whereConditions = [eq(posts.status, "published")];
+
+    try {
+      // Get total count
+
+      let orderBy = [desc(posts.created_at), desc(posts.is_sticky)];
+      whereConditions.push(...orderBy);
+
+      const _posts = await db.query.posts.findMany({
+        limit,
+        offset,
+        orderBy,
+        where:
+          whereConditions?.length > 0 ? and(...whereConditions) : undefined,
+        with: {
+          featured_image: {
+            columns: {
+              url: true,
+              alt_text: true,
+              caption: true,
+            },
+          },
+          category: {
+            columns: {
+              name: true,
+              slug: true,
+              id: true,
+            },
+          },
+        },
+      });
+
+      return {
+        data: _posts,
+      };
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      throw new Error("Failed to fetch posts");
+    }
+  },
+  ["posts-sitemap"],
+  {
+    tags: ["posts-sitemap"],
+    revalidate: 60 * 60 * 12, // 12 hours
+  }
+);
