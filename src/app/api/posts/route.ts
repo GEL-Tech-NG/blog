@@ -72,7 +72,9 @@ export async function POST(req: NextRequest) {
             ...rest,
             toc:
               rest?.generate_toc && rest?.status === "published"
-                ? sql`${generateToc(content, rest?.toc_depth ?? 2)}`
+                ? sql`CAST('${JSON.stringify(
+                    generateToc(content, rest?.toc_depth ?? 2)
+                  )}' AS JSON)`
                 : null,
             reading_time: calculateReadingTime(
               stripHtml(decodeAndSanitizeHtml(content))

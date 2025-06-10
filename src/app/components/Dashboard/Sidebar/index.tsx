@@ -69,7 +69,10 @@ export const DashboardSidebar = ({
           >
             {!isMinimized && (
               <Box flex={1}>
-                <AppLogoAndName logoSize={"30px"} />
+                <AppLogo
+                  src={siteSettings?.siteLogoMobile?.value ?? ""}
+                  size={"30px"}
+                />
                 <Link href={"/"} color={navBtnBg} fontSize={"small"}>
                   visit site
                 </Link>

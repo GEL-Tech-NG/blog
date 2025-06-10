@@ -48,7 +48,7 @@ export default function DashboardSettingsPage() {
   const [originalSettings, setOriginalSettings] =
     useState<SiteSettings>(settingsContext);
   const [currentMediaField, setCurrentMediaField] = useState<
-    "siteLogo" | "siteFavicon" | "siteOpengraph" | "siteMobileLogo" | null
+    "siteLogo" | "siteFavicon" | "siteOpengraph" | "siteLogoMobile" | null
   >(null);
 
   const { data, isFetching } = useQuery({
@@ -119,7 +119,7 @@ export default function DashboardSettingsPage() {
   };
 
   const openMediaModal = (
-    field: "siteLogo" | "siteFavicon" | "siteOpengraph" | "siteMobileLogo"
+    field: "siteLogo" | "siteFavicon" | "siteOpengraph" | "siteLogoMobile"
   ) => {
     setCurrentMediaField(field);
     onOpen();

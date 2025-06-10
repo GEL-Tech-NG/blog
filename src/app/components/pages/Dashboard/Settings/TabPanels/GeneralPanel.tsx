@@ -21,7 +21,7 @@ interface GeneralPanelProps {
   handleInputChange: (key: string, value: string) => void;
   handleToggle: (key: string) => void;
   openMediaModal: (
-    field: "siteLogo" | "siteMobileLogo" | "siteFavicon" | "siteOpengraph"
+    field: "siteLogo" | "siteLogoMobile" | "siteFavicon" | "siteOpengraph"
   ) => void;
 }
 
@@ -96,10 +96,10 @@ export const GeneralPanel = ({
           <FormControl>
             <FormLabel>Site Mobile Logo</FormLabel>
             <FormHelperText>Recommended size 300x300</FormHelperText>
-            {settings.siteMobileLogo?.value && (
+            {settings.siteLogoMobile?.value && (
               <Box mb={2} mt={1}>
                 <Image
-                  src={settings?.siteMobileLogo?.value}
+                  src={settings?.siteLogoMobile?.value}
                   alt="Site Mobile Logo"
                   maxH="100px"
                 />
@@ -108,16 +108,16 @@ export const GeneralPanel = ({
             <HStack>
               <Button
                 size="sm"
-                onClick={() => openMediaModal("siteMobileLogo")}
+                onClick={() => openMediaModal("siteLogoMobile")}
               >
-                {settings?.siteMobileLogo?.value ? "Change Logo" : "Add Logo"}
+                {settings?.siteLogoMobile?.value ? "Change Logo" : "Add Logo"}
               </Button>
-              {settings?.siteMobileLogo?.value && (
+              {settings?.siteLogoMobile?.value && (
                 <Button
                   size="sm"
                   colorScheme="red"
                   variant={"ghost"}
-                  onClick={() => handleInputChange("siteMobileLogo", "")}
+                  onClick={() => handleInputChange("siteLogoMobile", "")}
                 >
                   Remove
                 </Button>

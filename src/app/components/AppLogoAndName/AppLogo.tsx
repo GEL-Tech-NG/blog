@@ -18,6 +18,7 @@ export const AppLogo = ({
       loading="lazy"
       src={src}
       alt="Logo"
+      className="object-contain"
     />
   ) : (
     <DefaultLogo />

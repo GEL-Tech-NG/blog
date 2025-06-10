@@ -21,7 +21,7 @@ import { useSiteConfig } from "@/src/context/SiteConfig";
 
 const Footer = () => {
   const bgColor = useColorModeValue("charcoalBlack", "gray.900");
-  const textColor = "gray.400";
+  const textColor = "gray.300";
   const hoverColor = useColorModeValue("white", "gray.300");
   const siteSettings = useSiteConfig();
   const navItems = useMemo(
@@ -80,7 +80,11 @@ const Footer = () => {
         >
           <GridItem>
             <Stack color={"white"}>
-              <AppLogoAndName logoBg="white" isFooter nameSize={"large"} />
+              <AppLogoAndName
+                className="bg-white text-black "
+                isFooter={false}
+                nameSize={"large"}
+              />
               <Text fontSize="sm" color={textColor} maxW={300}>
                 {siteSettings?.siteDescription?.value}
               </Text>

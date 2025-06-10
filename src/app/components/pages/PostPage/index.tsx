@@ -79,7 +79,7 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             <BreadcrumbLink
               href="/"
               color={"var(--link-color)"}
-              fontWeight={600}
+              fontWeight={500}
             >
               Home
             </BreadcrumbLink>
@@ -89,13 +89,17 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
               <BreadcrumbLink
                 href={`/category/${post?.category.slug}`}
                 color={"var(--link-color)"}
-                fontWeight={600}
+                fontWeight={500}
               >
                 {post?.category.name}
               </BreadcrumbLink>
             </BreadcrumbItem>
           )}
-          <BreadcrumbItem isCurrentPage color={metaColor}>
+          <BreadcrumbItem
+            isCurrentPage
+            color={metaColor}
+            className="text-wrap "
+          >
             <Text>{post?.title}</Text>
           </BreadcrumbItem>
         </Breadcrumb>

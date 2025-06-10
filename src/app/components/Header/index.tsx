@@ -152,14 +152,15 @@ const Header = () => {
       >
         <Container maxW="container.2xl" py={"6px"}>
           <HStack justify="space-between" align="center">
-            <HStack as={Link} href="/">
+            <HStack as={Link} href="/" gap={0}>
               <AppLogo src={logo!} size={logoSize!} />
               {siteSettings.showSiteNameWithLogo?.enabled && (
                 <Text
                   hideBelow={"md"}
                   as={"span"}
                   fontSize={{ base: "medium", lg: "large" }}
-                  fontWeight="medium"
+                  fontWeight="bold"
+                  fontFamily={"var(--font-heading)"}
                 >
                   {siteSettings?.siteName?.value}
                 </Text>

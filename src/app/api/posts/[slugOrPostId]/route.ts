@@ -82,6 +82,7 @@ export async function PUT(
             scheduled_at: body.scheduled_at
               ? new Date(body.scheduled_at)
               : null,
+
             reading_time: body?.content
               ? calculateReadingTime(
                   stripHtml(decodeAndSanitizeHtml(body?.content || ""))
