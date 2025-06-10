@@ -103,10 +103,9 @@ const Testimonial = ({
 );
 
 export const NewsletterPage = ({ title }: { title?: string }) => {
- 
-  const bgColor = useColorModeValue("gray.50", "gray.900");
-  const borderColor = useColorModeValue("gray.200", "gray.700");
-  const textColor = useColorModeValue("gray.600", "gray.300");
+  const bgColor = useColorModeValue("brandPurple.50", "gray.900");
+  const borderColor = useColorModeValue("brandPurple.200", "gray.700");
+  const textColor = useColorModeValue("gray.700", "gray.200");
 
   return (
     <Container maxW="5xl" py={12}>
@@ -119,7 +118,13 @@ export const NewsletterPage = ({ title }: { title?: string }) => {
         p={8}
       >
         <VStack spacing={8} align="center" textAlign="center">
-          <Badge colorScheme="brand" fontSize="sm" px={3} py={1} rounded="full">
+          <Badge
+            colorScheme="brandPurple"
+            fontSize="sm"
+            px={3}
+            py={1}
+            rounded="full"
+          >
             Join 10,000+ Developers
           </Badge>
 
@@ -153,7 +158,7 @@ export const NewsletterPage = ({ title }: { title?: string }) => {
           </SimpleGrid>
 
           <HStack w={"full"} mx={"auto"} justify={"center"} pt={4}>
-            <Newsletter isDark={false} />
+            <Newsletter isDark={false} maxW={"full"}  />
           </HStack>
 
           <Text fontSize="sm" color={textColor}>

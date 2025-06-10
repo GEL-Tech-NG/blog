@@ -22,6 +22,7 @@ import { LuSend } from "react-icons/lu";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import isEmpty from "just-is-empty";
+import { cn } from "@/src/lib/utils";
 
 export const Newsletter = ({
   title,
@@ -41,10 +42,12 @@ export const Newsletter = ({
     null
   );
   const { colorMode } = useColorMode();
-  const formWrapBgColor = isDark || colorMode === "dark" ? "gray.800" : "white";
+  const formWrapBgColor = isDark || colorMode === "dark" ? "gray.900" : "white";
   const formWrapBorderColor =
     isDark || colorMode === "dark" ? "gray.700" : "gray.300";
   const textColor = useColorModeValue("gray.600", "gray.300");
+  const borderColor =
+    isDark || colorMode === "dark" ? "border-gray-700" : "border-gray-300";
   const headingColor = isDark || colorMode === "dark" ? "white" : "gray.800";
 
   async function sendVerificationEmail(email: string) {
@@ -102,7 +105,10 @@ export const Newsletter = ({
   };
 
   return (
-    <Box maxW={maxW} className="rounded-lg border border-gray-200 p-4">
+    <Box
+      maxW={maxW}
+      className={cn("rounded-lg border p-4 w-full", borderColor)}
+    >
       <Stack spacing={2}>
         {title && (
           <Heading
@@ -140,6 +146,7 @@ export const Newsletter = ({
                   rounded={"none"}
                   fontWeight={"normal"}
                   value={email}
+                  colorScheme="brandPurple"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
@@ -160,6 +167,7 @@ export const Newsletter = ({
                     isDisabled={isPending}
                     zIndex={2}
                     fontWeight={500}
+                    colorScheme="brandPurple"
                   >
                     Subscribe
                   </Button>
@@ -172,6 +180,7 @@ export const Newsletter = ({
                   isDisabled={isPending}
                   zIndex={2}
                   fontWeight={500}
+                  colorScheme="brandPurple"
                 >
                   Subscribe
                 </Button>
