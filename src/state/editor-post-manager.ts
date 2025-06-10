@@ -70,7 +70,12 @@ export const useEditorPostManagerStore = create<
         data: NonNullable<PostSelectForEditing>;
         message: string;
         lastUpdate: string | Date;
-      }>(`/api/posts/${postData.post_id}`, changedValues);
+      }>(`/api/posts/${postData.post_id}`, {
+        generate_toc: postData.generate_toc,
+        status: postData.status,
+        toc_depth: postData.toc_depth,
+        ...changedValues,
+      });
 
       if (status < 200 || status >= 300) {
         throw new Error("Failed to update post");

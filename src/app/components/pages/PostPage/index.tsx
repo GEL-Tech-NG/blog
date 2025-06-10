@@ -222,11 +222,11 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             alignItems={"stretch"}
             pb={6}
           >
+            { post?.toc && post?.toc.length > 0 && (
             <Box display={{ base: "none", lg: "block" }} pt={5}>
-              <TOCRenderer
-                content={decodeAndSanitizeHtml(post?.content || "") || ""}
-              />
-            </Box>
+                <TOCRenderer content={post?.toc || []} />
+              </Box>
+            )}
             <Box
               rounded={"xl"}
               mb={4}

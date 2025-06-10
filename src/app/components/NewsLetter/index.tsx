@@ -1,15 +1,11 @@
 import {
   Box,
-  VStack,
   Heading,
   Text,
   Flex,
   FormControl,
   Input,
   Button,
-  Toast,
-  InputGroup,
-  InputRightAddon,
   LightMode,
   Stack,
   useColorMode,
@@ -18,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useColorModeValue } from "@chakra-ui/react";
-import { LuSend } from "react-icons/lu";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import isEmpty from "just-is-empty";
@@ -28,7 +23,7 @@ export const Newsletter = ({
   title,
   description,
   isDark = true,
-  maxW = "lg",
+  maxW = "xl",
   canWrap,
 }: {
   title?: string;

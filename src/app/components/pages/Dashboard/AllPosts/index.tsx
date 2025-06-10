@@ -137,6 +137,7 @@ const PostsDashboard = () => {
                   aria-label="Edit"
                   size="sm"
                   variant="ghost"
+                  isExternal
                 />
               </Tooltip>
             </PermissionGuard>

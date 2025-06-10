@@ -70,12 +70,7 @@ export async function POST(req: NextRequest) {
           .insert(posts)
           .values({
             ...rest,
-            toc:
-              rest?.generate_toc && rest?.status === "published"
-                ? sql`CAST('${JSON.stringify(
-                    generateToc(content, rest?.toc_depth ?? 2)
-                  )}' AS JSON)`
-                : null,
+
             reading_time: calculateReadingTime(
               stripHtml(decodeAndSanitizeHtml(content))
             ),
@@ -98,11 +93,4 @@ export async function POST(req: NextRequest) {
       });
     }
   });
-}
-function generateToc(content: string, depth: number) {
-  const toc = parseHtmlHeadings(content, {
-    maxDepth: depth,
-    maxLevel: 3,
-  }).toc;
-  return toc;
 }

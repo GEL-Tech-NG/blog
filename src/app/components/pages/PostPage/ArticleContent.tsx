@@ -17,13 +17,13 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ post }) => {
       w="full"
       pb={{ base: 4, md: 6, lg: 8 }}
       flexShrink={0}
-      flex={1}
+      flexGrow={1}
       maxW="container.md"
     >
       <Box display={{ base: "block", lg: "none" }} pt={5}>
-        <TOCRenderer
-          content={decodeAndSanitizeHtml(post?.content || "") || ""}
-        />
+        {post?.toc && post?.toc.length > 0 && (
+          <TOCRenderer content={post?.toc || []} />
+        )}
       </Box>
       <ContentRenderer content={decodeAndSanitizeHtml(post?.content || "")} />
       <Box my={2}>

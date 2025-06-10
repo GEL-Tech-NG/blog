@@ -1,5 +1,5 @@
 "use client";
-import { parseHtmlHeadings, TocItem } from "@/src/lib/toc-generator";
+import { TocItem } from "@/src/lib/toc-generator";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { ScrollArea, ScrollBar } from "../../ui/scroll-area";
@@ -104,11 +104,10 @@ export const TOCRenderer = ({
   content,
   initialItemsToShow = 3,
 }: {
-  content: string;
+  content: TocItem[];
   initialItemsToShow?: number;
 }) => {
-  const parsedContent = parseHtmlHeadings(content);
-  const tocData = parsedContent.toc;
+  const tocData = content;
   const [activeId, setActiveId] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showAll, setShowAll] = useState(false);
