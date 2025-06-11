@@ -9,7 +9,6 @@ import {
   useColorModeValue,
   useBreakpointValue,
   HStack,
-  Tag,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -20,12 +19,7 @@ import {
 import { PostSelect } from "@/src/types";
 import Loader from "../../Loader";
 import PageWrapper from "../../PageWrapper";
-import {
-  decodeAndSanitizeHtml,
-  formatDate,
-  nativeFormatDate,
-  objectToQueryParams,
-} from "@/src/utils";
+import { nativeFormatDate, objectToQueryParams } from "@/src/utils";
 import { ArticleHeader } from "./ArticleHeader";
 import { ArticleContent } from "./ArticleContent";
 import { CommentsSection } from "./CommentSection";
@@ -34,18 +28,17 @@ import { useSiteConfig } from "@/src/context/SiteConfig";
 import { ViewTracker } from "../../ViewTracker";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/next-js";
-import { CopyLinkButton, SocialShareGroup } from "./ShareButtons";
 import { TOCRenderer } from "../../Renderers/TOCRenderer";
+import { ThemedSocialShareGroup } from "../../SocialShares";
+import { generatePostDescription } from "@/src/utils/post";
 
 const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
   const settings = useSiteConfig();
   const sidebarWidth = useBreakpointValue({ base: "full", lg: "350px" });
   const canWrapNewsletter = useBreakpointValue({ base: false, lg: true });
   const metaColor = useColorModeValue("gray.600", "gray.300");
-  const dividerColor = useColorModeValue("gray.600", "gray.400");
   const [shareUrl, setShareUrl] = useState("");
 
-  const borderColor = useColorModeValue("gray.200", "gray.700");
   const bgColor = useColorModeValue("white", "#121212");
   const newsletterBgColor = useColorModeValue("white", "gray.800");
   useEffect(() => {
@@ -194,11 +187,15 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
                 Share this post:
               </Text>
               <HStack>
-                <CopyLinkButton url={shareUrl} />
-                <SocialShareGroup
+                <ThemedSocialShareGroup
                   showLabels={false}
                   url={shareUrl}
+                  theme="brand"
+                  variant="round"
                   title={post?.title || ""}
+                  platforms={["copy", "x", "facebook", "linkedin", "email"]}
+                  hashtags={post?.tags?.map((tag) => tag.slug) || []}
+                  summary={generatePostDescription(post)}
                 />
               </HStack>
             </HStack>
