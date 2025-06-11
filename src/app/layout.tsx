@@ -168,9 +168,9 @@ export default async function RootLayout({
               </AuthProvider>
             </ReactQueryClient>
           </SiteConfigProvider>
-        </>
 
-        <TelegramFab />
+        </>
+          <TelegramFab />
       </body>
     </html>
   );

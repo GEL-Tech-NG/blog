@@ -222,8 +222,8 @@ const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
             alignItems={"stretch"}
             pb={6}
           >
-            { post?.toc && post?.toc.length > 0 && (
-            <Box display={{ base: "none", lg: "block" }} pt={5}>
+            {post?.toc && post?.toc.length > 0 && (
+              <Box display={{ base: "none", lg: "block" }} pt={5}>
                 <TOCRenderer content={post?.toc || []} />
               </Box>
             )}

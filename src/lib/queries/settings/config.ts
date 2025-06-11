@@ -9,6 +9,16 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     folder: "general",
     name: "Site Name",
   },
+  siteTitle: {
+    value: "Penstack",
+    enabled: true,
+    encrypted: false,
+    canEncrypt: false,
+    folder: "general",
+    name: "Site Title",
+    description:
+      "The title of the site displayed in the browser and search engines",
+  },
   siteDescription: {
     value:
       "Penstack is a modern, clean, minimalistic and customizable nextjs blog",

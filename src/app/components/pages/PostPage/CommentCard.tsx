@@ -55,7 +55,7 @@ export const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
 
           <Text fontSize={"14px"}>{comment.content}</Text>
 
-          <HStack spacing={4}>
+          {/* <HStack spacing={4}>
             <Button
               leftIcon={<LuMessageCircle />}
               size="xs"
@@ -64,7 +64,7 @@ export const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
             >
               Reply
             </Button>
-          </HStack>
+          </HStack> */}
         </VStack>
       </HStack>
     </Box>

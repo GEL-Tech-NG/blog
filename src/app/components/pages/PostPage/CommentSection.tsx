@@ -15,6 +15,7 @@ import {
   Modal,
   ModalBody,
   ModalContent,
+  HStack,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -102,26 +103,26 @@ export const CommentsSection = ({ post }: { post: PostSelect }) => {
   }, []);
   return (
     <Box
-      mt={12}
-      borderRadius="xl"
+      mt={8}
+      borderRadius="lg"
       border="1px solid"
       borderColor={borderColor}
       bg={bgColor}
     >
-      <Heading size="lg" mb={5} pt={4} pl={4}>
-        Comments
+      <Heading size="md" mb={2} pt={4} pl={4}>
+        Leave a Comment
       </Heading>
 
       {/* New Comment Form */}
-      <Card mb={8} rounded="xl">
+      <Card mb={4} rounded="lg">
         <CardBody bg={bgColor}>
           <Textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Share your thoughts..."
-            size="lg"
+            size="md"
             mb={4}
-            maxH={200}
+            maxH={100}
           />
           <Button
             size={"sm"}
@@ -141,11 +142,23 @@ export const CommentsSection = ({ post }: { post: PostSelect }) => {
           ))}
         </VStack>
       ) : (
-        !isFetching && (
+        !isFetching &&
+        comments?.length === 0 && (
           <Card bg={highlightColor}>
-            <CardBody p={3} textAlign="center">
-              <LuMessageCircle size={40} style={{ margin: "0 auto 16px" }} />
-              <Text fontSize="lg">Be the first to share your thoughts!</Text>
+            <CardBody p={3} pt={1} textAlign="center">
+              <HStack
+                mx={"auto"}
+                maxW={"500px"}
+                wrap={"wrap"}
+                justify={"center"}
+                align={"center"}
+                gap={2}
+              >
+                <LuMessageCircle size={35} />
+                <Text fontSize="large">
+                  Be the first to share your thoughts!
+                </Text>
+              </HStack>
             </CardBody>
           </Card>
         )

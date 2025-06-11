@@ -140,13 +140,13 @@ export default async function DynamicPage({ params }: PageProps) {
           height: "96",
         },
       },
-      datePublished: post.published_at || post.created_at,
-      dateModified: post.updated_at || post.published_at || post.created_at,
+      datePublished: post.published_at || post.updated_at,
+      dateModified: post.updated_at || post.published_at,
       image:
         post.featured_image?.url ||
         `${getSiteUrl()}/api/og?${objectToQueryParams({
           title: post.title,
-          date: post.published_at || post.created_at,
+          date: post.published_at || post.updated_at,
         })}`,
 
       mainEntityOfPage: {
@@ -174,7 +174,7 @@ export default async function DynamicPage({ params }: PageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <BlogPage post={post} />;
+        <BlogPage post={post} />
       </>
     );
   }

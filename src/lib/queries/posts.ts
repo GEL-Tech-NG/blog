@@ -152,7 +152,7 @@ export async function getPosts({
 export const getPostsForSitemap = unstable_cache(
   async ({
     page = 1,
-    limit = 1000,
+    limit = 200,
   }: {
     page?: number;
     limit?: number;
@@ -166,7 +166,6 @@ export const getPostsForSitemap = unstable_cache(
       // Get total count
 
       let orderBy = [desc(posts.created_at), desc(posts.is_sticky)];
-      whereConditions.push(...orderBy);
 
       const _posts = await db.query.posts.findMany({
         limit,
@@ -203,6 +202,71 @@ export const getPostsForSitemap = unstable_cache(
   ["posts-sitemap"],
   {
     tags: ["posts-sitemap"],
+    revalidate: 60 * 60 * 12, // 12 hours
+  }
+);
+export const getPostsForRss = unstable_cache(
+  async ({
+    page = 1,
+    limit = 200,
+  }: {
+    page?: number;
+    limit?: number;
+  } = {}) => {
+    const offset = (page - 1) * limit;
+
+    // Build where conditions
+    const whereConditions = [eq(posts.status, "published")];
+
+    try {
+      // Get total count
+
+      let orderBy = [desc(posts.created_at), desc(posts.is_sticky)];
+
+      const _posts = await db.query.posts.findMany({
+        limit,
+        offset,
+        orderBy,
+        where:
+          whereConditions?.length > 0 ? and(...whereConditions) : undefined,
+        with: {
+          author: {
+            columns: {
+              name: true,
+              username: true,
+              avatar: true,
+              bio: true,
+              email: true,
+            },
+          },
+          featured_image: {
+            columns: {
+              url: true,
+              alt_text: true,
+              caption: true,
+            },
+          },
+          category: {
+            columns: {
+              name: true,
+              slug: true,
+              id: true,
+            },
+          },
+        },
+      });
+
+      return {
+        data: _posts,
+      };
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      throw new Error("Failed to fetch posts");
+    }
+  },
+  ["posts-rss"],
+  {
+    tags: ["posts-rss"],
     revalidate: 60 * 60 * 12, // 12 hours
   }
 );

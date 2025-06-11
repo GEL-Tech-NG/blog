@@ -47,6 +47,20 @@ export const GeneralPanel = ({
         />
       </FormControl>
       <FormControl>
+        <FormLabel>Site Title</FormLabel>
+        <FormHelperText>
+          {settings.siteTitle?.description ||
+            "The title of the site displayed in the browser and search engines"}
+        </FormHelperText>
+        <Input
+          maxW={600}
+          rounded="md"
+          value={settings.siteTitle?.value}
+          onChange={(e) => handleInputChange("siteTitle", e.target.value)}
+          placeholder="My Awesome Blog Title"
+        />
+      </FormControl>
+      <FormControl>
         <FormLabel>Site Description</FormLabel>
         <Textarea
           maxH={110}

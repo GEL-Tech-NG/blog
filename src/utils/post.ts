@@ -34,7 +34,7 @@ export async function getData(path: string, firstSegment: string) {
 export function generatePostDescription(post: any) {
   const description = shortenText(
     post?.summary || stripHtml(decodeAndSanitizeHtml(post?.content || "")),
-    200
+    150
   );
   return description;
 }
