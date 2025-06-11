@@ -19,7 +19,7 @@ export async function GET() {
     language: "en",
     copyright: `All rights reserved ${siteSettings.siteName?.value} - ${new Date().getFullYear()}`,
     feedLinks: {
-      rss2: `${getSiteUrl()}/rss.xml`,
+      rss2: `${getSiteUrl()}/feed`,
       atom: `${getSiteUrl()}/atom.xml`,
     },
     author: {
