@@ -1,4 +1,3 @@
-import { NewPostRedirect } from "@/src/app/components/pages/Dashboard/NewPostPage/NewPostRedirect";
 import { db } from "@/src/db";
 import { posts } from "@/src/db/schemas";
 import { checkPermission } from "@/src/lib/auth/check-permission";

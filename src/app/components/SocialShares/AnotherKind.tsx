@@ -745,6 +745,7 @@ const ThemedSocialShareGroup = memo<ThemedSocialShareGroupProps>(
     spacing = "gap-2",
   }) => {
     const renderPlatformButton = useMemo(
+      // eslint-disable-next-line react/display-name
       () => (platform: PlatformName) => {
         const commonProps = {
           url,

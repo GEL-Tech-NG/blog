@@ -635,7 +635,7 @@ const ThemedLinkedInShareButton = memo<
         if (source) linkedinUrl += `&source=${encodeURIComponent(source)}`;
         return linkedinUrl;
       },
-    [summary, source]
+    [summary, source, title]
   );
 
   return (
@@ -746,6 +746,7 @@ const ThemedSocialShareGroup = memo<ThemedSocialShareGroupProps>(
     spacing = "gap-2",
   }) => {
     const renderPlatformButton = useMemo(
+      // eslint-disable-next-line react/display-name
       () => (platform: PlatformName) => {
         const commonProps = {
           url,
