@@ -1,24 +1,7 @@
-import { db } from "@/src/db";
-import { medias } from "@/src/db/schemas";
-import { asc } from "drizzle-orm";
+
 import { NextRequest, NextResponse } from "next/server";
-import { unstable_cache } from "next/cache";
+import { fetchMediaFolders } from "@/src/lib/queries/media";
 
-const fetchMediaFolders = unstable_cache(
-  async () => {
-    const folders = await db
-      .selectDistinct({ folder: medias.folder })
-      .from(medias)
-      .orderBy(asc(medias.folder));
-
-    return folders?.length ? folders.map((f) => f.folder) : [];
-  },
-  ["media-folders"],
-  {
-    revalidate: 60 * 60, // 1 hour
-    tags: ["media-folders"],
-  }
-);
 
 export async function GET(req: NextRequest) {
   try {

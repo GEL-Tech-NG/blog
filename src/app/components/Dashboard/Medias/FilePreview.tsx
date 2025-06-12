@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { LuFile, LuImage, LuVideo, LuFileText, LuMusic } from "react-icons/lu";
 import {
   Card,
@@ -18,7 +18,7 @@ import {
 import { MediaResponse } from "@/src/types";
 import { formatBytes } from "@/src/utils";
 
-const FilePreview = ({
+const FilePreview = memo(({
   file,
   isOpen,
   onClose,
@@ -170,6 +170,8 @@ const FilePreview = ({
       </DrawerContent>
     </Drawer>
   );
-};
+});
+
+FilePreview.displayName = "FilePreview";
 
 export default FilePreview;

@@ -71,6 +71,13 @@
       "when": 1749505892559,
       "tag": "0009_worthless_rocket_raccoon",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1749717367957,
+      "tag": "0010_cheerful_kitty_pryde",
+      "breakpoints": true
     }
   ]
 }

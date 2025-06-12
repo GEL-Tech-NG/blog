@@ -28,6 +28,11 @@ export const extensions = [
     heading: false,
     codeBlock: false,
     blockquote: false,
+    listItem: {
+      HTMLAttributes: {
+        class: "gradient-bullets",
+      },
+    },
   }),
   MarkdownPasteExtension,
   Table.configure({

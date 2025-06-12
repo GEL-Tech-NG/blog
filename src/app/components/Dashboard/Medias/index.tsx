@@ -32,7 +32,7 @@ export default function Medias({
   const dividerBgColor = useColorModeValue("white", "gray.900");
   return (
     <Box py={6} px={{ base: 0, md: 5 }} bg={dividerBgColor} rounded={"lg"}>
-      <Tabs isLazy h={"full"}>
+      <Tabs h={"full"}>
         <TabList>
           <Tab>Media Library</Tab>
           <Tab>Upload Media</Tab>

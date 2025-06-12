@@ -99,6 +99,10 @@ export const postSeoMeta = mysqlTable(
     title: varchar("title", { length: 150 }),
     canonical_url: varchar("canonical_url", { length: 255 }),
     description: varchar("description", { length: 255 }),
+    image: varchar("image", { length: 255 }),
+    keywords: varchar("keywords", { length: 255 }),
+    created_at,
+    updated_at,
   },
   (table) => ({
     idxSeoTitle: index("idx_seo_title").on(table.title),

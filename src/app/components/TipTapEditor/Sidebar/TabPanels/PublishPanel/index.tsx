@@ -14,14 +14,7 @@ export const PublishPanel = () => {
   const isSaving = useEditorPostManagerStore((state) => state.isSaving);
 
   return (
-    <Stack
-      gap={3}
-      flexShrink={0}
-      maxW={360}
-      minW={300}
-      width={{ base: "100%" }}
-      overflowY={"auto"}
-    >
+    <Stack gap={3} className="p-0">
       <SectionCard
         title="Publish"
         header={
