@@ -5,7 +5,6 @@ import { PostsCards } from "../../../../themes/smooth-land/PostsCards";
 import { usePosts } from "@/src/hooks";
 import { CategoryItemList } from "../../CategoryItemList";
 import { PostSelect } from "@/src/types";
-import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 
 export default function ArticlesPage({

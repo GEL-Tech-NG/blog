@@ -58,7 +58,7 @@ export async function generateMetadata(
         {
           url:
             siteSettings.siteOpengraph?.value ||
-            `/api/og?${objectToQueryParams({ title: siteSettings.siteName?.value, description: siteSettings.siteDescription?.value })}`,
+            `/api/og?${objectToQueryParams({ title: siteSettings.siteTitle?.value, description: siteSettings.siteDescription?.value })}`,
           width: 1200,
           height: 630,
         },

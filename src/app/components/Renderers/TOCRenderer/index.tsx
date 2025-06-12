@@ -163,7 +163,7 @@ export const TOCRenderer = ({
     <nav
       className={cn(
         "w-full lg:w-[350px] border rounded-lg bg-white transition-all duration-200 overflow-hidden",
-        isCollapsed ? "h-auto" : "h-[360px]"
+        isCollapsed ? "h-auto" : "h-[330px]"
       )}
       aria-label="Table of Contents"
     >
@@ -193,19 +193,21 @@ export const TOCRenderer = ({
 
       {!isCollapsed && (
         <div id="toc-content">
-          <ScrollArea className="h-[300px]">
-            <div
-              className="p-4 pt-2"
-              role="tree"
-              aria-label="Table of contents navigation"
-            >
-              {visibleItems.map((item) => (
-                <TOCItemComponent
-                  key={item.id}
-                  item={item}
-                  activeId={activeId}
-                />
-              ))}
+          <ScrollArea className="h-[270px]">
+            <div className="p-4">
+              <div
+                className="pb-2"
+                role="tree"
+                aria-label="Table of contents navigation"
+              >
+                {visibleItems.map((item) => (
+                  <TOCItemComponent
+                    key={item.id}
+                    item={item}
+                    activeId={activeId}
+                  />
+                ))}
+              </div>
 
               {hasMoreItems && (
                 <div className="pt-2 border-t border-gray-200 sticky bottom-0 pb-1.5 bg-white overflow-hidden">
