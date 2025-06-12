@@ -1,5 +1,6 @@
 import { db } from "@/src/db";
 import { posts, users } from "@/src/db/schemas";
+import { getAuthorByUsername, getAuthorPosts } from "@/src/lib/queries/author";
 import { PostSelect } from "@/src/types";
 import { getServerSearchParams } from "@/src/utils";
 import { desc, eq } from "drizzle-orm";
@@ -26,9 +27,7 @@ export async function GET(
         { status: 400 }
       );
 
-    const user = await db.query.users.findFirst({
-      where: eq(users.username, username.toLowerCase()),
-    });
+    const user = await getAuthorByUsername(username);
     if (!user)
       return NextResponse.json(
         {
@@ -38,39 +37,7 @@ export async function GET(
         { status: 404 }
       );
 
-    const offset = limit * (page - 1);
-    const _posts = await db.query.posts.findMany({
-      where:
-        status === "all"
-          ? eq(posts.author_id, user?.auth_id as string)
-          : eq(posts.status, status),
-      offset: offset,
-      limit: limit,
-      orderBy: [desc(posts.updated_at), desc(posts?.published_at)],
-      with: {
-        featured_image: {
-          columns: {
-            url: true,
-            caption: true,
-            alt_text: true,
-          },
-        },
-        category: {
-          columns: {
-            name: true,
-            slug: true,
-            id: true,
-          },
-        },
-        author: {
-          columns: {
-            name: true,
-            avatar: true,
-            username: true,
-          },
-        },
-      },
-    });
+    const _posts = await getAuthorPosts(user, limit, page, status);
 
     return NextResponse.json({
       data: _posts,

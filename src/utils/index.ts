@@ -339,3 +339,13 @@ export const generateSlug = (
     ...options,
   });
 };
+export function generatePostDescription(post: any) {
+  const description = shortenText(
+    post?.summary || stripHtml(decodeAndSanitizeHtml(post?.content || "")),
+    150
+  );
+  return description;
+}
+export async function isAllowedPrefix(path: string) {
+  return path === defaultPermalinkPrefix;
+}

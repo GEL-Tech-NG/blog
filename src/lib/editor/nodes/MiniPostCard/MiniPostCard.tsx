@@ -19,7 +19,7 @@ export const MiniPostCard: React.FC<MiniPostCardProps> = ({
 }) => {
   const [customTitle, setCustomTitle] = useState(node?.attrs.customTitle || "");
 
-  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const borderColor = useColorModeValue("gray.300", "gray.600");
 
   const selectPost = (selectedPost: PostSelect) => {
     if (typeof getPos === "function") {

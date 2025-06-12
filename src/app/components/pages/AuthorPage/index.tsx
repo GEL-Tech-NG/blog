@@ -14,75 +14,74 @@ import {
 } from "@chakra-ui/react";
 import React, { Suspense } from "react";
 import { Newsletter } from "../../NewsLetter";
-import { useAuthor, useAuthorPosts } from "@/src/hooks";
-import Loader from "../../Loader";
 import PageWrapper from "../../PageWrapper";
 import { PostsCards } from "@/src/themes/smooth-land/PostsCards";
+import { AuthorSelect, PostSelect } from "@/src/types";
 
-const AuthorPage = ({ username }: { username: string }) => {
+const AuthorPage = ({
+  username,
+  author,
+  posts,
+}: {
+  username: string;
+  author: AuthorSelect;
+  posts: PostSelect[];
+}) => {
   const bgColor = useColorModeValue("gray.100", "inherit");
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const { author, loading: isAuthorLoading } = useAuthor(username);
-  const { posts, loading: isAuthorPostsLoading } = useAuthorPosts({ username });
 
   return (
     <PageWrapper>
       <Box minH="100vh" bg={bgColor} py={12} mb={8}>
         <Container maxW="7xl">
           {/* Author Profile Section */}
-          {isAuthorLoading ? (
-            <Card mb={12} h={200}>
-              <Stack align={"center"} h="full" justify="center">
-                <Loader />
-              </Stack>
-            </Card>
-          ) : (
-            <Card mb={6}>
-              <CardBody>
-                <Flex
-                  direction={{ base: "column", md: "row" }}
-                  align={{ base: "center", md: "start" }}
-                  gap={8}
-                >
-                  <Avatar
-                    src={author?.avatar as string}
-                    name={author?.name}
-                    w="128px"
-                    h="128px"
-                    borderRadius="full"
-                    objectFit="cover"
-                    border={"4px solid rgba(255, 255, 255, 0.6)"}
-                  />
 
-                  <VStack
-                    flex={1}
-                    align={{ base: "center", md: "start" }}
-                    spacing={2}
-                  >
-                    <Stack gap={0} align={{ base: "center", md: "start" }}>
-                      <Heading size="xl">{author?.name}</Heading>
-                      <Text
-                        as={"span"}
-                        color={"gray.500"}
-                        textAlign={{ base: "center", md: "left" }}
-                      >
-                        @{author?.username}
-                      </Text>
-                    </Stack>
-                    {author?.title && (
-                      <Text color="brand.500" fontWeight="medium">
-                        {author?.title}
-                      </Text>
-                    )}
+          <Card mb={6}>
+            <CardBody>
+              <Flex
+                direction={{ base: "column", md: "row" }}
+                align={{ base: "center", md: "start" }}
+                gap={8}
+              >
+                <Avatar
+                  src={author?.avatar as string}
+                  name={author?.name}
+                  w="128px"
+                  h="128px"
+                  borderRadius="full"
+                  objectFit="cover"
+                  border={"4px solid rgba(255, 255, 255, 0.6)"}
+                />
+
+                <VStack
+                  flex={1}
+                  align={{ base: "center", md: "start" }}
+                  spacing={2}
+                >
+                  <Stack gap={0} align={{ base: "center", md: "start" }}>
+                    <Heading size="xl">{author?.name}</Heading>
                     <Text
-                      color={textColor}
-                      maxW="2xl"
+                      as={"span"}
+                      color={"gray.500"}
                       textAlign={{ base: "center", md: "left" }}
                     >
-                      {author?.bio}
+                      @{author?.username}
                     </Text>
+                  </Stack>
+                  {author?.title && (
+                    <Text color="brand.500" fontWeight="medium">
+                      {author?.title}
+                    </Text>
+                  )}
+                  <Text
+                    color={textColor}
+                    maxW="2xl"
+                    textAlign={{ base: "center", md: "left" }}
+                  >
+                    {author?.bio}
+                  </Text>
 
-                    {/* <HStack
+                  {/* <HStack
                 spacing={4}
                 wrap="wrap"
                 justify={{ base: "center", md: "start" }}
@@ -136,11 +135,11 @@ const AuthorPage = ({ username }: { username: string }) => {
                   <Text>{author?.socials?.website}</Text>
                   </Link>
                   </HStack> */}
-                  </VStack>
-                </Flex>
-              </CardBody>
-            </Card>
-          )}
+                </VStack>
+              </Flex>
+            </CardBody>
+          </Card>
+
           <Card mb={12}>
             <CardBody>
               <Box mx={"auto"} maxW={"2xl"}>
@@ -154,18 +153,12 @@ const AuthorPage = ({ username }: { username: string }) => {
           </Card>
 
           <Box mt={8}>
-            {" "}
-            {!isAuthorLoading && author && (
-              <Heading size="lg" mb={8}>
-                Articles by {author?.name}
-              </Heading>
-            )}
+            <Heading size="lg" mb={8}>
+              Articles by {author?.name}
+            </Heading>
+
             <Suspense>
-              <PostsCards
-                showAuthor={false}
-                posts={posts}
-                loading={isAuthorPostsLoading}
-              />
+              <PostsCards showAuthor={false} posts={posts} loading={false} />
             </Suspense>
           </Box>
         </Container>

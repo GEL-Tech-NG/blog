@@ -7,10 +7,6 @@
   height: 100%;
   overflow-y: auto;
   background-color: var(--chakra-colors-white);
-  --link-color: var(--chakra-colors-blue-600);
-  --link-hover-color: var(--chakra-colors-blue-700);
-  --white: var(--chakra-colors-white);
-  --black: var(--chakra-colors-black);
 }
 .chakra-ui-dark .penstack-post-editor {
   background-color: var(--chakra-colors-gray-800);

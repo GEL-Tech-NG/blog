@@ -1,5 +1,6 @@
 import { db } from "@/src/db";
 import { users } from "@/src/db/schemas";
+import { getAuthorByUsername } from "@/src/lib/queries/author";
 import { eq } from "drizzle-orm";
 
 import { NextResponse, type NextRequest } from "next/server";
@@ -20,9 +21,7 @@ export async function GET(
         { status: 400 }
       );
 
-    const user = await db.query.users.findFirst({
-      where: eq(users.username, username.toLowerCase()),
-    });
+    const user = await getAuthorByUsername(username);
     if (!user)
       return NextResponse.json(
         {

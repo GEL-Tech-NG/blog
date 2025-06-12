@@ -91,5 +91,5 @@ export const queryCategoriesWithFilters = unstable_cache(
     }
   },
   ["queryCategoriesWithFilters"],
-  { tags: ["queryCategoriesWithFilters"] }
+  { tags: ["queryCategoriesWithFilters"], revalidate: 60 * 60 * 24 }
 );

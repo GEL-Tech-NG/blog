@@ -14,6 +14,7 @@ import { ElementType } from "react";
 import { getPost, getPostForEditing } from "../lib/queries/post";
 import { getPosts } from "../lib/queries/posts";
 import { getFeaturedPost } from "../lib/queries/featured";
+import { getAuthorByUsername, getAuthorPosts } from "../lib/queries/author";
 
 export type AggregatedPostViews = {
   viewed_date: Date | string;
@@ -64,7 +65,8 @@ export type FeaturedPostType = Awaited<ReturnType<typeof getFeaturedPost>>;
 export type PostSelectForEditing = Awaited<
   ReturnType<typeof getPostForEditing>
 >;
-
+export type AuthorSelect = Awaited<ReturnType<typeof getAuthorByUsername>>;
+export type AuthorPostsSelect = Awaited<ReturnType<typeof getAuthorPosts>>;
 export interface EditorActionItem {
   id: string | number;
   label: string;

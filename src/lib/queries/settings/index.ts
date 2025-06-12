@@ -28,7 +28,7 @@ export const getSettings = unstable_cache(
     return { ...DEFAULT_SETTINGS, ...settingsObj };
   },
   ["getSettings"],
-  { tags: ["getSettings"] }
+  { tags: ["getSettings"], revalidate: 60 * 60 * 24 }
 );
 
 export async function updateSettings(newSettings: SiteSettings) {

@@ -16,24 +16,29 @@ import {
   Stack,
   Avatar,
 } from "@chakra-ui/react";
-import { PostSelect } from "@/src/types";
+import { PostSelect, SiteSettings } from "@/src/types";
 import Loader from "../../Loader";
 import PageWrapper from "../../PageWrapper";
-import { nativeFormatDate, objectToQueryParams } from "@/src/utils";
+import {
+  generatePostDescription,
+  nativeFormatDate,
+  objectToQueryParams,
+} from "@/src/utils";
 import { ArticleHeader } from "./ArticleHeader";
 import { ArticleContent } from "./ArticleContent";
 import { CommentsSection } from "./CommentSection";
 import { Newsletter } from "../../NewsLetter";
-import { useSiteConfig } from "@/src/context/SiteConfig";
 import { ViewTracker } from "../../ViewTracker";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/next-js";
 import { TOCRenderer } from "../../Renderers/TOCRenderer";
 import { ThemedSocialShareGroup } from "../../SocialShares";
-import { generatePostDescription } from "@/src/utils/post";
 
-const PostPage: React.FC<{ post: PostSelect }> = ({ post }) => {
-  const settings = useSiteConfig();
+const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
+  post,
+  siteSettings,
+}) => {
+  const settings = siteSettings;
   const sidebarWidth = useBreakpointValue({ base: "full", lg: "350px" });
   const canWrapNewsletter = useBreakpointValue({ base: false, lg: true });
   const metaColor = useColorModeValue("gray.600", "gray.300");

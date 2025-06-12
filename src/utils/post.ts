@@ -1,4 +1,10 @@
-import { shortenText, stripHtml, decodeAndSanitizeHtml } from ".";
+import "server-only";
+import {
+  shortenText,
+  stripHtml,
+  decodeAndSanitizeHtml,
+  isAllowedPrefix,
+} from ".";
 import { getPostBySlug } from "../lib/queries/post";
 import {
   defaultPermalinkType,
@@ -30,14 +36,4 @@ export async function getData(path: string, firstSegment: string) {
 
     return null;
   }
-}
-export function generatePostDescription(post: any) {
-  const description = shortenText(
-    post?.summary || stripHtml(decodeAndSanitizeHtml(post?.content || "")),
-    150
-  );
-  return description;
-}
-export async function isAllowedPrefix(path: string) {
-  return path === defaultPermalinkPrefix;
 }

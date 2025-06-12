@@ -1,23 +1,17 @@
 import { notFound } from "next/navigation";
 
 import BlogPage from "@/src/app/components/blog";
-import {
-  defaultPermalinkPrefix,
-  defaultPermalinkType,
-  matchPermalink,
-  permalinkFormats,
-} from "@/src/utils/permalink";
-import { getPostBySlug } from "@/src/lib/queries/post";
+
 import {
   shortenText,
   stripHtml,
   decodeAndSanitizeHtml,
   objectToQueryParams,
+  generatePostDescription,
 } from "@/src/utils";
 import { ResolvingMetadata, Metadata } from "next";
 import { getSiteUrl } from "@/src/utils/url";
 import { getData } from "@/src/utils/post";
-import { generatePostDescription } from "@/src/utils/post";
 import { getSettings } from "@/src/lib/queries/settings";
 import { format } from "date-fns";
 interface PageProps {
@@ -36,8 +30,6 @@ export async function generateMetadata(
   const post = await getData(path, firstSegment);
 
   if (post) {
-    // Add JSON-LD script
-
     return {
       title: post?.title,
       description: generatePostDescription(post),
@@ -174,7 +166,7 @@ export default async function DynamicPage({ params }: PageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <BlogPage post={post} />
+        <BlogPage post={post} siteSettings={siteSettings} />
       </>
     );
   }

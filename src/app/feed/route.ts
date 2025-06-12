@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { Feed } from "feed";
 import { getSettings } from "@/src/lib/queries/settings";
 import { getSiteUrl } from "@/src/utils/url";
-import { generatePostDescription } from "@/src/utils/post";
+import { generatePostDescription } from "@/src/utils";
 
 export async function GET() {
   const posts = await getPostsForRss();

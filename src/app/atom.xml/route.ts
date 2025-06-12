@@ -1,10 +1,13 @@
 import { getPostsForRss } from "@/src/lib/queries/posts";
-import { decodeAndSanitizeHtml, generatePostUrl } from "@/src/utils";
+import {
+  decodeAndSanitizeHtml,
+  generatePostDescription,
+  generatePostUrl,
+} from "@/src/utils";
 import { NextResponse } from "next/server";
 import { Feed } from "feed";
 import { getSettings } from "@/src/lib/queries/settings";
 import { getSiteUrl } from "@/src/utils/url";
-import { generatePostDescription } from "@/src/utils/post";
 
 export async function GET() {
   const posts = await getPostsForRss();

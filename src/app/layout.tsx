@@ -13,6 +13,7 @@ import { getSiteUrl } from "../utils/url";
 import { objectToQueryParams } from "../utils";
 import { groupSettingsByFolder } from "./components/pages/Dashboard/Settings/utils";
 import { TelegramFab } from "./components/Telegram/Fab";
+import isEmpty from "just-is-empty";
 
 type Props = {
   params: { slug?: string } & Record<string, string | string[] | undefined>;
@@ -27,7 +28,7 @@ export async function generateMetadata(
 
   return {
     metadataBase: new URL(getSiteUrl()),
-    title: siteSettings?.siteName?.value,
+    title: siteSettings?.siteTitle?.value,
     description: siteSettings?.siteDescription?.value,
     robots: {
       index: true,
@@ -132,6 +133,7 @@ export default async function RootLayout({
       postalCode: "100261",
       addressCountry: "Nigeria",
     },
+    email: "info@geltechng.com",
     contactPoint: {
       "@type": "ContactPoint",
       telephone: "+234-8162872504",
@@ -139,7 +141,9 @@ export default async function RootLayout({
       email: "info@geltechng.com",
       availableLanguage: "English",
     },
-    sameAs: socialSettings.map((setting) => setting.value),
+    sameAs: socialSettings
+      .filter((setting) => !isEmpty(setting.value))
+      .map((setting) => setting.value),
   };
   return (
     <html
@@ -168,9 +172,8 @@ export default async function RootLayout({
               </AuthProvider>
             </ReactQueryClient>
           </SiteConfigProvider>
-
         </>
-          <TelegramFab />
+        <TelegramFab />
       </body>
     </html>
   );

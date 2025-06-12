@@ -5,8 +5,10 @@ import { useCallback, useEffect } from "react";
 
 export const CategoryItemList = ({
   onChange,
+  initialCategory = "",
 }: {
   onChange?: (category: string) => void;
+  initialCategory?: string;
 }) => {
   const [categoryQuery, setCategoryQuery] = useQueryState("category", {
     throttleMs: 50,
@@ -31,13 +33,15 @@ export const CategoryItemList = ({
     setCategoryQuery(val);
     onChangeCb?.(val);
   }
-
+  useEffect(() => {
+    setCategoryQuery(initialCategory);
+  }, [initialCategory]);
   return (
     <Card rounded={"sm"}>
       <CardBody>
         <HStack overflowX={"auto"} spacing={4} flexShrink={0}>
           {isCategoryLoading && !categories?.length ? (
-            Array.from({ length: 6 }).map((_, index) => (
+            Array.from({ length: 5 }).map((_, index) => (
               <Skeleton
                 key={index}
                 flexShrink={0}

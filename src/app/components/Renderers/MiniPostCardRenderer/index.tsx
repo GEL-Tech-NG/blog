@@ -104,16 +104,16 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
 
     return (
       <Card
-        p={4}
+        p={3}
         // rounded="md"
         // bg={bgColor}
         my={4}
-        maxW={600}
-        // variant={"outline"}
+        maxW={{ base: "100%", lg: 650 }}
+        variant={"outline"}
       >
         <VStack align="stretch" spacing={3} divider={<StackDivider />}>
           {!isEditing && node?.attrs?.customTitle && (
-            <Text fontSize="large" fontWeight="bold">
+            <Text fontSize="medium" className="uppercase font-bold">
               {node.attrs.customTitle}
             </Text>
           )}
@@ -138,9 +138,9 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
             posts.map((post) => (
               <Link
                 key={post?.id}
-                color={"var(--link-color)"}
+                color={"brandPurple.600"}
                 href={generatePostUrl(post)}
-                _hover={{ textDecoration: "none" }}
+                _hover={{ textDecoration: "none", color: "brandPurple.700" }}
                 onClick={(e) => {
                   if (isEditing) e.preventDefault();
                 }}
@@ -152,7 +152,7 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
                       alt={post?.featured_image.alt_text || ""}
                       boxSize={{ base: "80px", lg: "80px" }}
                       maxH={{ base: "80px", lg: "80px" }}
-                      objectFit="cover"
+                      objectFit="contain"
                       rounded={"lg"}
                     />
                   )}
@@ -164,8 +164,10 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
                       {post?.title}
                     </Text>
                     <Text
-                      fontSize={{ base: "small", lg: "medium" }}
+                      fontSize={{ base: "14px", lg: "medium" }}
                       color={textColor}
+                      noOfLines={2}
+                      w={"full"}
                     >
                       {shortenText(
                         stripHtml(decodeAndSanitizeHtml(post?.content || "")),

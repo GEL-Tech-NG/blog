@@ -54,7 +54,9 @@ interface UsePostsProps {
   access?: "dashboard";
   sortBy?: "created_at" | "published_at" | "recent" | "popular";
   sortOrder?: "desc" | "asc";
-  category?: string;canFetch?:boolean;initialData?:PostSelect[]
+  category?: string;
+  canFetch?: boolean;
+  initialData?: PostSelect[];
 }
 export function usePosts({
   status = "published",
@@ -62,8 +64,10 @@ export function usePosts({
   page = 1,
   sortBy,
   access,
-  sortOrder,initialData,
-  category,canFetch=true
+  sortOrder,
+  initialData,
+  category,
+  canFetch = true,
 }: UsePostsProps = {}) {
   const [params, setParams] = useState({
     status,
@@ -72,32 +76,44 @@ export function usePosts({
     sortBy,
     access,
     sortOrder,
-    category,canFetch
+    category,
+    canFetch,
   });
   const {
     data: posts,
-    isLoading: loading,
+    isLoading,
+    isPending,
+    isFetching,
     isError,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["posts", params],initialData,
+    queryKey: ["posts", params],
+    initialData,
     queryFn: async () => {
       const { data } = await axios.get<{ data: PostSelect[] }>(
         `/api/posts?${objectToQueryParams(params)}`
       );
       return data.data;
     },
-    staleTime: 1000 * 60 * 30,enabled:canFetch
+    staleTime: 1000 * 60 * 30,
+    enabled: canFetch,
   });
 
-  const refetchPosts = async () => {
+  const refetchPosts = async (params?: UsePostsProps) => {
+    params && updateParams(params);
     await refetch();
   };
   const updateParams = useCallback((prop: UsePostsProps) => {
     setParams((prev) => ({ ...prev, ...prop }));
   }, []);
-  return { posts, loading, error, refetchPosts, updateParams };
+  return {
+    posts,
+    loading: isLoading || isFetching,
+    error,
+    refetchPosts,
+    updateParams,
+  };
 }
 export function useAuthor(username: string) {
   const {
