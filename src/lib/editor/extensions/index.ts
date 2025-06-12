@@ -21,18 +21,12 @@ import CharacterCount from "@tiptap/extension-character-count";
 import { MediaExtension } from "@/src/lib/editor/extensions/media";
 import { MarkdownPasteExtension } from "./markdown-paste";
 import { PenstackHeadingExtension } from "./heading";
-import { TableOfContents } from "./table-of-content";
 
 export const extensions = [
   StarterKit.configure({
     heading: false,
     codeBlock: false,
     blockquote: false,
-    listItem: {
-      HTMLAttributes: {
-        class: "gradient-bullets",
-      },
-    },
   }),
   MarkdownPasteExtension,
   Table.configure({
@@ -61,7 +55,6 @@ export const extensions = [
   CharacterCount.configure({
     limit: 100000,
   }),
-  TableOfContents,
   MediaExtension,
   PostCardExtension,
   PenstackCodeblock.configure({

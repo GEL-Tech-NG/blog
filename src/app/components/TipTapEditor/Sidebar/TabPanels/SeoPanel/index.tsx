@@ -12,35 +12,69 @@ import {
   Image,
   Button,
   useDisclosure,
+  FormHelperText,
 } from "@chakra-ui/react";
 import isEmpty from "just-is-empty";
-import { useState } from "react";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 
 export const SeoPanel = () => {
+  const title = usePostSeoMetaStore((state) => state.title);
+  const description = usePostSeoMetaStore((state) => state.description);
+  const canonicalUrl = usePostSeoMetaStore((state) => state.canonical_url);
+  const image = usePostSeoMetaStore((state) => state.image);
+  const keywords = usePostSeoMetaStore((state) => state.keywords);
+  const setKeyValue = usePostSeoMetaStore((state) => state.setKeyValue);
   return (
     <Stack gap={3} className="p-0">
       <SectionCard title="SEO Metadata">
         <Stack gap={3} px={4} py={3}>
           <FormControl>
-            <FormLabel>Title</FormLabel>
-            <Input />
+            <FormLabel>Meta Title</FormLabel>
+            <Input
+              placeholder="Enter title for SEO"
+              value={title}
+              onChange={(e) => setKeyValue("title", e.target.value)}
+            />
           </FormControl>
           <FormControl>
-            <FormLabel>Description</FormLabel>
-            <Textarea />
+            <FormLabel>Meta Description</FormLabel>
+            <Textarea
+              placeholder="Enter meta description for SEO"
+              maxLength={150}
+              maxH={100}
+              value={description}
+              onChange={(e) => setKeyValue("description", e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Canonical URL</FormLabel>
-            <Input />
+            <FormHelperText mb={2}>
+              If this post is published on a different platform, enter the URL
+              of the post.
+            </FormHelperText>
+            <Input
+              placeholder="Enter canonical URL for SEO"
+              value={canonicalUrl}
+              onChange={(e) => setKeyValue("canonical_url", e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Image</FormLabel>
+            <FormHelperText mb={2}>
+              The image will be used as the open graph image for the post.
+            </FormHelperText>
             <ImageUploadAndPreview />
           </FormControl>
           <FormControl>
             <FormLabel>Keywords</FormLabel>
-            <Input />
+            <FormHelperText mb={2}>
+              Enter keywords for SEO. Separate with commas.
+            </FormHelperText>
+            <Input
+              placeholder="Enter keywords for SEO"
+              value={keywords}
+              onChange={(e) => setKeyValue("keywords", e.target.value)}
+            />
           </FormControl>
         </Stack>
       </SectionCard>
