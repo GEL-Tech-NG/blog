@@ -85,6 +85,15 @@ export const getPostForEditing = async (slugOrPostId: string | number) => {
           caption: true,
         },
       },
+      seoMeta: {
+        columns: {
+          title: true,
+          description: true,
+          image: true,
+          keywords: true,
+          canonical_url: true,
+        },
+      },
     },
   });
   return post;

@@ -95,7 +95,7 @@ export const postSeoMeta = mysqlTable(
   "PostSeoMeta",
   {
     id,
-    post_id: int("post_id").notNull(),
+    post_id: int("post_id").notNull().unique(),
     title: varchar("title", { length: 150 }),
     canonical_url: varchar("canonical_url", { length: 255 }),
     description: varchar("description", { length: 255 }),
@@ -107,7 +107,7 @@ export const postSeoMeta = mysqlTable(
   (table) => ({
     idxSeoTitle: index("idx_seo_title").on(table.title),
     idxSeoCanonicalUrl: index("idx_seo_canonical_url").on(table.canonical_url),
-    idxPostId: index("idx_post_id").on(table.post_id),
+    idxPostId: uniqueIndex("idx_post_id").on(table.post_id),
   })
 );
 

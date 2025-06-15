@@ -7,6 +7,7 @@ import { usePenstackEditorStore } from "@/src/state/penstack-editor";
 import { useEditorPostManagerStore } from "@/src/state/editor-post-manager";
 import { decodeAndSanitizeHtml, sanitizeAndEncodeHtml } from "@/src/utils";
 import { PostSelectForEditing } from "@/src/types";
+import { usePostSeoMetaStore } from "@/src/state/post-seo-meta";
 
 export default function NewPostPage({ post }: { post: PostSelectForEditing }) {
   useEditorPostManagerStore.getState().setPost(post!);
@@ -19,8 +20,12 @@ export function PostEditor() {
   const setEditorContent = usePenstackEditorStore(
     (state) => state.setEditorContent
   );
+  const setKeyValue = usePostSeoMetaStore((state) => state.setKeyValue);
+  const setPostIdOrSlug = usePostSeoMetaStore((state) => state.setPostIdOrSlug);
+  setPostIdOrSlug(activePost?.post_id || "");
 
   const { user } = useAuth();
+
   function onEditorUpdate(content: { html: string; text?: string }) {
     setEditorContent(content);
     updateField("content", sanitizeAndEncodeHtml(content.html));

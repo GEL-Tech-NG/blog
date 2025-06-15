@@ -1,5 +1,6 @@
 import { MediaModal } from "@/src/app/components/Dashboard/Medias/MediaModal";
 import { SectionCard } from "@/src/app/components/Dashboard/SectionCard";
+import { PillInput } from "@/src/app/components/PillInput";
 import { usePostSeoMetaStore } from "@/src/state/post-seo-meta";
 import { MediaResponse } from "@/src/types";
 import {
@@ -15,15 +16,20 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 import isEmpty from "just-is-empty";
+import { useEffect } from "react";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 
 export const SeoPanel = () => {
+  const fetchSeoMeta = usePostSeoMetaStore((state) => state.fetchSeoMeta);
   const title = usePostSeoMetaStore((state) => state.title);
   const description = usePostSeoMetaStore((state) => state.description);
   const canonicalUrl = usePostSeoMetaStore((state) => state.canonical_url);
   const image = usePostSeoMetaStore((state) => state.image);
   const keywords = usePostSeoMetaStore((state) => state.keywords);
   const setKeyValue = usePostSeoMetaStore((state) => state.setKeyValue);
+  useEffect(() => {
+    fetchSeoMeta();
+  }, []);
   return (
     <Stack gap={3} className="p-0">
       <SectionCard title="SEO Metadata">
@@ -70,10 +76,15 @@ export const SeoPanel = () => {
             <FormHelperText mb={2}>
               Enter keywords for SEO. Separate with commas.
             </FormHelperText>
-            <Input
+            <PillInput
               placeholder="Enter keywords for SEO"
               value={keywords}
-              onChange={(e) => setKeyValue("keywords", e.target.value)}
+              onPillAdd={(pill, allPills) => {
+                setKeyValue("keywords", allPills);
+              }}
+              onPillRemove={(pill, allPills, index) => {
+                setKeyValue("keywords", allPills);
+              }}
             />
           </FormControl>
         </Stack>

@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { PostInsert, PostSelectForEditing } from "../types";
-import { debounce } from "lodash";
+import  debounce from "lodash/debounce";
 import axios from "axios";
 import { generateSlug } from "../utils";
-import { isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
 import isEmpty from "just-is-empty";
 
 type EditorPostManagerState = {
