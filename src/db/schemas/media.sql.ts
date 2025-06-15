@@ -14,6 +14,8 @@ export const medias = mysqlTable(
     id,
     name: varchar("name", { length: 255 }).notNull(),
     url: text("url").notNull(),
+    thumbnail: text("thumbnail"),
+    preview: text("preview"),
     type: varchar("type", {
       length: 100,
       enum: ["audio", "image", "video", "pdf", "doc"],

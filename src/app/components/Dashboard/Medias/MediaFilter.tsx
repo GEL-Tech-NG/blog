@@ -12,12 +12,12 @@ import { FilterParams, MediaType } from "@/src/types";
 
 interface MediaFilterProps {
   onFilterChange: (filters: Partial<FilterParams>) => void;
-  folders: string[];
+
   refetchMedia: () => void;
 }
 
 export const MediaFilter: React.FC<MediaFilterProps> = memo(
-  ({ onFilterChange, refetchMedia, folders }) => {
+  ({ onFilterChange, refetchMedia }) => {
     return (
       <HStack
         py={4}
@@ -53,21 +53,6 @@ export const MediaFilter: React.FC<MediaFilterProps> = memo(
               <option value="pdf">PDF</option>
               <option value="doc">Documents</option>
             </>
-          </Select>
-
-          <Select
-            rounded={"md"}
-            onChange={(e) =>
-              onFilterChange({ folder: e.target.value || undefined })
-            }
-          >
-            <option value="">All folders</option>
-            {folders?.length > 0 &&
-              folders.map((folder) => (
-                <option key={folder} value={folder}>
-                  {folder}
-                </option>
-              ))}
           </Select>
 
           <Select

@@ -37,15 +37,6 @@ export const MediaLibrary: React.FC<MediaLibraryProps> = memo(
 
     const boxBgColor = useColorModeValue("white", "gray.700");
 
-    const fetchFolders = useCallback(async () => {
-      try {
-        const { data } = await axios<{ data: string[] }>(`/api/media/folders`);
-
-        return data.data;
-      } catch (error) {
-        console.error("Failed to fetch folders:", error);
-      }
-    }, []);
     const fetchMedia = useCallback(async () => {
       setLoading(true);
       try {
@@ -77,12 +68,7 @@ export const MediaLibrary: React.FC<MediaLibraryProps> = memo(
       queryFn: fetchMedia,
       refetchOnWindowFocus: false,
     });
-    const { data: folders } = useQuery({
-      queryKey: ["folders"],
-      queryFn: fetchFolders,
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 60 * 24,
-    });
+
     const handleSelect = useCallback(
       (media: MediaResponse) => {
         if (multiple) {
@@ -116,12 +102,6 @@ export const MediaLibrary: React.FC<MediaLibraryProps> = memo(
     }, [filters]);
     return (
       <Box className="space-y-6" minH={400}>
-        <MediaFilter
-          onFilterChange={handleFilterChange}
-          folders={folders as string[]}
-          refetchMedia={refetch}
-        />
-
         {loading && (
           <VStack justify={"center"} py={12}>
             <Loader />

@@ -18,6 +18,16 @@ export async function POST(request: NextRequest) {
         .values({
           name: filename || cloudinaryResponse.original_filename,
           url: await generateCloudinaryUrl(cloudinaryResponse as any),
+          thumbnail: await generateCloudinaryUrl(cloudinaryResponse as any, [
+            "w_250",
+            "q_auto",
+            "f_auto",
+          ]),
+          preview: await generateCloudinaryUrl(cloudinaryResponse as any, [
+            "w_500",
+            "q_auto",
+            "f_auto",
+          ]),
           type: determineFileType(
             cloudinaryResponse.format || cloudinaryResponse.resource_type
           ),

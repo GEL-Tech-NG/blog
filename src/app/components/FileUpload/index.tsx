@@ -35,14 +35,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   folder = "uploads",
   onUploadComplete,
   maxSize = 10485760,
-  acceptedFileTypes = [
-    "image/*",
-    "video/*",
-    "audio/*",
-    "application/pdf",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "application/msword",
-  ],
+  acceptedFileTypes = ["image/*", "video/*", "audio/*", "application/pdf"],
 }) => {
   const [uploading, setUploading] = useState(false);
   const queryClient = useQueryClient();

@@ -156,7 +156,7 @@ export const MediaCard: React.FC<MediaCardProps> = memo(
             {media.type === "image" && (
               <Box rounded={"md"} aspectRatio={16 / 9}>
                 <Image
-                  src={media.url}
+                  src={media.thumbnail || media.url}
                   alt={media.alt_text || media.name}
                   w="full"
                   h="full"
@@ -169,7 +169,7 @@ export const MediaCard: React.FC<MediaCardProps> = memo(
                 <Box
                   as="video"
                   controls
-                  src={media.url}
+                  src={media.thumbnail || media.url}
                   w="full"
                   h="full"
                   objectFit={"contain"}
