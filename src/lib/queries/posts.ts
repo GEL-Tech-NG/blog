@@ -91,6 +91,8 @@ export async function getPosts({
         featured_image: {
           columns: {
             url: true,
+            thumbnail: true,
+            preview: true,
             alt_text: true,
             caption: true,
           },

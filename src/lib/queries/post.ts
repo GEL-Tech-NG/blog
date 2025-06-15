@@ -21,6 +21,8 @@ export const getPost = async (slugOrPostId: string | number) => {
         columns: {
           url: true,
           alt_text: true,
+          thumbnail: true,
+          preview: true,
           caption: true,
         },
       },
@@ -83,6 +85,8 @@ export const getPostForEditing = async (slugOrPostId: string | number) => {
           url: true,
           alt_text: true,
           caption: true,
+          preview: true,
+          thumbnail: true,
         },
       },
       seoMeta: {

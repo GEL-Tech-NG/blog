@@ -51,10 +51,26 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
       setShareUrl(window.location.href || "");
     }
   }, []);
+  const featuredImage =
+    useBreakpointValue({
+      base:
+        (post?.featured_image?.preview as string) || post?.featured_image?.url,
+      md: post?.featured_image?.url,
+    }) ||
+    post?.featured_image?.preview ||
+    `/api/og?${objectToQueryParams({
+      title: post?.title,
+      date: post?.published_at || post?.created_at,
+      username: post?.author?.username,
+      avatar: post?.author?.avatar,
+      name: post?.author?.name,
+      category: post?.category?.name,
+      w: 1000,
+      h: 500,
+    })}`;
   if (!post) {
     return <Loader />;
   }
-
   return (
     <PageWrapper styleProps={{ px: 0, bg: bgColor }}>
       {settings.localPostAnalytics?.enabled && (
@@ -114,22 +130,9 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
             className="relative h-[220px] sm:h-[360px] md:h-[400px] lg:h-[500px] xl:h-[600px] border-2 border-gray-200 rounded-lg overflow-hidden"
           >
             <Image
-              src={
-                post?.featured_image?.url ||
-                `/api/og?${objectToQueryParams({
-                  title: post?.title,
-                  date: post?.published_at || post?.created_at,
-                  username: post?.author?.username,
-                  avatar: post?.author?.avatar,
-                  name: post?.author?.name,
-                  category: post?.category?.name,
-                  w: 1000,
-                  h: 500,
-                })}`
-              }
+              src={featuredImage}
               alt={post?.featured_image?.alt_text || post?.title || ""}
               width="full"
-              loading="lazy"
               height="full"
               style={{
                 width: "100%",

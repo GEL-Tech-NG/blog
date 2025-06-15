@@ -2,6 +2,7 @@ import { PostSelect } from "@/src/types";
 import {
   decodeAndSanitizeHtml,
   formatDate,
+  generatePostDescription,
   generatePostUrl,
   nativeFormatDate,
   objectToQueryParams,
@@ -25,8 +26,6 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-
-const MotionPostCard = motion(Card);
 
 export default function PostCard({
   post,
@@ -69,6 +68,7 @@ export default function PostCard({
       >
         <Image
           src={
+            (post?.featured_image?.preview as string) ||
             (post?.featured_image?.url as string) ||
             `/api/og?${objectToQueryParams({
               title: post?.title,
@@ -114,8 +114,7 @@ export default function PostCard({
             </LinkOverlay>
 
             <Text noOfLines={2} color={textColor} fontSize={"15px"}>
-              {post?.summary ||
-                stripHtml(decodeAndSanitizeHtml(post?.content || ""))}
+              {generatePostDescription(post)}
             </Text>
           </VStack>
           {/* {showAuthor && ( */}

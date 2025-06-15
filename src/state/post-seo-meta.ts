@@ -30,74 +30,138 @@ type PostSeoMetaStore = {
       "saveSeoMeta" | "setPostIdOrSlug" | "setKeyValue" | "fetchSeoMeta"
     >]
   ) => void;
+  // Internal state to track initial values
+  _initialValues: {
+    title?: string;
+    description?: string;
+    image?: string;
+    keywords?: string[];
+    canonical_url?: string;
+  };
 };
 
-export const usePostSeoMetaStore = create<PostSeoMetaStore>((set, get) => ({
-  title: "",
-  post_id: null,
-  description: "",
-  image: "",
-  keywords: [],
-  canonical_url: "",
-  isSaving: false,
-  postIdOrSlug: null,
-  error: null,
-  setKeyValue: (key, value) => {
-    set({ [key]: value });
-    get().saveSeoMeta();
-  },
-  saveSeoMeta: async () => {
-    const { title, description, image, keywords, canonical_url, postIdOrSlug } =
-      get();
-    const seoMeta = { title, description, image, keywords, canonical_url };
-    const debouncedSave = debounce(async () => {
-      try {
-        const response = await fetch(`/api/posts/${postIdOrSlug}/seometa`, {
-          method: "POST",
-          body: JSON.stringify(seoMeta),
-        });
-        if (!response.ok) {
-          throw new Error("Failed to save SEO meta");
-        }
-        const data = await response.json();
-        set({
-          title: data.data.title,
-          description: data.data.description,
-          image: data.data.image,
-          keywords: data.data.keywords,
-          canonical_url: data.data.canonical_url,
-        });
-        if (data.error) {
-          throw new Error(data.error);
-        }
-        set({ isSaving: false });
-      } catch (error: any) {
-        set({ error: error.message });
-        set({ isSaving: false });
-      }
-    }, 1000);
-    debouncedSave();
-  },
-  setPostIdOrSlug: (postIdOrSlug: string) => {
-    set({ postIdOrSlug });
-  },
-  fetchSeoMeta: async () => {
+export const usePostSeoMetaStore = create<PostSeoMetaStore>((set, get) => {
+  // Create debounced save function
+  const debouncedSave = debounce(async () => {
+    const state = get();
+    const {
+      title,
+      description,
+      image,
+      keywords,
+      canonical_url,
+      postIdOrSlug,
+      _initialValues,
+    } = state;
+
+    const currentValues = {
+      title,
+      description,
+      image,
+      keywords,
+      canonical_url,
+    };
+
+    // Check if there are any changes from initial values
+    if (isEqual(currentValues, _initialValues)) {
+      return; // No changes, skip saving
+    }
+
+    set({ isSaving: true });
+
     try {
-      const { postIdOrSlug } = get();
-      const response = await fetch(`/api/posts/${postIdOrSlug}/seometa`);
+      const response = await fetch(`/api/posts/${postIdOrSlug}/seometa`, {
+        method: "POST",
+        body: JSON.stringify(currentValues),
+      });
+
       if (!response.ok) {
-        throw new Error("Failed to fetch SEO meta");
+        throw new Error("Failed to save SEO meta");
       }
+
       const data = await response.json();
-      set({
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      const updatedValues = {
         title: data.data.title,
         description: data.data.description,
         image: data.data.image,
         keywords: data.data.keywords,
         canonical_url: data.data.canonical_url,
+      };
+
+      set({
+        ...updatedValues,
+        _initialValues: { ...updatedValues }, // Update initial values after successful save
+        isSaving: false,
+        error: null,
       });
     } catch (error: any) {
-      set({ error: error.message });
+      set({
+        error: error.message,
+        isSaving: false,
+      });
     }
-  },
-}));
+  }, 1000);
+
+  return {
+    title: "",
+    post_id: null,
+    description: "",
+    image: "",
+    keywords: [],
+    canonical_url: "",
+    isSaving: false,
+    postIdOrSlug: null,
+    error: null,
+    _initialValues: {
+      title: "",
+      description: "",
+      image: "",
+      keywords: [],
+      canonical_url: "",
+    },
+
+    setKeyValue: (key, value) => {
+      set({ [key]: value });
+      debouncedSave();
+    },
+
+    saveSeoMeta: debouncedSave,
+
+    setPostIdOrSlug: (postIdOrSlug: string) => {
+      set({ postIdOrSlug });
+    },
+
+    fetchSeoMeta: async () => {
+      try {
+        const { postIdOrSlug } = get();
+        const response = await fetch(`/api/posts/${postIdOrSlug}/seometa`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch SEO meta");
+        }
+
+        const data = await response.json();
+        const fetchedValues = {
+          title: data.data.title,
+          description: data.data.description,
+          image: data.data.image,
+          keywords: data.data.keywords,
+          canonical_url: data.data.canonical_url,
+        };
+
+        set({
+          ...fetchedValues,
+          _initialValues: { ...fetchedValues }, // Set initial values when fetching
+          error: null,
+        });
+      } catch (error: any) {
+        set({ error: error.message });
+      }
+    },
+  };
+});

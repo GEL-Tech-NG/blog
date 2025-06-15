@@ -339,10 +339,10 @@ export const generateSlug = (
     ...options,
   });
 };
-export function generatePostDescription(post: any) {
+export function generatePostDescription(post: any, len = 150) {
   const description = shortenText(
     post?.summary || stripHtml(decodeAndSanitizeHtml(post?.content || "")),
-    150
+    len
   );
   return description;
 }
