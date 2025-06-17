@@ -26,14 +26,30 @@ import {
 } from "@/src/utils";
 import { ArticleHeader } from "./ArticleHeader";
 import { ArticleContent } from "./ArticleContent";
-import { CommentsSection } from "./CommentSection";
 import { Newsletter } from "../../NewsLetter";
-import { ViewTracker } from "../../ViewTracker";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/next-js";
-import { TOCRenderer } from "../../Renderers/TOCRenderer";
 import { ThemedSocialShareGroup } from "../../SocialShares";
+import dynamic from "next/dynamic";
 
+const ViewTracker = dynamic(
+  () => import("../../ViewTracker").then((mod) => mod.ViewTracker),
+  {
+    ssr: false,
+  }
+);
+const TOCRenderer = dynamic(
+  () => import("../../Renderers/TOCRenderer").then((mod) => mod.TOCRenderer),
+  {
+    ssr: false,
+  }
+);
+const CommentsSection = dynamic(
+  () => import("./CommentSection").then((mod) => mod.CommentsSection),
+  {
+    ssr: false,
+  }
+);
 const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
   post,
   siteSettings,

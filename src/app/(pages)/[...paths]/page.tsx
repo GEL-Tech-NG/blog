@@ -14,6 +14,7 @@ import { getSiteUrl } from "@/src/utils/url";
 import { getData } from "@/src/utils/post";
 import { getSettings } from "@/src/lib/queries/settings";
 import { format } from "date-fns";
+import isEmpty from "just-is-empty";
 interface PageProps {
   params: {
     paths?: string[];
@@ -34,7 +35,12 @@ export async function generateMetadata(
       title: post?.title,
       description: generatePostDescription(post),
       creator: post?.author?.name,
-
+      alternates: {
+        canonical: post?.seoMeta?.canonical_url || `${getSiteUrl()}/${path}`,
+      },
+      keywords: isEmpty(post?.seoMeta?.keywords)
+        ? post?.tags?.map((tag) => tag.name)
+        : post?.seoMeta?.keywords,
       authors: [
         {
           name: post?.author?.name,
@@ -42,25 +48,28 @@ export async function generateMetadata(
         },
       ],
       category: post?.category?.name,
+
       openGraph: {
         publishedTime: format(
           new Date(post?.published_at || (post?.created_at as Date)),
           "yyyy-MM-dd"
         ),
         modifiedTime: format(
-          new Date(
-            post?.updated_at || post?.published_at || (post?.created_at as Date)
-          ),
+          new Date(post?.updated_at || (post?.published_at as Date)),
           "yyyy-MM-dd"
         ),
         url: `${getSiteUrl()}/${path}`,
-        title: post?.title,
-        description: generatePostDescription(post),
+        title: post?.seoMeta?.title || post?.title,
+        description:
+          post?.seoMeta?.description || generatePostDescription(post),
         siteName: siteSettings.siteName.value,
-        tags: post?.tags?.map((tag) => tag.name),
+        tags: isEmpty(post?.seoMeta?.keywords)
+          ? post?.tags?.map((tag) => tag.name)
+          : post?.seoMeta?.keywords,
         images: [
           {
             url:
+              post?.seoMeta?.image ||
               post?.featured_image?.url ||
               `/api/og?${objectToQueryParams({
                 title: post?.title,
@@ -81,8 +90,10 @@ export async function generateMetadata(
       },
       twitter: {
         card: "summary_large_image",
-        title: `${post?.title} - ${post?.category?.name}`,
-        description: `${generatePostDescription(post)}`,
+        title:
+          post?.seoMeta?.title || `${post?.title} - ${post?.category?.name}`,
+        description:
+          post?.seoMeta?.description || `${generatePostDescription(post)}`,
       },
       robots: {
         index: true,

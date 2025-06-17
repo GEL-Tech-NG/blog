@@ -42,6 +42,15 @@ export const getPost = async (slugOrPostId: string | number) => {
           slug: true,
         },
       },
+      seoMeta: {
+        columns: {
+          title: true,
+          description: true,
+          image: true,
+          keywords: true,
+          canonical_url: true,
+        },
+      },
       tags: {
         with: {
           tag: {
