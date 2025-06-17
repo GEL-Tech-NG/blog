@@ -1,31 +1,52 @@
-import GoogleAnalytics from "../app/components/Analytics/GoogleAnalytics";
-import GoogleTagManager from "../app/components/Analytics/GoogleTagManager";
-import MixpanelAnalytics from "../app/components/Analytics/MixpanelAnalytics";
-import { decryptKey } from "../lib/encryption";
+import dynamic from "next/dynamic";
 import { SiteSettings } from "../types";
+import { CanRender } from "../app/components/CanRender";
 
+const GoogleTagManager = dynamic(
+  () => import("../app/components/Analytics/GoogleTagManager"),
+  {
+    ssr: false,
+  }
+);
+const GoogleAnalytics = dynamic(
+  () => import("../app/components/Analytics/GoogleAnalytics"),
+  {
+    ssr: false,
+  }
+);
+
+const GoogleTagManagerNoscript = dynamic(
+  () => import("../app/components/Analytics/GoogleTagManager/Noscript"),
+  {
+    ssr: false,
+  }
+);
+const MixpanelAnalytics = dynamic(
+  () => import("../app/components/Analytics/MixpanelAnalytics"),
+  {
+    ssr: false,
+  }
+);
 export const AnalyticsProviders = ({
   settings,
+  children,
 }: {
   settings: SiteSettings;
+  children: React.ReactNode;
 }) => {
-  if (!settings.gaId || !settings.mixpanelToken || !settings.gtmId) {
-    return null;
-  }
-  const mixpanelTokenValue = settings.mixpanelToken.enabled
-    ? settings.mixpanelToken.value
-    : "";
   return (
     <>
-      {settings.gtmId.enabled && (
-        <GoogleTagManager gtmId={settings.gtmId.value} />
-      )}
-      {settings.gaId.enabled && (
+      <CanRender condition={settings.gaId.enabled}>
         <GoogleAnalytics gaMeasurementId={settings.gaId.value} />
-      )}
-      {settings.mixpanelToken.enabled && (
-        <MixpanelAnalytics token={mixpanelTokenValue} />
-      )}
+      </CanRender>
+      <CanRender condition={settings.gtmId.enabled}>
+        <GoogleTagManager gtmId={settings.gtmId.value} />
+        <GoogleTagManagerNoscript gtmId={settings.gtmId.value} />
+      </CanRender>
+      <CanRender condition={settings.mixpanelToken.enabled}>
+        <MixpanelAnalytics token={settings.mixpanelToken.value || ""} />
+      </CanRender>
+      {children}
     </>
   );
 };

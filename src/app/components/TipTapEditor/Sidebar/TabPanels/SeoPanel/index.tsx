@@ -101,7 +101,7 @@ export const SeoPanel = () => {
     </Stack>
   );
 };
-const ImageUploadAndPreview = memo(() => {
+const ImageUploadAndPreview = () => {
   const image = usePostSeoMetaStore((state) => state.image);
   const setKeyValue = usePostSeoMetaStore((state) => state.setKeyValue);
   const handleImageSelect = (media: MediaResponse) => {
@@ -119,5 +119,5 @@ const ImageUploadAndPreview = memo(() => {
       />
     </>
   );
-});
+};
 ImageUploadAndPreview.displayName = "ImageUploadAndPreview";

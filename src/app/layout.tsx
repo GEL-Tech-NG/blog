@@ -8,12 +8,19 @@ import { getSession } from "../lib/auth/next-auth";
 import { SiteConfigProvider } from "../context/SiteConfig";
 import { getSettings } from "../lib/queries/settings";
 import { NuqsProvider } from "../providers/nuqs";
-import { AnalyticsProviders } from "../providers/analytics";
 import { getSiteUrl } from "../utils/url";
 import { objectToQueryParams } from "../utils";
 import { groupSettingsByFolder } from "./components/pages/Dashboard/Settings/utils";
 import { TelegramFab } from "./components/Telegram/Fab";
 import isEmpty from "just-is-empty";
+import {
+  CanRender,
+  ConditionalScriptRenderer,
+  SCRIPT_POSITIONS,
+} from "./components/ScriptsManager";
+import dynamic from "next/dynamic";
+import GoogleTagManager from "./components/Analytics/GoogleTagManager";
+import GoogleTagManagerNoscript from "./components/Analytics/GoogleTagManager/Noscript";
 
 type Props = {
   params: { slug?: string } & Record<string, string | string[] | undefined>;
@@ -62,7 +69,6 @@ export async function generateMetadata(
           width: 1200,
           height: 630,
         },
-        ...previousImages,
       ],
 
       locale: "en-US",
@@ -150,8 +156,24 @@ export default async function RootLayout({
       lang="en"
       className={`${fonts.body.variable} ${fonts.heading.variable}`}
     >
+      <head>
+        <CanRender
+          enabled={
+            !isEmpty(siteSettings.gtmId.value) && siteSettings.gtmId.enabled
+          }
+          fallback={null}
+        >
+          <GoogleTagManager gtmId={siteSettings.gtmId.value} />
+        </CanRender>
+      </head>
       <body>
         <>
+          {/* <ConditionalScriptRenderer
+            scripts={scripts}
+            position={SCRIPT_POSITIONS.BODY_START}
+            globalEnabled={true}
+          /> */}
+
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
@@ -162,7 +184,7 @@ export default async function RootLayout({
               __html: JSON.stringify(organizationJsonLd),
             }}
           />
-          <AnalyticsProviders settings={siteSettings} />
+
           <SiteConfigProvider initialConfig={siteSettings}>
             <ReactQueryClient>
               <AuthProvider session={session}>
@@ -172,8 +194,21 @@ export default async function RootLayout({
               </AuthProvider>
             </ReactQueryClient>
           </SiteConfigProvider>
+          <TelegramFab />
+          {/* <ConditionalScriptRenderer
+            scripts={scripts}
+            position={SCRIPT_POSITIONS.BODY_END}
+            globalEnabled={true}
+          /> */}
+          <CanRender
+            enabled={
+              !isEmpty(siteSettings.gtmId.value) && siteSettings.gtmId.enabled
+            }
+            fallback={null}
+          >
+            <GoogleTagManagerNoscript gtmId={siteSettings.gtmId.value} />
+          </CanRender>
         </>
-        <TelegramFab />
       </body>
     </html>
   );

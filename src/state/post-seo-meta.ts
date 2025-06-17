@@ -61,7 +61,7 @@ export const usePostSeoMetaStore = create<PostSeoMetaStore>((set, get) => {
       keywords,
       canonical_url,
     };
-
+    console.log({ currentValues, _initialValues });
     // Check if there are any changes from initial values
     if (isEqual(currentValues, _initialValues)) {
       return; // No changes, skip saving
