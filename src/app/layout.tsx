@@ -16,11 +16,10 @@ import isEmpty from "just-is-empty";
 import {
   CanRender,
   ConditionalScriptRenderer,
-  SCRIPT_POSITIONS,
 } from "./components/ScriptsManager";
-import dynamic from "next/dynamic";
-import GoogleTagManager from "./components/Analytics/GoogleTagManager";
 import GoogleTagManagerNoscript from "./components/Analytics/GoogleTagManager/Noscript";
+import { getThirdPartyScripts } from "../lib/third-party-scripts";
+import { SCRIPT_POSITIONS } from "../lib/third-party-scripts/types";
 
 type Props = {
   params: { slug?: string } & Record<string, string | string[] | undefined>;
@@ -86,6 +85,7 @@ export default async function RootLayout({
   const siteSettings = await getSettings();
   const groupedSettings = groupSettingsByFolder(siteSettings);
   const socialSettings = groupedSettings["social"] || [];
+  const scripts = getThirdPartyScripts(siteSettings);
   const siteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -157,22 +157,25 @@ export default async function RootLayout({
       className={`${fonts.body.variable} ${fonts.heading.variable}`}
     >
       <head>
-        <CanRender
-          enabled={
-            !isEmpty(siteSettings.gtmId.value) && siteSettings.gtmId.enabled
-          }
-          fallback={null}
-        >
-          <GoogleTagManager gtmId={siteSettings.gtmId.value} />
-        </CanRender>
+        <ConditionalScriptRenderer
+          scripts={scripts}
+          position={SCRIPT_POSITIONS.HEAD_START}
+          globalEnabled={true}
+        />
+
+        <ConditionalScriptRenderer
+          scripts={scripts}
+          position={SCRIPT_POSITIONS.HEAD_END}
+          globalEnabled={true}
+        />
       </head>
       <body>
         <>
-          {/* <ConditionalScriptRenderer
+          <ConditionalScriptRenderer
             scripts={scripts}
             position={SCRIPT_POSITIONS.BODY_START}
             globalEnabled={true}
-          /> */}
+          />
 
           <script
             type="application/ld+json"
@@ -195,11 +198,11 @@ export default async function RootLayout({
             </ReactQueryClient>
           </SiteConfigProvider>
           <TelegramFab />
-          {/* <ConditionalScriptRenderer
+          <ConditionalScriptRenderer
             scripts={scripts}
             position={SCRIPT_POSITIONS.BODY_END}
             globalEnabled={true}
-          /> */}
+          />
           <CanRender
             enabled={
               !isEmpty(siteSettings.gtmId.value) && siteSettings.gtmId.enabled

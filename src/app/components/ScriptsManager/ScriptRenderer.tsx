@@ -1,4 +1,5 @@
-import { ScriptRendererProps } from ".";
+
+import { ScriptRendererProps } from "@/src/lib/third-party-scripts/types";
 import { CanRender } from "../CanRender";
 import { ScriptComponent } from "./ScriptComponent";
 
