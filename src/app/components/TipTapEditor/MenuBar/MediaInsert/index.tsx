@@ -32,10 +32,11 @@ export const MediaInsert: FC<PropsWithChildren<MediaInsertProps>> = ({
                 editor
                   .chain()
                   .focus()
-                  .setImage({
+                  .insertMedia({
                     src: media.url,
                     alt: media.name,
-                    title: media.caption as string,
+                    type: media.type as "image" | "video" | "audio",
+                    caption: media.caption as string,
                   })
                   .run();
               });
@@ -43,10 +44,12 @@ export const MediaInsert: FC<PropsWithChildren<MediaInsertProps>> = ({
               editor
                 .chain()
                 .focus()
-                .setImage({
+                .insertMedia({
                   src: media.url,
                   alt: media?.alt_text || media.name,
-                  title: media.caption as string,
+                  type: media.type as "image" | "video" | "audio",
+
+                  caption: media.caption as string,
                 })
                 .run();
             }

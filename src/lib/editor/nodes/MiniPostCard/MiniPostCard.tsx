@@ -41,7 +41,7 @@ export const MiniPostCard: React.FC<MiniPostCardProps> = ({
   if (!node.attrs.postIds?.length) {
     return (
       <NodeViewWrapper>
-        <Card>
+        <Card my={2}>
           <CardBody
             border="2px"
             borderStyle="dashed"

@@ -1,4 +1,3 @@
-import { MediaModal } from "@/src/app/components/Dashboard/Medias/MediaModal";
 import { SectionCard } from "@/src/app/components/Dashboard/SectionCard";
 import { PillInput } from "@/src/app/components/PillInput";
 import { usePostSeoMetaStore } from "@/src/state/post-seo-meta";
@@ -9,20 +8,9 @@ import {
   FormLabel,
   Textarea,
   Stack,
-  Box,
-  Image,
-  Button,
-  useDisclosure,
   FormHelperText,
-  HStack,
-  Flex,
-  Tooltip,
-  IconButton,
-  Text,
 } from "@chakra-ui/react";
-import isEmpty from "just-is-empty";
-import { memo, useEffect, useRef } from "react";
-import { LuPlus, LuTrash2 } from "react-icons/lu";
+import { useEffect, useRef } from "react";
 import { ImageCard } from "../../components/ImageCard";
 
 export const SeoPanel = () => {

@@ -18,7 +18,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import CharacterCount from "@tiptap/extension-character-count";
-import { MediaExtension } from "@/src/lib/editor/extensions/media";
+import Media from "@/src/lib/editor/extensions/media-ext";
 import { MarkdownPasteExtension } from "./markdown-paste";
 import { PenstackHeadingExtension } from "./heading";
 
@@ -47,7 +47,7 @@ export const extensions = [
   }),
 
   Typography,
-  Image,
+  // Image,
   TextAlign.configure({
     types: ["heading", "paragraph"],
   }),
@@ -55,7 +55,7 @@ export const extensions = [
   CharacterCount.configure({
     limit: 100000,
   }),
-  MediaExtension,
+  Media,
   PostCardExtension,
   PenstackCodeblock.configure({
     lowlight,

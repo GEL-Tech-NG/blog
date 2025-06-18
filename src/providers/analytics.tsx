@@ -36,14 +36,14 @@ export const AnalyticsProviders = ({
 }) => {
   return (
     <>
-      <CanRender condition={settings.gaId.enabled}>
+      <CanRender enabled={settings.gaId.enabled}>
         <GoogleAnalytics gaMeasurementId={settings.gaId.value} />
       </CanRender>
-      <CanRender condition={settings.gtmId.enabled}>
+      <CanRender enabled={settings.gtmId.enabled}>
         <GoogleTagManager gtmId={settings.gtmId.value} />
         <GoogleTagManagerNoscript gtmId={settings.gtmId.value} />
       </CanRender>
-      <CanRender condition={settings.mixpanelToken.enabled}>
+      <CanRender enabled={settings.mixpanelToken.enabled}>
         <MixpanelAnalytics token={settings.mixpanelToken.value || ""} />
       </CanRender>
       {children}

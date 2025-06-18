@@ -11,6 +11,7 @@ export const PostCardExtension = Node.create({
   name: "postCard",
   group: "block",
   atom: true,
+  draggable: true,
   addAttributes() {
     return {
       postIds: {

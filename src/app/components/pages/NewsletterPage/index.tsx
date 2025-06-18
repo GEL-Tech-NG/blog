@@ -76,7 +76,7 @@ const Testimonial = ({
 }) => (
   <Stack
     bg={useColorModeValue("white", "gray.800")}
-    p={6}
+    p={{ base: 5, md: 6 }}
     rounded="xl"
     border="1px"
     borderColor={useColorModeValue("gray.100", "gray.700")}
@@ -115,7 +115,7 @@ export const NewsletterPage = ({ title }: { title?: string }) => {
         bg={bgColor}
         border="1px"
         borderColor={borderColor}
-        p={8}
+        p={{ base: 4, md: 6, lg: 8 }}
       >
         <VStack spacing={8} align="center" textAlign="center">
           <Badge
@@ -158,7 +158,7 @@ export const NewsletterPage = ({ title }: { title?: string }) => {
           </SimpleGrid>
 
           <HStack w={"full"} mx={"auto"} justify={"center"} pt={4}>
-            <Newsletter isDark={false} maxW={"full"}  />
+            <Newsletter isDark={false} maxW={"full"} />
           </HStack>
 
           <Text fontSize="sm" color={textColor}>
