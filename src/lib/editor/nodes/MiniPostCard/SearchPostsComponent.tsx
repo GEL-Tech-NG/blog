@@ -54,7 +54,9 @@ export const SearchPostsComponent: React.FC<SearchPostsComponentProps> = ({
 
   return (
     <VStack spacing={4}>
-      <Text>Search and select a post to embed</Text>
+      <Text fontSize="medium" fontWeight="bold" color="gray.600">
+        Search and select a post to embed
+      </Text>
       <InputGroup>
         <Input
           placeholder="Search posts..."

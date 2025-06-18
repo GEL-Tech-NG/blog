@@ -14,7 +14,7 @@ import {
   decodeAndSanitizeHtml,
   stripHtml,
 } from "@/src/utils";
-import { or, eq, sql, SQL } from "drizzle-orm";
+import { or, eq } from "drizzle-orm";
 import isEmpty from "just-is-empty";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -88,7 +88,7 @@ export async function PUT(
               body?.status === "published" &&
               !isEmpty(body?.content)
                 ? generateToc(body?.content || "", body?.toc_depth ?? 2)
-                : null,
+                : oldPost?.toc,
             reading_time: body?.content
               ? calculateReadingTime(
                   stripHtml(decodeAndSanitizeHtml(body?.content || ""))

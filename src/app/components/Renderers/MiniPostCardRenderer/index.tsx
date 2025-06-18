@@ -21,12 +21,14 @@ import {
   Skeleton,
   StackDivider,
   Card,
+  IconButton,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { NodeViewProps } from "@tiptap/react";
 import axios from "axios";
 
-import { ChangeEvent, memo, useState } from "react";
+import { ChangeEvent, memo, useCallback, useState } from "react";
+import { FaTrash } from "react-icons/fa";
 
 interface MiniPostCardProps {
   isEditing?: boolean;
@@ -47,7 +49,22 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
     const borderColor = useColorModeValue("gray.200", "gray.700");
     const textColor = useColorModeValue("gray.600", "gray.400");
     const [showPostSearch, setShowPostSearch] = useState(false);
+    const queryClient = useQueryClient();
 
+    const removePost = useCallback(
+      (postId: string) => {
+        const postIds = (node?.attrs?.postIds as string)
+          ?.split(",")
+          .map((id) => id.trim());
+        const newPostIds = postIds.filter((id) => id !== postId);
+        updateAttributes?.({ postIds: newPostIds.join(",") });
+        queryClient.invalidateQueries({
+          queryKey: ["post_card_posts"],
+          refetchType: "all",
+        });
+      },
+      [node?.attrs?.postIds, updateAttributes]
+    );
     const postIds = (node?.attrs?.postIds as string)
       ?.split(",")
       .map((id) => id.trim());
@@ -138,9 +155,9 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
             posts.map((post) => (
               <Link
                 key={post?.id}
-                color={"brandPurple.600"}
+                color={"brandPurple.700"}
                 href={generatePostUrl(post)}
-                _hover={{ textDecoration: "none", color: "brandPurple.700" }}
+                _hover={{ textDecoration: "none", color: "brandPurple.800" }}
                 onClick={(e) => {
                   if (isEditing) e.preventDefault();
                 }}
@@ -157,12 +174,24 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
                     />
                   )}
                   <Stack align="start" spacing={1}>
-                    <Text
-                      fontSize={{ base: "medium", lg: "large" }}
-                      fontWeight="bold"
-                    >
-                      {post?.title}
-                    </Text>
+                    <HStack>
+                      <Text
+                        fontSize={{ base: "medium", lg: "large" }}
+                        fontWeight="bold"
+                      >
+                        {post?.title}
+                      </Text>
+                      {isEditing && (
+                        <IconButton
+                          icon={<FaTrash />}
+                          colorScheme="red"
+                          variant="ghost"
+                          size={"xs"}
+                          aria-label="Remove post"
+                          onClick={() => removePost(post?.post_id || "")}
+                        />
+                      )}
+                    </HStack>
                     <Text
                       fontSize={{ base: "14px", lg: "medium" }}
                       color={textColor}
@@ -194,6 +223,7 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
               <Button
                 size={"sm"}
                 alignSelf={"center"}
+                mt={2}
                 onClick={() => {
                   setShowPostSearch(true);
                 }}

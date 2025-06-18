@@ -17,14 +17,27 @@ import {
   CanRender,
   ConditionalScriptRenderer,
 } from "./components/ScriptsManager";
-import GoogleTagManagerNoscript from "./components/Analytics/GoogleTagManager/Noscript";
 import { getThirdPartyScripts } from "../lib/third-party-scripts";
 import { SCRIPT_POSITIONS } from "../lib/third-party-scripts/types";
+import dynamic from "next/dynamic";
 
 type Props = {
   params: { slug?: string } & Record<string, string | string[] | undefined>;
   searchParams: { [key: string]: string | string[] | undefined };
 };
+const MixPanelAnalytics = dynamic(
+  () => import("./components/Analytics/MixpanelAnalytics"),
+  {
+    ssr: false,
+  }
+);
+const GoogleTagManagerNoscript = dynamic(
+  () => import("./components/Analytics/GoogleTagManager/Noscript"),
+  {
+    ssr: false,
+  }
+);
+
 export async function generateMetadata(
   _: Props,
   parent: ResolvingMetadata
@@ -209,6 +222,15 @@ export default async function RootLayout({
             fallback={null}
           >
             <GoogleTagManagerNoscript gtmId={siteSettings.gtmId.value} />
+          </CanRender>
+          <CanRender
+            enabled={
+              !isEmpty(siteSettings.mixpanelToken.value) &&
+              siteSettings.mixpanelToken.enabled
+            }
+            fallback={null}
+          >
+            <MixPanelAnalytics token={siteSettings.mixpanelToken.value} />
           </CanRender>
         </>
       </body>
