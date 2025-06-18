@@ -32,8 +32,8 @@ export async function generateMetadata(
 
   if (post) {
     return {
-      title: post?.title,
-      description: generatePostDescription(post),
+      title: post?.seoMeta?.title || post?.title,
+      description: post?.seoMeta?.description || generatePostDescription(post),
       creator: post?.author?.name,
       alternates: {
         canonical: post?.seoMeta?.canonical_url || `${getSiteUrl()}/${path}`,
@@ -130,8 +130,8 @@ export default async function DynamicPage({ params }: PageProps) {
     const jsonLd = {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
-      headline: post.title,
-      description: generatePostDescription(post),
+      headline: post.seoMeta?.title || post.title,
+      description: post.seoMeta?.description || generatePostDescription(post),
       author: {
         "@type": "Person",
         name: post.author?.name,
@@ -146,9 +146,10 @@ export default async function DynamicPage({ params }: PageProps) {
       datePublished: post.published_at || post.updated_at,
       dateModified: post.updated_at || post.published_at,
       image:
+        post.seoMeta?.image ||
         post.featured_image?.url ||
         `${getSiteUrl()}/api/og?${objectToQueryParams({
-          title: post.title,
+          title: post.seoMeta?.title || post.title,
           date: post.published_at || post.updated_at,
         })}`,
 
@@ -167,7 +168,9 @@ export default async function DynamicPage({ params }: PageProps) {
         },
       },
       articleBody: stripHtml(decodeAndSanitizeHtml(post.content || "")),
-      keywords: post.tags?.map((tag) => tag.name),
+      keywords: isEmpty(post.seoMeta?.keywords)
+        ? post.tags?.map((tag) => tag.name)
+        : post.seoMeta?.keywords,
       articleSection: post.category?.name,
       wordCount: post.reading_time ? post.reading_time * 200 : undefined, // Rough estimate based on reading time
     };

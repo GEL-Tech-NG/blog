@@ -33,6 +33,7 @@ export const SeoPanel = () => {
   const canonicalUrl = usePostSeoMetaStore((state) => state.canonical_url);
   const keywords = usePostSeoMetaStore((state) => state.keywords);
   const setKeyValue = usePostSeoMetaStore((state) => state.setKeyValue);
+  const isLoading = usePostSeoMetaStore((state) => state.isLoading);
   useEffect(() => {
     if (!isFetched.current) {
       fetchSeoMeta();
@@ -49,6 +50,7 @@ export const SeoPanel = () => {
               placeholder="Enter title for SEO"
               value={title}
               onChange={(e) => setKeyValue("title", e.target.value)}
+              isDisabled={isLoading}
             />
           </FormControl>
           <FormControl>
@@ -58,6 +60,7 @@ export const SeoPanel = () => {
               maxLength={150}
               maxH={100}
               value={description}
+              isDisabled={isLoading}
               onChange={(e) => setKeyValue("description", e.target.value)}
             />
           </FormControl>
@@ -71,6 +74,7 @@ export const SeoPanel = () => {
               placeholder="Enter canonical URL for SEO"
               value={canonicalUrl}
               onChange={(e) => setKeyValue("canonical_url", e.target.value)}
+              isDisabled={isLoading}
             />
           </FormControl>
           <FormControl>
@@ -87,6 +91,7 @@ export const SeoPanel = () => {
             </FormHelperText>
             <PillInput
               placeholder="Enter keywords for SEO"
+              disabled={isLoading}
               value={keywords}
               onPillAdd={(pill, allPills) => {
                 setKeyValue("keywords", allPills);

@@ -208,14 +208,15 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
             </Box>
             <HStack align={"center"} wrap={"wrap"} mt={4}>
               <Text as={"span"} fontWeight={"semibold"}>
-                Share this post:
+                Share this:
               </Text>
               <HStack>
                 <ThemedSocialShareGroup
                   showLabels={false}
                   url={shareUrl}
                   theme="brand"
-                  variant="round"
+                  variant="default"
+                  className="h-10"
                   title={post?.title || ""}
                   platforms={["copy", "x", "facebook", "linkedin", "email"]}
                   hashtags={post?.tags?.map((tag) => tag.slug) || []}

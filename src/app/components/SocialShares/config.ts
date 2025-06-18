@@ -330,9 +330,10 @@ export const SOCIAL_SHARE_VARIANTS = {
     padding: "px-3 py-2",
     gap: "gap-2",
   },
+
   round: {
-    rounded: "rounded-md",
-    padding: "px-4 py-2",
+    rounded: "rounded-full",
+    padding: "p-3",
     gap: "gap-2",
   },
   compact: {

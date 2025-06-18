@@ -15,6 +15,7 @@ type PostSeoMetaStore = {
   saveSeoMeta: () => Promise<void>;
   postIdOrSlug: string | null;
   error: string | null;
+  isLoading: boolean;
   setPostIdOrSlug: (postIdOrSlug: string) => void;
   fetchSeoMeta: () => Promise<void>;
   setKeyValue: (
@@ -117,6 +118,7 @@ export const usePostSeoMetaStore = create<PostSeoMetaStore>((set, get) => {
     isSaving: false,
     postIdOrSlug: null,
     error: null,
+    isLoading: false,
     _initialValues: {
       title: "",
       description: "",
@@ -137,6 +139,7 @@ export const usePostSeoMetaStore = create<PostSeoMetaStore>((set, get) => {
     },
 
     fetchSeoMeta: async () => {
+      set({ isLoading: true });
       try {
         const { postIdOrSlug } = get();
         const response = await fetch(`/api/posts/${postIdOrSlug}/seometa`);
@@ -161,6 +164,8 @@ export const usePostSeoMetaStore = create<PostSeoMetaStore>((set, get) => {
         });
       } catch (error: any) {
         set({ error: error.message });
+      } finally {
+        set({ isLoading: false });
       }
     },
   };

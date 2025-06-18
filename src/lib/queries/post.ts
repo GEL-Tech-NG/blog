@@ -44,6 +44,7 @@ export const getPost = async (slugOrPostId: string | number) => {
       },
       seoMeta: {
         columns: {
+          post_id: true,
           title: true,
           description: true,
           image: true,
@@ -100,6 +101,7 @@ export const getPostForEditing = async (slugOrPostId: string | number) => {
       },
       seoMeta: {
         columns: {
+          post_id: true,
           title: true,
           description: true,
           image: true,

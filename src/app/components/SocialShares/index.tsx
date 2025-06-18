@@ -359,13 +359,11 @@ const ThemedCopyLinkButton = memo<
       [url, successDuration]
     );
 
-    if (!url) return null;
-
     return (
       <ThemedSocialShareButton
         icon={CopyIcon}
         label={copied ? successLabel : "Copy Link"}
-        url={url}
+        url={url || ""}
         title={title}
         platform="copy"
         onClick={handleCopy}

@@ -68,29 +68,6 @@ export const posts = mysqlTable(
   })
 );
 
-export const postsRelations = relations(posts, ({ one, many }) => ({
-  author: one(users, {
-    fields: [posts.author_id],
-    references: [users.auth_id],
-  }),
-  views: many(postViews),
-  reactions: many(postReactions),
-  seoMeta: one(postSeoMeta, {
-    fields: [posts.seo_meta_id],
-    references: [postSeoMeta.post_id],
-  }),
-  featured_image: one(medias, {
-    fields: [posts.featured_image_id],
-    references: [medias.id],
-  }),
-  comments: many(comments),
-  category: one(categories, {
-    fields: [posts.category_id],
-    references: [categories.id],
-  }),
-  tags: many(postTags),
-}));
-
 export const postSeoMeta = mysqlTable(
   "PostSeoMeta",
   {
@@ -111,10 +88,6 @@ export const postSeoMeta = mysqlTable(
   })
 );
 
-export const postMetaRelations = relations(postSeoMeta, ({ one }) => ({
-  post: one(posts, { fields: [postSeoMeta.post_id], references: [posts.id] }),
-}));
-
 export const categories = mysqlTable(
   "Categories",
   {
@@ -129,10 +102,6 @@ export const categories = mysqlTable(
     idxSlug: uniqueIndex("idx_slug").on(table.slug),
   })
 );
-
-export const categoriesRelations = relations(categories, ({ many }) => ({
-  posts: many(posts),
-}));
 
 export const tags = mysqlTable(
   "Tags",
@@ -149,10 +118,6 @@ export const tags = mysqlTable(
   })
 );
 
-export const tagsRelations = relations(tags, ({ many }) => ({
-  posts: many(postTags),
-}));
-
 export const postTags = mysqlTable(
   "PostTags",
   {
@@ -163,11 +128,6 @@ export const postTags = mysqlTable(
     idxPostTag: index("idx_post_tag").on(table.post_id, table.tag_id),
   })
 );
-
-export const postTagsRelations = relations(postTags, ({ one }) => ({
-  post: one(posts, { fields: [postTags.post_id], references: [posts.id] }),
-  tag: one(tags, { fields: [postTags.tag_id], references: [tags.id] }),
-}));
 
 export const comments = mysqlTable(
   "Comments",
@@ -193,15 +153,6 @@ export const comments = mysqlTable(
   })
 );
 
-export const commentsRelations = relations(comments, ({ one, many }) => ({
-  author: one(users, {
-    fields: [comments.author_id],
-    references: [users.auth_id],
-  }),
-  post: one(posts, { fields: [comments.post_id], references: [posts.id] }),
-  replies: many(replies),
-}));
-
 export const replies = mysqlTable(
   "Replies",
   {
@@ -225,6 +176,45 @@ export const replies = mysqlTable(
     idxCreatedAt: index("idx_created_at").on(table.created_at),
   })
 );
+export const postMetaRelations = relations(postSeoMeta, ({ one }) => ({
+  post: one(posts, { fields: [postSeoMeta.post_id], references: [posts.id] }),
+}));
+export const postsRelations = relations(posts, ({ one, many }) => ({
+  author: one(users, {
+    fields: [posts.author_id],
+    references: [users.auth_id],
+  }),
+  views: many(postViews),
+  reactions: many(postReactions),
+  seoMeta: one(postSeoMeta, {
+    fields: [posts.seo_meta_id],
+    references: [postSeoMeta.id],
+  }),
+  featured_image: one(medias, {
+    fields: [posts.featured_image_id],
+    references: [medias.id],
+  }),
+  comments: many(comments),
+  category: one(categories, {
+    fields: [posts.category_id],
+    references: [categories.id],
+  }),
+  tags: many(postTags),
+}));
+
+export const postTagsRelations = relations(postTags, ({ one }) => ({
+  post: one(posts, { fields: [postTags.post_id], references: [posts.id] }),
+  tag: one(tags, { fields: [postTags.tag_id], references: [tags.id] }),
+}));
+
+export const commentsRelations = relations(comments, ({ one, many }) => ({
+  author: one(users, {
+    fields: [comments.author_id],
+    references: [users.auth_id],
+  }),
+  post: one(posts, { fields: [comments.post_id], references: [posts.id] }),
+  replies: many(replies),
+}));
 
 export const repliesRelations = relations(replies, ({ one }) => ({
   author: one(users, {
@@ -235,4 +225,12 @@ export const repliesRelations = relations(replies, ({ one }) => ({
     fields: [replies.comment_id],
     references: [comments.id],
   }),
+}));
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  posts: many(posts),
+}));
+
+export const tagsRelations = relations(tags, ({ many }) => ({
+  posts: many(postTags),
 }));

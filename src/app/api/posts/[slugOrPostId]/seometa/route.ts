@@ -1,7 +1,8 @@
 import { db } from "@/src/db";
-import { postSeoMeta } from "@/src/db/schemas";
+import { posts, postSeoMeta } from "@/src/db/schemas";
 import { getPostForEditing } from "@/src/lib/queries/post";
 import { eq } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -18,33 +19,60 @@ export async function POST(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    await db
-      .insert(postSeoMeta)
-      .values({
-        post_id: post.id,
-        title,
-        description,
-        canonical_url,
-        image,
-        keywords: JSON.stringify(keywords),
-      })
-      .onDuplicateKeyUpdate({
-        set: {
-          title,
-          description,
-          canonical_url,
-          image,
-          keywords: JSON.stringify(keywords),
-          updated_at: new Date(), // if you have this field
-        },
+    const seoMeta = await db.transaction(async (tx) => {
+      const currentSeoMeta = await tx.query.postSeoMeta.findFirst({
+        where: eq(postSeoMeta.post_id, post.id),
       });
-    const seoMeta = await db.query.postSeoMeta.findFirst({
-      where: eq(postSeoMeta.post_id, post.id),
+      if (currentSeoMeta) {
+        await tx
+          .update(postSeoMeta)
+          .set({
+            title,
+            description,
+            canonical_url,
+            image,
+            keywords: JSON.stringify(keywords),
+          })
+          .where(eq(postSeoMeta.id, currentSeoMeta.id));
+        // if the post has no seo meta id, set it to the current seo meta id
+        if (!post.seo_meta_id) {
+          await tx
+            .update(posts)
+            .set({
+              seo_meta_id: currentSeoMeta.id,
+            })
+            .where(eq(posts.id, post.id));
+        }
+      } else {
+        const [insertedSeoMeta] = await tx
+          .insert(postSeoMeta)
+          .values({
+            post_id: post.id,
+            title,
+            description,
+            canonical_url,
+            image,
+            keywords: JSON.stringify(keywords),
+          })
+          .$returningId();
+        await tx
+          .update(posts)
+          .set({
+            seo_meta_id: insertedSeoMeta.id,
+          })
+          .where(eq(posts.id, post.id));
+      }
+      return await tx.query.postSeoMeta.findFirst({
+        where: eq(postSeoMeta.post_id, post.id),
+      });
     });
     const meta = {
       ...seoMeta,
       keywords: JSON.parse(seoMeta?.keywords || "[]"),
     };
+    revalidateTag("getPostWithCache");
+    revalidateTag("getPlainPostWithCache");
+
     return NextResponse.json({ message: "SEO meta saved", data: meta });
   } catch (error) {
     return NextResponse.json(
