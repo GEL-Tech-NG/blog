@@ -12,6 +12,8 @@ export default async function Home({
   const postsWithMeta = await getPosts({ category });
   const featuredPost = await getFeaturedPost();
   return (
-    <FrontPage postsWithMeta={postsWithMeta} featuredPost={featuredPost} />
+    <>
+      <FrontPage postsWithMeta={postsWithMeta} featuredPost={featuredPost} />
+    </>
   );
 }

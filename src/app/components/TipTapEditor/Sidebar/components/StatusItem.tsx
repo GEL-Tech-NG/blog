@@ -3,16 +3,14 @@ import { LuRadioReceiver } from "react-icons/lu";
 
 export const StatusItem = ({ status }: { status: string }) => {
   return (
-    <ListItem>
-      <HStack>
-        <Text as="span" color="gray.500">
-          <Icon as={LuRadioReceiver} mr={1} />
-          Status:
-        </Text>
-        <Text as="span" fontWeight="semibold" textTransform="capitalize">
-          {status}
-        </Text>
-      </HStack>
-    </ListItem>
+    <HStack>
+      <Text as="span" color="gray.500">
+        <Icon as={LuRadioReceiver} mr={1} />
+        Status:
+      </Text>
+      <Text as="span" fontWeight="semibold" textTransform="capitalize">
+        {status}
+      </Text>
+    </HStack>
   );
 };

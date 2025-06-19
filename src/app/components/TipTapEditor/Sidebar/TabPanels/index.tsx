@@ -10,10 +10,16 @@ export const EditorSidebarTabPanels = () => {
       minW={300}
       width={{ base: "100%" }}
       overflowY={"auto"}
+      className=""
     >
       <Tabs>
-        <TabList>
-          <Tab>Publish</Tab>
+        <TabList
+          bg="white"
+          borderBottom="1px solid"
+          borderColor="gray.200"
+          className="rounded-t-lg "
+        >
+          <Tab>Appearance</Tab>
           <Tab>SEO</Tab>
         </TabList>
         <TabPanels>

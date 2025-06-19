@@ -31,6 +31,7 @@ export const UserMenu = () => {
           rightIcon={<LuChevronDown />}
           variant={"outline"}
           rounded={"full"}
+          size={"sm"}
         >
           Hi, {user?.name?.split(" ")[0]}
         </MenuButton>

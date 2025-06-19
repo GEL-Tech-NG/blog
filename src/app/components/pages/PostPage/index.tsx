@@ -31,6 +31,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/next-js";
 import { ThemedSocialShareGroup } from "../../SocialShares";
 import dynamic from "next/dynamic";
+import { TelegramFab } from "../../Telegram/Fab";
 
 const ViewTracker = dynamic(
   () => import("../../ViewTracker").then((mod) => mod.ViewTracker),
@@ -54,6 +55,7 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
   post,
   siteSettings,
 }) => {
+  
   const settings = siteSettings;
   const sidebarWidth = useBreakpointValue({ base: "full", lg: "350px" });
   const canWrapNewsletter = useBreakpointValue({ base: false, lg: true });
@@ -92,6 +94,7 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
       {settings.localPostAnalytics?.enabled && (
         <ViewTracker postId={post?.id} />
       )}
+          <TelegramFab />
 
       {/* Post Content Section */}
       <Container maxW="1250px" py={8} px={{ base: 4, md: 5, lg: 8 }}>

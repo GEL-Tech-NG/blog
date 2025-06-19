@@ -1,11 +1,8 @@
 "use client";
-import { usePathname } from "next/navigation";
 import { FaTelegram } from "react-icons/fa";
 
 export const TelegramFab = () => {
-  const pathname = usePathname();
-  const isDashboard = pathname.includes("/dashboard");
-  if (isDashboard) return null;
+
   return (
     <a
       href="https://t.me/geltechdeals"

@@ -1,5 +1,9 @@
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
   Button,
   Drawer,
   DrawerBody,
@@ -7,21 +11,31 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   Hide,
+  HStack,
+  Icon,
   IconButton,
   Show,
   Stack,
+  StackDivider,
   Text,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import DashHeader from "../../Dashboard/Header";
-import { LuSettings } from "react-icons/lu";
+import {
+  LuChevronRight,
+  LuClock,
+  LuLayoutDashboard,
+  LuSettings,
+} from "react-icons/lu";
 import { SidebarContent } from "../Sidebar";
 import { memo } from "react";
 import React from "react";
 import { formatDate } from "@/src/utils";
 import { useEditorPostManagerStore } from "@/src/state/editor-post-manager";
+import { StatusItem } from "../Sidebar/components/StatusItem";
 
 function EditorHeader() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,31 +44,77 @@ function EditorHeader() {
   const lastUpdate = useEditorPostManagerStore(
     (state) => state.activePost?.updated_at || state.lastUpdate
   );
-
+  const isSaving = useEditorPostManagerStore((state) => state.isSaving);
+  const postTitle = useEditorPostManagerStore(
+    (state) => state.activePost?.title
+  );
+  const postStatus = useEditorPostManagerStore(
+    (state) => state.activePost?.status
+  );
   return (
     <>
       <DashHeader pos="sticky" top={0} zIndex={10}>
-        <Stack gap={0}>
-          <Text fontSize="lg" fontWeight={600} as="span">
-            Create Post
-          </Text>
-          {hasError && (
-            <Text as="span" fontSize="sm" color="red.500">
-              Error saving post. Please try again.
-            </Text>
-          )}
-          {!hasError && (
-            <Text as="span" fontSize="sm" color="gray.500">
-              Last saved:{" "}
-              {lastUpdate
-                ? formatDate(new Date(lastUpdate))
-                : isDirty && (
-                    <Text as={"span"} color={"orange.500"}>
+        <Stack gap={1.5}>
+          <Breadcrumb
+            my={1}
+            hideBelow={"lg"}
+            spacing="8px"
+            className="text-sm"
+            display={"flex"}
+            justifyContent={{ base: "start", md: "center" }}
+            separator={<LuChevronRight className="text-gray-500" />}
+          >
+            <BreadcrumbItem className="font-semibold hover:underline">
+              <BreadcrumbLink href="/dashboard">
+                <span className="sr-only">Dashboard</span>
+                <LuLayoutDashboard />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem className="font-semibold">
+              <BreadcrumbLink href="/dashboard/posts">Posts</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink isCurrentPage className="text-gray-500">
+                {postTitle}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+          <HStack
+            gap={2}
+            divider={<StackDivider />}
+            alignItems="center"
+            fontSize="sm"
+          >
+            <Box>
+              <StatusItem status={postStatus as string} />
+            </Box>
+            {hasError && (
+              <Text as="span" color="red.500">
+                Error saving post. Please try again.
+              </Text>
+            )}
+            {!hasError && (
+              <Flex align="center" gap={1}>
+                <HStack align={"center"} gap={1} className="text-gray-500">
+                  <Icon as={LuClock} />
+                  <Text as="span">Last saved: </Text>
+                </HStack>
+
+                {lastUpdate ? (
+                  <Text className="font-semibold " as="span">
+                    {formatDate(new Date(lastUpdate))}
+                  </Text>
+                ) : (
+                  isDirty && (
+                    <Text as={"span"} className="text-yellow-500 font-semibold">
                       You have Unsaved changes...
                     </Text>
-                  )}
-            </Text>
-          )}
+                  )
+                )}
+              </Flex>
+            )}
+          </HStack>
         </Stack>
         <Hide below="md">
           <Button

@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { LuClock } from "react-icons/lu";
+import { LuTimer } from "react-icons/lu";
 import { Button, HStack, Icon, ListItem, Text } from "@chakra-ui/react";
 import { PermissionGuard } from "../../../PermissionGuard";
 import { CalendarPicker } from "../../CalendarPicker";
@@ -17,7 +17,7 @@ export const ScheduleItem = ({
         <HStack justify="space-between">
           <HStack>
             <Text as="span" color="gray.500">
-              <Icon as={LuClock} mr={1} />
+              <Icon as={LuTimer} mr={1} />
               Schedule:
             </Text>
             <Text as="span" fontWeight="semibold" textTransform="capitalize">

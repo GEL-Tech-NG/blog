@@ -100,13 +100,16 @@ export function usePosts({
     enabled: canFetch,
   });
 
-  const refetchPosts = async (params?: UsePostsProps) => {
-    params && updateParams(params);
-    await refetch();
-  };
   const updateParams = useCallback((prop: UsePostsProps) => {
     setParams((prev) => ({ ...prev, ...prop }));
   }, []);
+  const refetchPosts = useCallback(
+    async (params?: UsePostsProps) => {
+      params && updateParams(params);
+      await refetch();
+    },
+    [refetch, updateParams]
+  );
   return {
     posts,
     loading: isLoading || isFetching,

@@ -3,7 +3,6 @@ import { CommentsToggle } from "./CommentsToggle";
 import { MetricsItem } from "./MetricsItem";
 import { PinnedToggle } from "./PinnedToggle";
 import { ScheduleItem } from "./ScheduleItem";
-import { StatusItem } from "./StatusItem";
 import { VisibilityItem } from "./VisibilityItem";
 import { useEditorPostManagerStore } from "@/src/state/editor-post-manager";
 
@@ -19,14 +18,12 @@ export const PublishMetadata = () => {
   const allowComments = useEditorPostManagerStore(
     (state) => state.activePost?.allow_comments
   );
-  const status = useEditorPostManagerStore((state) => state.activePost?.status);
   const scheduledAt = useEditorPostManagerStore(
     (state) => state.activePost?.scheduled_at
   );
   return (
     <Box p={4} pb={0}>
       <Stack as={List} fontSize={14} gap={2}>
-        <StatusItem status={status as string} />
         <VisibilityItem visibility={visibility as string} />
         <ScheduleItem
           scheduledAt={scheduledAt as Date}

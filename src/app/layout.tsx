@@ -209,7 +209,6 @@ export default async function RootLayout({
               </AuthProvider>
             </ReactQueryClient>
           </SiteConfigProvider>
-          <TelegramFab />
           <ConditionalScriptRenderer
             scripts={scripts}
             position={SCRIPT_POSITIONS.BODY_END}

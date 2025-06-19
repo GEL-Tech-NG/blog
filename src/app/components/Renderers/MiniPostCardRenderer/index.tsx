@@ -2,6 +2,7 @@ import { SearchPostsComponent } from "@/src/lib/editor/nodes/MiniPostCard/Search
 import { PostSelect } from "@/src/types";
 import {
   decodeAndSanitizeHtml,
+  generatePostDescription,
   generatePostUrl,
   objectToQueryParams,
   shortenText,
@@ -138,12 +139,16 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
             <Input
               border={"none"}
               borderBottom={"1px solid"}
-              borderColor={"gray.300"}
+              borderColor={"gray.400"}
               rounded={"none"}
               placeholder="Add custom title (optional)"
               value={inputValue}
               variant={""}
               size={"lg"}
+              _focus={{
+                border: "2px solid",
+                borderColor: "brandPurple.500",
+              }}
               fontSize={"large"}
               fontWeight="bold"
               onChange={(e) => {
@@ -198,10 +203,7 @@ export const MiniPostCardRenderer: React.FC<MiniPostCardProps> = memo(
                       noOfLines={2}
                       w={"full"}
                     >
-                      {shortenText(
-                        stripHtml(decodeAndSanitizeHtml(post?.content || "")),
-                        150
-                      )}
+                      {generatePostDescription(post)}
                     </Text>
                   </Stack>
                 </HStack>

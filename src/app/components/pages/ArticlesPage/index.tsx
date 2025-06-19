@@ -6,6 +6,7 @@ import { usePosts } from "@/src/hooks";
 import { CategoryItemList } from "../../CategoryItemList";
 import { PostSelect } from "@/src/types";
 import { useEffect, useState } from "react";
+import { TelegramFab } from "../../Telegram/Fab";
 
 export default function ArticlesPage({
   posts: initialPosts,
@@ -25,9 +26,11 @@ export default function ArticlesPage({
     if (categoryQuery !== initialCategory) {
       refetchPosts();
     }
-  }, [categoryQuery, initialCategory]);
+  }, [categoryQuery, initialCategory, refetchPosts]);
   return (
     <PageWrapper>
+      <TelegramFab />
+
       <Box py={8} px={{ base: 3, lg: 4 }} maxW={"container.xl"} mx="auto">
         <Box>
           <Box mt={0} mb={6}>
