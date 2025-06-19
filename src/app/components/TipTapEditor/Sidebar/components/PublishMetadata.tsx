@@ -5,6 +5,7 @@ import { PinnedToggle } from "./PinnedToggle";
 import { ScheduleItem } from "./ScheduleItem";
 import { VisibilityItem } from "./VisibilityItem";
 import { useEditorPostManagerStore } from "@/src/state/editor-post-manager";
+import { TocActions } from "./TocActions";
 
 export const PublishMetadata = () => {
   const { isOpen, onClose, onToggle } = useDisclosure();
@@ -14,6 +15,9 @@ export const PublishMetadata = () => {
   );
   const isSticky = useEditorPostManagerStore(
     (state) => state.activePost?.is_sticky
+  );
+  const generateToc = useEditorPostManagerStore(
+    (state) => state.activePost?.generate_toc
   );
   const allowComments = useEditorPostManagerStore(
     (state) => state.activePost?.allow_comments
@@ -39,6 +43,10 @@ export const PublishMetadata = () => {
         <PinnedToggle
           isSticky={isSticky as boolean}
           onChange={() => updateField("is_sticky", !isSticky)}
+        />
+        <TocActions
+          generateToc={generateToc as boolean}
+          onChange={() => updateField("generate_toc", !generateToc)}
         />
       </Stack>
     </Box>

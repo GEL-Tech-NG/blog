@@ -15,15 +15,15 @@ export const PenstackHeadingsRenderer: React.FC<HeadingsRendererProps> = memo(
         h1: {
           fontSize: "2.25rem",
           as: "h1",
-          mt: "2em",
+          mt: "1.75em",
           mb: "1em",
           fontWeight: 800,
           lineHeight: 1.2,
         },
         h2: {
-          fontSize: "1.875rem",
+          fontSize: "1.85rem",
           as: "h2",
-          mt: "1.75em",
+          mt: "1.5em",
           mb: "0.75em",
           fontWeight: 700,
           lineHeight: 1.25,
@@ -31,7 +31,7 @@ export const PenstackHeadingsRenderer: React.FC<HeadingsRendererProps> = memo(
         h3: {
           fontSize: "1.5rem",
           as: "h3",
-          mt: "1.5em",
+          mt: "1.25em",
           mb: "0.5em",
           fontWeight: 600,
           lineHeight: 1.3,
@@ -39,7 +39,7 @@ export const PenstackHeadingsRenderer: React.FC<HeadingsRendererProps> = memo(
         h4: {
           fontSize: "1.25rem",
           as: "h4",
-          mt: "1.25em",
+          mt: "1.15em",
           mb: "0.5em",
           fontWeight: 600,
           lineHeight: 1.4,
@@ -47,7 +47,7 @@ export const PenstackHeadingsRenderer: React.FC<HeadingsRendererProps> = memo(
         h5: {
           fontSize: "1.125rem",
           as: "h5",
-          mt: "1.25em",
+          mt: "1em",
           mb: "0.5em",
           fontWeight: 600,
           lineHeight: 1.4,
@@ -55,7 +55,7 @@ export const PenstackHeadingsRenderer: React.FC<HeadingsRendererProps> = memo(
         h6: {
           fontSize: "1rem",
           as: "h6",
-          mt: "1.25em",
+          mt: "1em",
           mb: "0.5em",
           fontWeight: 600,
           lineHeight: 1.4,

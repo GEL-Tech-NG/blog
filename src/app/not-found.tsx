@@ -18,7 +18,7 @@ const NotFound: NextPage = () => {
   return (
     <Container maxW="container.xl" h="100vh" centerContent>
       <VStack spacing={8} align="center" justify="center" h="full">
-        <Image src="/assets/404.svg" alt="404 Illustration" boxSize="300px" />
+        <Image src="/assets/404.svg" alt="404 Illustration" boxSize="200px" />
         <Heading as="h1" size="2xl" textAlign="center">
           Oops! Page Not Found
         </Heading>

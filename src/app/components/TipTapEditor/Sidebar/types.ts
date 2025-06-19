@@ -14,3 +14,8 @@ export interface PinnedToggleProps {
   isSticky: boolean;
   onChange: () => void;
 }
+export interface TocActionsProps {
+  generateToc: boolean;
+  tocDepth?: number;
+  onChange: () => void;
+}
