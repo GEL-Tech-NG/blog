@@ -1,7 +1,7 @@
 import { Node, mergeAttributes } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { MediaAspectRatios, MediaObjectFits } from "../../types";
-import { MediaComponentNew } from "../../nodes/media/MediaComponentNew";
+import { MediaComponentNew } from "../../nodes/media/MediaComponents";
 
 // TypeScript interfaces
 interface MediaAttrs {
