@@ -16,9 +16,9 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ post }) => {
     <Box
       w="full"
       pb={{ base: 4, md: 6, lg: 8 }}
-      flexShrink={0}
+      // flexShrink={0}
       flexGrow={1}
-      maxW="container.md"
+      maxW="container.lg"
     >
       <Box display={{ base: "block", lg: "none" }} pt={5}>
         {post?.toc && post?.toc.length > 0 && (
@@ -28,7 +28,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ post }) => {
       <ContentRenderer content={decodeAndSanitizeHtml(post?.content || "")} />
       <Box my={2}>
         {post?.tags && post?.tags?.length > 0 && (
-          <HStack align={"center"} gap={2} mb={4} mt={5}>
+          <HStack wrap={"wrap"} gap={2} mb={4} mt={5}>
             <HStack fontWeight={500} color={"gray.600"}>
               <LuTags />{" "}
               <Text as={"span"} fontWeight={500} color={"gray.700"}>

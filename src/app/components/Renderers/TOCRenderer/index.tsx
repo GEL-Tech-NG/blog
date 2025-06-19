@@ -162,7 +162,7 @@ export const TOCRenderer = ({
   return (
     <nav
       className={cn(
-        "w-full lg:w-[350px] border rounded-lg bg-white transition-all duration-200 overflow-hidden",
+        "w-full border rounded-lg bg-white transition-all duration-200 overflow-hidden",
         isCollapsed ? "h-auto" : "h-[330px]"
       )}
       aria-label="Table of Contents"

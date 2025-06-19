@@ -32,6 +32,7 @@ import { Link } from "@chakra-ui/next-js";
 import { ThemedSocialShareGroup } from "../../SocialShares";
 import dynamic from "next/dynamic";
 import { TelegramFab } from "../../Telegram/Fab";
+import { FaBoxes } from "react-icons/fa";
 
 const ViewTracker = dynamic(
   () => import("../../ViewTracker").then((mod) => mod.ViewTracker),
@@ -55,7 +56,6 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
   post,
   siteSettings,
 }) => {
-  
   const settings = siteSettings;
   const sidebarWidth = useBreakpointValue({ base: "full", lg: "350px" });
   const canWrapNewsletter = useBreakpointValue({ base: false, lg: true });
@@ -94,7 +94,7 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
       {settings.localPostAnalytics?.enabled && (
         <ViewTracker postId={post?.id} />
       )}
-          <TelegramFab />
+      <TelegramFab />
 
       {/* Post Content Section */}
       <Container maxW="1250px" py={8} px={{ base: 4, md: 5, lg: 8 }}>
@@ -231,7 +231,7 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
         </Box>
         {/* Main Content Area */}
         <Flex
-          gap={{ base: 4, md: 5, lg: 8, xl: 10 }}
+          gap={{ base: 4, md: 5, lg: 6, xl: 10 }}
           w="full"
           justify={"space-between"}
           flexDirection={{ base: "column-reverse", lg: "row" }}
@@ -239,16 +239,49 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
           <VStack
             w={sidebarWidth || "320px"}
             minW={{ base: "full", md: 320 }}
-            spacing={2}
+            pt={4}
+            spacing={4}
             alignSelf={"start"}
             position="sticky"
             style={{ scrollPaddingTop: "10px" }}
             top={{ base: 0, lg: 55 }}
             alignItems={"stretch"}
+            zIndex={{ base: 40, lg: 0 }}
             pb={6}
           >
+            <HStack
+              gap={1}
+              align={"center"}
+              wrap={"wrap"}
+              bg={newsletterBgColor}
+              pos={{ base: "fixed", lg: "relative" }}
+              w={"full"}
+              px={{ base: 4, lg: 0 }}
+              py={{ base: 2, lg: 0 }}
+              bottom={0}
+              left={0}
+              zIndex={{ base: 4, lg: 0 }}
+            >
+              <Text as={"span"} fontWeight={"semibold"}>
+                Share:
+              </Text>
+              <Box>
+                <ThemedSocialShareGroup
+                  showLabels={false}
+                  url={shareUrl}
+                  theme="brand"
+                  variant="compact"
+                  // className="h-8"
+                  // size="lg"
+                  title={post?.title || ""}
+                  platforms={["copy", "x", "facebook", "linkedin", "email"]}
+                  hashtags={post?.tags?.map((tag) => tag.slug) || []}
+                  summary={generatePostDescription(post)}
+                />
+              </Box>
+            </HStack>
             {post?.toc && post?.toc.length > 0 && (
-              <Box display={{ base: "none", lg: "block" }} pt={5}>
+              <Box display={{ base: "none", lg: "block" }} pt={0}>
                 <TOCRenderer content={post?.toc || []} />
               </Box>
             )}
@@ -257,7 +290,8 @@ const PostPage: React.FC<{ post: PostSelect; siteSettings: SiteSettings }> = ({
               mb={4}
               bg={newsletterBgColor}
               maxW={"full"}
-              pt={{ base: 0, lg: 4 }}
+              w={"full"}
+              pt={{ base: 0, lg: 0 }}
             >
               <Newsletter
                 title="Subscribe to our newsletter"

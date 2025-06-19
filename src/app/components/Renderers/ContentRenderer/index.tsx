@@ -291,38 +291,38 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
 );
 ContentRenderer.displayName = "ContentRenderer";
 
-function convertNodeToReactElements(nodes: any[]): React.ReactNode {
-  return nodes.map((node, i) => {
-    if (node.type === "text") {
-      return <React.Fragment key={i}>{node.value}</React.Fragment>;
-    }
-    if (node.type === "element") {
-      const className = node.properties.className || [];
-      return (
-        <Box as="span" key={i} className={className.join(" ")} display="inline">
-          {convertNodeToReactElements(node.children)}
-        </Box>
-      );
-    }
-    return null;
-  });
-}
+// function convertNodeToReactElements(nodes: any[]): React.ReactNode {
+//   return nodes.map((node, i) => {
+//     if (node.type === "text") {
+//       return <React.Fragment key={i}>{node.value}</React.Fragment>;
+//     }
+//     if (node.type === "element") {
+//       const className = node.properties.className || [];
+//       return (
+//         <Box as="span" key={i} className={className.join(" ")} display="inline">
+//           {convertNodeToReactElements(node.children)}
+//         </Box>
+//       );
+//     }
+//     return null;
+//   });
+// }
 
-function getWeightForClassName(className: string): string {
-  const classesToBold = [
-    "hljs-keyword",
-    "hljs-built_in",
-    "hljs-type",
-    "hljs-function",
-    "hljs-class",
-    "hljs-title",
-  ];
+// function getWeightForClassName(className: string): string {
+//   const classesToBold = [
+//     "hljs-keyword",
+//     "hljs-built_in",
+//     "hljs-type",
+//     "hljs-function",
+//     "hljs-class",
+//     "hljs-title",
+//   ];
 
-  return classesToBold.includes(className) ? "bold" : "normal";
-}
+//   return classesToBold.includes(className) ? "bold" : "normal";
+// }
 
-function getStyleForClassName(className: string): string {
-  const classesToItalicize = ["hljs-comment", "hljs-doctag", "hljs-meta"];
+// function getStyleForClassName(className: string): string {
+//   const classesToItalicize = ["hljs-comment", "hljs-doctag", "hljs-meta"];
 
-  return classesToItalicize.includes(className) ? "italic" : "normal";
-}
+//   return classesToItalicize.includes(className) ? "italic" : "normal";
+// }

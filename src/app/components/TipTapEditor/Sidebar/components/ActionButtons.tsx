@@ -1,4 +1,14 @@
-import { Button, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  useToast,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  ButtonGroup,
+  Icon,
+} from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { PermissionGuard } from "../../../PermissionGuard";
 import { useState } from "react";
 import { useEditorPostManagerStore } from "@/src/state/editor-post-manager";
@@ -12,54 +22,74 @@ export const ActionButtons = () => {
     position: "top",
   });
   const updateField = useEditorPostManagerStore((state) => state.updateField);
+
   function onDraft() {
     updateField("status", "draft");
   }
+
   function onPublish() {
     setIsPublishing(true);
     updateField("status", "published");
   }
+
   function onDelete() {
     updateField("status", "deleted");
   }
+
+  const isPublishLoading = isSaving && isPublishing;
+
   return (
-    <>
-      <PermissionGuard requiredPermission="posts:delete">
-        <Button
-          size="xs"
-          flex={1}
-          rounded="md"
-          variant="ghost"
-          colorScheme="red"
-          color="red.500"
-          bg="red.100"
-          onClick={onDelete}
-        >
-          Delete
-        </Button>
-      </PermissionGuard>
-      <Button
-        size="xs"
-        flex={1}
-        variant="outline"
-        rounded="md"
-        onClick={onDraft}
-      >
-        Save draft
-      </Button>
+    <ButtonGroup size="xs" isAttached variant="outline">
+      {/* Main Publish Button */}
       <PermissionGuard requiredPermission="posts:publish">
         <Button
-          size="xs"
-          isDisabled={isSaving && isPublishing}
-          isLoading={isSaving && isPublishing}
+          isDisabled={isPublishLoading}
+          isLoading={isPublishLoading}
           loadingText="Publishing..."
-          flex={1}
           rounded="md"
+          roundedRight="none"
           onClick={onPublish}
+          colorScheme="blue"
+          variant="solid"
+          flex={1}
         >
           Publish
         </Button>
       </PermissionGuard>
-    </>
+
+      {/* Dropdown Menu */}
+      <Menu>
+        <MenuButton
+          as={Button}
+          size="xs"
+          rounded="md"
+          roundedLeft="none"
+          colorScheme="blue"
+          variant="solid"
+          borderLeft="1px solid"
+          borderLeftColor="blue.600"
+          px={2}
+          isDisabled={isPublishLoading}
+        >
+          <ChevronDownIcon />
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={onDraft} fontSize="sm">
+            Save as Draft
+          </MenuItem>
+
+          <PermissionGuard requiredPermission="posts:delete">
+            <MenuItem
+              onClick={onDelete}
+              fontSize="sm"
+              color="red.500"
+              _hover={{ bg: "red.50" }}
+            >
+              Delete Post
+            </MenuItem>
+          </PermissionGuard>
+        </MenuList>
+      </Menu>
+    </ButtonGroup>
   );
 };
