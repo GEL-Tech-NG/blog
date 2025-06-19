@@ -32,8 +32,8 @@ declare module "@tiptap/core" {
     };
   }
 }
-const Media = Node.create({
-  name: "media",
+const PenstackMedia = Node.create({
+  name: "penstackMedia",
   group: "block",
   atom: true,
   selectable: true,
@@ -118,11 +118,11 @@ const Media = Node.create({
     return [
       {
         tag: 'div[data-type="media"]',
-        getAttrs: (element) => {
-          // Validate that we have at least a src attribute
-          const src = element.getAttribute("src");
-          return src ? {} : false;
-        },
+        // getAttrs: (element) => {
+        //   // Validate that we have at least a src attribute
+        //   // const src = element.getAttribute("src");
+        //   // return src ? {} : false;
+        // },
       },
     ];
   },
@@ -147,6 +147,7 @@ const Media = Node.create({
             console.warn("Media insertion requires src attribute");
             return false;
           }
+          console.log({ attributes });
           return commands.insertContent({
             type: this.name,
             attrs: attributes,
@@ -156,5 +157,5 @@ const Media = Node.create({
   },
 });
 
-export default Media;
+export default PenstackMedia;
 export type { MediaAttrs };

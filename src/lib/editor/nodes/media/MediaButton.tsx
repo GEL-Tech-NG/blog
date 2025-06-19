@@ -13,7 +13,7 @@ export const MediaButton = ({ editor }: { editor: Editor }) => {
   const handleMediasSelect = (medias: MediaResponse[]) => {
     medias.forEach((media) => {
       editor.commands.insertMedia({
-        url: media.url,
+        src: media.url,
         alt: media?.alt_text || media?.name,
         type: media.type as "image" | "video",
         caption: media.caption as string,
@@ -26,7 +26,7 @@ export const MediaButton = ({ editor }: { editor: Editor }) => {
       <Button
         size="sm"
         leftIcon={<LuImage />}
-        variant={editor.isActive("media") ? "solid" : "outline"}
+        variant={editor.isActive("penstackMedia") ? "solid" : "outline"}
         onClick={() => {
           onMediaModalOpen();
         }}

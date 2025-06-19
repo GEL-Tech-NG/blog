@@ -12,7 +12,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
-import { Editor, useCurrentEditor } from "@tiptap/react";
+import { Editor } from "@tiptap/react";
 import { useFormik } from "formik";
 import React, { FormEvent, memo, useRef, useState } from "react";
 

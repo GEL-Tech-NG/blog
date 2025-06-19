@@ -2,10 +2,10 @@ import { NodeViewProps } from "@tiptap/react";
 import { NodeViewWrapper } from "@tiptap/react";
 import { useState } from "react";
 import { MediaAspectRatios, MediaObjectFits } from "../../types";
-import Image from "next/image";
+import { Image } from "@chakra-ui/react";
 
 // TypeScript interfaces
-interface MediaAttrs {
+export interface MediaAttrs {
   src: string;
   alt?: string;
   type: "image" | "video" | "audio";
@@ -16,10 +16,12 @@ interface MediaAttrs {
   objectFit?: MediaObjectFits;
 }
 
-interface MediaNodeViewProps extends NodeViewProps {
+export interface MediaNodeViewProps extends Partial<NodeViewProps> {
   node: NodeViewProps["node"] & {
     attrs: MediaAttrs;
   };
+  attrs?: MediaAttrs;
+  isEditing?: boolean;
 }
 
 // Error boundary component for media failures
@@ -115,10 +117,7 @@ const ImageMedia = ({
             setImageError(true);
             setImageLoading(false);
           }}
-          priority={false}
           loading="lazy"
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+WVsTpn2kd7+aq18L4Q="
         />
       </div>
       {caption && (
@@ -144,6 +143,7 @@ const VideoMedia = ({ src }: { src: string }) => {
       className="rounded-md max-w-full"
       onError={() => setVideoError(true)}
       preload="metadata"
+      src={src}
     >
       <source src={src} type="video/mp4" />
       <source src={src} type="video/webm" />
@@ -167,6 +167,7 @@ const AudioMedia = ({ src }: { src: string }) => {
       className="w-full"
       onError={() => setAudioError(true)}
       preload="metadata"
+      src={src}
     >
       <source src={src} type="audio/mpeg" />
       <source src={src} type="audio/ogg" />
@@ -177,16 +178,27 @@ const AudioMedia = ({ src }: { src: string }) => {
 };
 
 // Main MediaComponent with proper typing
-export const MediaComponentNew = ({ node }: MediaNodeViewProps) => {
+export const MediaComponentNew = ({
+  node,
+  attrs,
+  isEditing = true,
+}: MediaNodeViewProps) => {
   const { src, alt, type, caption, width, height, aspectRatio, objectFit } =
-    node.attrs;
+    isEditing ? node.attrs : attrs || {};
+  console.log({
+    attrs,
+  });
 
   // Validate required attributes
   if (!src) {
-    return (
+    return isEditing ? (
       <NodeViewWrapper as="div" className="p-4">
         <MediaError type="media" />
       </NodeViewWrapper>
+    ) : (
+      <div className="p-4">
+        <MediaError type="media" />
+      </div>
     );
   }
 
@@ -216,9 +228,11 @@ export const MediaComponentNew = ({ node }: MediaNodeViewProps) => {
 
   const containerClass = type === "image" ? "flex w-max space-x-4 p-4" : "p-4";
 
-  return (
+  return isEditing ? (
     <NodeViewWrapper as="div" className={containerClass}>
       {renderMedia()}
     </NodeViewWrapper>
+  ) : (
+    <div className={containerClass}>{renderMedia()}</div>
   );
 };

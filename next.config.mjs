@@ -1,5 +1,3 @@
-/** @type {import('next').NextConfig} */
-
 const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
 const netlifySiteUrl = process.env.NETLIFY && process.env.URL;
 let url =
@@ -8,10 +6,33 @@ let url =
       netlifySiteUrl ||
       `https://${vercelProductionUrl}`
     : "http://localhost:3000";
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
     NEXTAUTH_URL: url,
     NEXT_PUBLIC_SITE_URL: url,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
 };
 

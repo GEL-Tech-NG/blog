@@ -30,7 +30,9 @@ import {
 import { PenstackCodeBlockRenderer } from "../PenstackCodeBlockRenderer";
 import PenstackBlockquoteRenderer from "../PenstackBlockquoteRenderer";
 import { PenstackHeadingsRenderer } from "../HeadingsRenderer";
-import MediaRenderer from "../MediaRenderer";
+import { MediaRenderer } from "../MediaRenderer";
+import { MediaAspectRatios, MediaObjectFits } from "@/src/lib/editor/types";
+
 interface ContentRendererProps {
   content: string;
   className?: string;
@@ -75,13 +77,32 @@ export const ContentRenderer: React.FC<ContentRendererProps> = memo(
             );
           }
           if (domNode.attribs?.["data-type"] === "media") {
+            console.log({ attrs: domNode.attribs, attrs2: domNode.attributes });
+
             return (
               <MediaRenderer
-                url={domNode.attribs.src}
-                type={domNode.attribs.type}
-                alt={domNode.attribs.alt}
-                title={domNode.attribs.title}
-                caption={domNode.attribs.caption}
+                attrs={{
+                  src: domNode.attribs.src,
+                  type: domNode.attribs["data-media-type"] as
+                    | "image"
+                    | "video"
+                    | "audio",
+                  width: domNode.attribs["data-media-width"]
+                    ? parseInt(domNode.attribs["data-media-width"], 10)
+                    : 300,
+                  height: domNode.attribs["data-media-height"]
+                    ? parseInt(domNode.attribs["data-media-height"], 10)
+                    : 400,
+                  aspectRatio: domNode.attribs[
+                    "data-media-aspect-ratio"
+                  ] as MediaAspectRatios,
+                  objectFit: domNode.attribs[
+                    "data-media-object-fit"
+                  ] as MediaObjectFits,
+                  alt: domNode.attribs.alt,
+                  caption: domNode.attribs.caption,
+                }}
+                isEditing={false}
               />
             );
           }
