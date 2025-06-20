@@ -44,13 +44,12 @@ export interface MediaNodeViewProps extends Partial<NodeViewProps> {
 export const MediaComponentNew = ({
   node,
   attrs,
+  updateAttributes,
+  selected,
   isEditing = true,
 }: MediaNodeViewProps) => {
   const { src, alt, type, caption, width, height, aspectRatio, objectFit } =
     isEditing ? node.attrs : attrs || {};
-  console.log({
-    attrs,
-  });
 
   // Validate required attributes
   if (!src) {
@@ -76,6 +75,9 @@ export const MediaComponentNew = ({
             caption={caption}
             width={width}
             height={height}
+            updateAttrs={updateAttributes}
+            selected={selected}
+            isEditing={isEditing}
             aspectRatio={aspectRatio}
             objectFit={objectFit}
           />
@@ -85,7 +87,7 @@ export const MediaComponentNew = ({
       case "audio":
         return <AudioMedia src={src} />;
       default:
-        return <MediaError type="unknown media type" />;
+        return <MediaError type="Unknown media type" />;
     }
   };
 

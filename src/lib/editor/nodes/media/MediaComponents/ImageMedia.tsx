@@ -29,6 +29,11 @@ const getObjectFitClass = (objectFit?: MediaObjectFits) => {
   };
   return fitMap[objectFit || "cover"] || "object-cover";
 };
+type ImageMediaProps = MediaAttrs & {
+  isEditing?: boolean;
+  updateAttrs?: (attrs: Partial<MediaAttrs>) => void;
+  selected?: boolean;
+};
 export const ImageMedia = ({
   src,
   alt,
@@ -37,7 +42,10 @@ export const ImageMedia = ({
   height = 400,
   aspectRatio = "3/4",
   objectFit = "cover",
-}: MediaAttrs) => {
+  selected,
+  isEditing = true,
+  updateAttrs,
+}: ImageMediaProps) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 
