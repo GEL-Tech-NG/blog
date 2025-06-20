@@ -12,7 +12,7 @@ export const TocActions = ({ generateToc, onChange }: TocActionsProps) => {
           <Icon as={LuStickyNote} mr={1} />
           Generate Table of Content:
         </Text>
-        <Switch isChecked={generateToc} onChange={onChange} />
+        <Switch isChecked={generateToc} onChange={onChange} size={"sm"} />
       </HStack>
     </ListItem>
     // </PermissionGuard>

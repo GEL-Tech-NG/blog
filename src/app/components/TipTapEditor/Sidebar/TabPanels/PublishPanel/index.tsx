@@ -1,4 +1,11 @@
-import { Spinner, Stack, Text, HStack } from "@chakra-ui/react";
+import {
+  Spinner,
+  Stack,
+  Text,
+  HStack,
+  Switch,
+  StackDivider,
+} from "@chakra-ui/react";
 
 import { SectionCard } from "@/src/app/components/Dashboard/SectionCard";
 
@@ -12,15 +19,34 @@ import { PublishMetadata } from "../../components/PublishMetadata";
 
 export const PublishPanel = () => {
   const isSaving = useEditorPostManagerStore((state) => state.isSaving);
-
+  const autoSave = useEditorPostManagerStore((state) => state.autoSave);
+  const isDirty = useEditorPostManagerStore((state) => state.isDirty);
+  const setAutosave = useEditorPostManagerStore((state) => state.setAutosave);
   return (
     <Stack gap={3} className="p-0">
       <SectionCard
         title="Publish"
         header={
-          <>
+          <HStack divider={<StackDivider />}>
             <HStack>
-              {" "}
+              <Text as="span" fontSize={"smaller"} color="gray.500">
+                Auto Save:
+              </Text>
+              <Switch
+                isChecked={autoSave}
+                onChange={(e) => setAutosave(!autoSave)}
+                size="sm"
+              />
+            </HStack>
+            <HStack>
+              <Text
+                as="span"
+                fontSize={"smaller"}
+                color={isSaving ? "gray.300" : undefined}
+              >
+                {" "}
+                {isSaving ? "Saving..." : isDirty ? "Unsaved" : "Saved"}
+              </Text>
               {isSaving ? (
                 <Spinner size="xs" />
               ) : (
@@ -30,17 +56,19 @@ export const PublishPanel = () => {
                   w={"14px"}
                   h={"14px"}
                   rounded="full"
-                  bg="green.400"
+                  bg={isDirty ? "orange.400" : "green.400"}
                 >
-                  <LuCheck size={12} color="white" />
+                  {isDirty && !autoSave ? (
+                    <Text fontSize="xs" as={"span"} color="white">
+                      !
+                    </Text>
+                  ) : (
+                    <LuCheck size={12} color="white" />
+                  )}
                 </Stack>
               )}
-              <Text as="span" color={isSaving ? "gray.300" : undefined}>
-                {" "}
-                {isSaving ? "Saving..." : "Saved"}
-              </Text>
             </HStack>
-          </>
+          </HStack>
         }
         footer={<ActionButtons />}
       >

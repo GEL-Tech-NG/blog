@@ -43,6 +43,8 @@ export const CalendarPicker = ({
     () => Intl.DateTimeFormat().resolvedOptions().timeZone,
     []
   );
+  const [dateValue, setDateValue] = useState<Date | undefined>(defaultValue);
+  // State to manage the selected timezone
   const [timezone, setTimezone] = useState<string>(defaultTimezone);
   const toast = useToast({
     duration: 3000,
@@ -100,7 +102,15 @@ export const CalendarPicker = ({
   }
   return (
     <>
-      <Popover isOpen={isOpen} onClose={onClose}>
+      <Popover
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpen={() => {
+          if (!dateValue) {
+            setDateValue(new Date());
+          }
+        }}
+      >
         <PopoverTrigger>{trigger}</PopoverTrigger>
         <PopoverContent
           ref={popRef}
@@ -113,7 +123,7 @@ export const CalendarPicker = ({
             <Calendar
               onCancel={onCancel}
               onDone={onDone}
-              defaultValue={defaultValue}
+              defaultValue={dateValue}
               onTimezoneChange={(timezone) => {
                 setTimezone(timezone);
               }}

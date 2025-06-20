@@ -44,7 +44,7 @@ function EditorHeader() {
   const lastUpdate = useEditorPostManagerStore(
     (state) => state.activePost?.updated_at || state.lastUpdate
   );
-  const isSaving = useEditorPostManagerStore((state) => state.isSaving);
+  const autoSave = useEditorPostManagerStore((state) => state.autoSave);
   const postTitle = useEditorPostManagerStore(
     (state) => state.activePost?.title
   );
@@ -102,9 +102,14 @@ function EditorHeader() {
                 </HStack>
 
                 {lastUpdate ? (
-                  <Text className="font-semibold " as="span">
-                    {formatDate(new Date(lastUpdate))}
-                  </Text>
+                  <HStack>
+                    <Text className="font-semibold " as="span">
+                      {formatDate(new Date(lastUpdate))}
+                    </Text>
+                    <Text className="text-orange-500" as="span">
+                      {isDirty ? "(Unsaved changes)" : ""}
+                    </Text>
+                  </HStack>
                 ) : (
                   isDirty && (
                     <Text as={"span"} className="text-yellow-500 font-semibold">

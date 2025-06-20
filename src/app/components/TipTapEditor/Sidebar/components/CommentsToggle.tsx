@@ -15,7 +15,7 @@ export const CommentsToggle = ({
             <Icon as={LuMessageSquare} mr={1} />
             Allow Comments:
           </Text>
-          <Switch isChecked={allowComments} onChange={onChange} />
+          <Switch isChecked={allowComments} onChange={onChange} size={"sm"} />
         </HStack>
       </ListItem>
     </PermissionGuard>

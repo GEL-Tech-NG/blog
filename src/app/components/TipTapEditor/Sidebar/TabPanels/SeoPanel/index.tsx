@@ -27,7 +27,7 @@ export const SeoPanel = () => {
       fetchSeoMeta();
       isFetched.current = true;
     }
-  }, []);
+  }, [fetchSeoMeta]);
   return (
     <Stack gap={3} className="p-0">
       <SectionCard title="SEO Metadata">
@@ -45,7 +45,7 @@ export const SeoPanel = () => {
             <FormLabel>Meta Description</FormLabel>
             <Textarea
               placeholder="Enter meta description for SEO"
-              maxLength={150}
+              maxLength={160}
               maxH={100}
               value={description}
               isDisabled={isLoading}

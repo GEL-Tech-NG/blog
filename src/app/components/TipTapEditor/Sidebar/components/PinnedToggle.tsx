@@ -12,7 +12,7 @@ export const PinnedToggle = ({ isSticky, onChange }: PinnedToggleProps) => {
             <Icon as={LuPin} mr={1} />
             Pinned:
           </Text>
-          <Switch isChecked={isSticky} onChange={onChange} />
+          <Switch isChecked={isSticky} onChange={onChange} size={"sm"} />
         </HStack>
       </ListItem>
     </PermissionGuard>
