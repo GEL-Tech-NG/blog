@@ -23,7 +23,7 @@ export const UserMenu = () => {
           pl={1}
           leftIcon={
             <Avatar
-              size={"sm"}
+              size={"xs"}
               name={user?.name}
               src={user?.avatar || user?.image}
             />
@@ -35,10 +35,13 @@ export const UserMenu = () => {
         >
           Hi, {user?.name?.split(" ")[0]}
         </MenuButton>
-        <MenuList>
+        <MenuList px={2} minW={"200px"} rounded={"lg"}>
           <MenuItem
             icon={<LuLogOut />}
             color="red.500"
+            _hover={{ bg: "red.100" }}
+            fontWeight={"semibold"}
+            rounded={"lg"}
             onClick={() => {
               signOut();
             }}
