@@ -118,11 +118,11 @@ const PenstackMedia = Node.create({
     return [
       {
         tag: 'div[data-type="media"]',
-        // getAttrs: (element) => {
-        //   // Validate that we have at least a src attribute
-        //   // const src = element.getAttribute("src");
-        //   // return src ? {} : false;
-        // },
+        getAttrs: (element) => {
+          // Validate that we have at least a src attribute
+          const src = element.getAttribute("src");
+          return src ? {} : false;
+        },
       },
     ];
   },

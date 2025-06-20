@@ -1,4 +1,4 @@
-import { Plus_Jakarta_Sans, League_Spartan } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
 import { Bricolage_Grotesque } from "next/font/google";
 const body = Plus_Jakarta_Sans({

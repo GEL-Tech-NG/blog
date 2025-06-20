@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { type ComponentProps, type ReactNode, useState } from "react";
 import {
   Box,
   Card,
@@ -17,13 +17,15 @@ type SectionCardProps = {
   footer?: ReactNode;
   children?: ReactNode;
   isOpen?: boolean;
-};
+} & Omit<ComponentProps<typeof Card>, "title">;
+
 export function SectionCard({
   children,
   header,
   footer,
   title,
   isOpen = true,
+  ...props
 }: SectionCardProps) {
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const bgColor = useColorModeValue("white", "gray.800");
@@ -31,7 +33,7 @@ export function SectionCard({
   const toggleCard = () => setIsCardOpen(!isCardOpen);
 
   return (
-    <Card>
+    <Card {...props}>
       {(header || title) && (
         <HStack
           justify={"space-between"}
@@ -41,7 +43,7 @@ export function SectionCard({
           borderBottomColor={borderColor}
         >
           {title && (
-            <Text as={"span"} fontSize={"17px"} fontWeight={500}>
+            <Text as={"span"} fontSize={"16px"} fontWeight={500}>
               {title}
             </Text>
           )}

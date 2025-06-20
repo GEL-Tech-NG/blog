@@ -28,18 +28,6 @@ export interface MediaNodeViewProps extends Partial<NodeViewProps> {
   isEditing?: boolean;
 }
 
-// Error boundary component for media failures
-
-// Loading placeholder
-
-// Helper function to get aspect ratio class
-
-// Image component with error handling
-
-// Video component with error handling
-
-// Audio component with error handling
-
 // Main MediaComponent with proper typing
 export const MediaComponentNew = ({
   node,
@@ -69,17 +57,19 @@ export const MediaComponentNew = ({
       case "image":
         return (
           <ImageMedia
-            src={src}
-            alt={alt}
-            type="image"
-            caption={caption}
-            width={width}
-            height={height}
-            updateAttrs={updateAttributes}
+            initialAttrs={{
+              src,
+              alt,
+              caption,
+              width,
+              height,
+              aspectRatio,
+              objectFit,
+              type: "image",
+            }}
+            onAttrsChange={updateAttributes}
             selected={selected}
             isEditing={isEditing}
-            aspectRatio={aspectRatio}
-            objectFit={objectFit}
           />
         );
       case "video":
