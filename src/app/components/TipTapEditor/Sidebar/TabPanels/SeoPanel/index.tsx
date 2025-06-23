@@ -30,7 +30,7 @@ export const SeoPanel = () => {
   }, [fetchSeoMeta]);
   return (
     <Stack gap={3} className="p-0">
-      <SectionCard title="SEO Metadata">
+      <SectionCard title="SEO Metadata" rounedTop={0}>
         <Stack gap={3} px={4} py={3}>
           <FormControl>
             <FormLabel>Meta Title</FormLabel>

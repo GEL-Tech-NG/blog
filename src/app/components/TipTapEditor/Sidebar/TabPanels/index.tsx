@@ -1,6 +1,7 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { SeoPanel } from "./SeoPanel";
 import { PublishPanel } from "./PublishPanel";
+import { BlockPanel } from "./BlockPanel";
 
 export const EditorSidebarTabPanels = () => {
   return (
@@ -20,11 +21,15 @@ export const EditorSidebarTabPanels = () => {
           className="rounded-t-lg "
         >
           <Tab>Appearance</Tab>
+          <Tab>Block</Tab>
           <Tab>SEO</Tab>
         </TabList>
         <TabPanels>
           <TabPanel px={0}>
             <PublishPanel />
+          </TabPanel>
+          <TabPanel px={0}>
+            <BlockPanel />
           </TabPanel>
           <TabPanel px={0}>
             <SeoPanel />

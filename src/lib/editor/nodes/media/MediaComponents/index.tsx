@@ -47,10 +47,16 @@ export const MediaComponentNew = ({
   updateAttributes,
   selected,
   isEditing = true,
+  ...p
 }: MediaNodeViewProps) => {
   const { src, alt, type, caption, width, height, aspectRatio, objectFit } =
     isEditing ? node.attrs : attrs || {};
-
+  console.log({
+    mm: p.editor?.getAttributes("penstackMedia"),
+    is: p.editor?.isActive("penstackMedia"),
+    pos: p.getPos?.(),
+    z: p.editor?.state.selection,
+  });
   // Validate required attributes
   if (!src) {
     return isEditing ? (
@@ -91,7 +97,7 @@ export const MediaComponentNew = ({
     }
   };
 
-  const containerClass = type === "image" ? "flex w-max space-x-4 p-4" : "p-4";
+  const containerClass = type === "image" ? "flex space-x-4 p-4" : "p-4";
 
   return isEditing ? (
     <NodeViewWrapper as="div" className={containerClass}>

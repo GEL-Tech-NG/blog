@@ -17,13 +17,14 @@ type SectionCardProps = {
   footer?: ReactNode;
   children?: ReactNode;
   isOpen?: boolean;
-};
+} & React.ComponentProps<typeof Card>;
 export function SectionCard({
   children,
   header,
   footer,
   title,
   isOpen = true,
+  ...props
 }: SectionCardProps) {
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const bgColor = useColorModeValue("white", "gray.800");
@@ -31,7 +32,7 @@ export function SectionCard({
   const toggleCard = () => setIsCardOpen(!isCardOpen);
 
   return (
-    <Card>
+    <Card {...props}>
       {(header || title) && (
         <HStack
           justify={"space-between"}

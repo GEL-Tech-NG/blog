@@ -26,6 +26,7 @@ export const PublishPanel = () => {
     <Stack gap={3} className="p-0">
       <SectionCard
         title="Publish"
+        roundedTop={0}
         header={
           <HStack divider={<StackDivider />}>
             <HStack>
